@@ -176,6 +176,7 @@ module OpenProject::Revisions::Git
       end
       
       require_dependency 'open_project/revisions/git/load_gitolite_hooks'
+      require_dependency 'open_project/revisions/git/git_hosting'
       require_dependency 'open_project/revisions/git/grack/auth'
       require_dependency 'open_project/revisions/git/grack/server'
     end
