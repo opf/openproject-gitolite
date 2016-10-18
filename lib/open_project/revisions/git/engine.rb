@@ -175,9 +175,9 @@ module OpenProject::Revisions::Git
         require_dependency "open_project/revisions/git/patches/#{sym}_patch"
       end
       
-      require_dependency 'load_gitolite_hooks'
-      require_dependency 'grack/auth'
-      require_dependency 'grack/server'
+      require_dependency 'open_project/revisions/git/load_gitolite_hooks'
+      require_dependency 'open_project/revisions/git/grack/auth'
+      require_dependency 'open_project/revisions/git/grack/server'
     end
 
     initializer 'revisions_git.scm_vendor' do

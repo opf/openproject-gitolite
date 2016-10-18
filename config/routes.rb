@@ -24,4 +24,8 @@ OpenProject::Application.routes.draw do
 
   # Enable SmartHTTP Grack support
   mount Grack::Bundle.new({}), at: '/gitolite/', constraints: lambda { |request| /[-\/\w\.]+\.git\//.match(request.path_info) }, via: [:get, :post]
+
+  # Handle non existing paths (still not sure if this will help)
+  #match '/gitolite/' => redirect('/404'), via: [:get, :post]
+  #match '/gitolite/*paths' => redirect('/404'), via: [:get, :post]
 end
