@@ -146,7 +146,8 @@ module OpenProject::Revisions::Git::GitoliteWrapper
 
         # Delete the repository project itself.
         logger.info("Deleting obsolete repository #{full_path}")
-        FileUtils.remove_dir(path)
+        OpenProject::Revisions::Git::Commands.sudo_rm_rf(full_path) #To prevent error while deleting repos that use SmartHTTP (still need to find why error is produced)
+        #FileUtils.remove_dir(path)
 
         # Traverse all parent directories within repositories,
         # searching for empty project directories.
