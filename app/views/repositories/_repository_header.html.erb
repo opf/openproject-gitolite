@@ -36,24 +36,33 @@ See doc/COPYRIGHT.rdoc for more details.
   <% if @instructions && @instructions.available? %>
   <li class="toolbar-item toolbar-input-group">
 
-    <% if !User.current.anonymous? %>
+    <% if @repository.is_a?(Repository::Gitolite) %>
+      <% if !User.current.anonymous? %>
+        <div class="toolbar-input-group--affix -prepend">
+          <a id="git_url_ssh"  href="javascript:void(0)">SSH</a>
+        </div>
+      <% end %>
+      <% if @repository.extra[:git_http].to_s != "0" %>
+        <div class="toolbar-input-group--affix -prepend">
+          <a id="git_url_http" href="javascript:void(0)">HTTP</a>
+        </div>
+      <% end %>
+      <% if @project.is_public && @repository.extra[:git_daemon].to_s != "0" %>
+        <div class="toolbar-input-group--affix -prepend">
+          <a id="git_url_git"  href="javascript:void(0)">Git</a>
+        </div>
+      <% end %>
+    <% else %>
       <div class="toolbar-input-group--affix -prepend">
-        <a id="git_url_ssh"  href="javascript:void(0)">SSH</a>
+        <span><%= @instructions.checkout_command %></span>
       </div>
     <% end %>
-    <% if @repository.extra[:git_http].to_s != "0" %>
-      <div class="toolbar-input-group--affix -prepend">
-        <a id="git_url_http" href="javascript:void(0)">HTTP</a>
-      </div>
-    <% end %>
-    <%  if @project.is_public && @repository.extra[:git_daemon].to_s != "0" %>
-      <div class="toolbar-input-group--affix -prepend">
-        <a id="git_url_git"  href="javascript:void(0)">Git</a>
-      </div>
-    <%  end %>
 
     <input id="repository-checkout-url"
            type="text" class="-clickable" size="40"
+           <% if !@repository.is_a?(Repository::Gitolite) %>
+             value="<%= @instructions.checkout_url %>"
+           <% end %>
            onclick="this.focus(); this.select();"
            readonly>
     <button class="toolbar-input--affix toolbar-input-group--affix -append"
@@ -101,16 +110,16 @@ See doc/COPYRIGHT.rdoc for more details.
 </persistent-toggle>
 
 
+<% if @repository.is_a?(Repository::Gitolite) %>
 <script type="text/javascript">
-
-  var guProjectName= "<%=  @repository.project.identifier + '.git' %>";
+  var guProjectName= "<%= @repository.project.identifier + '.git' %>";
   var guProjectIsPublic= "<%= @project.is_public.to_s %>";
   var guUser= "<%= User.current.login %>";
   var guUserIsCommitter= "<%= User.current.allowed_to?(:commit_access, @project) ? 'true' : 'false' %>";
   var guGitUser="<%= Setting.plugin_openproject_revisions_git[:gitolite_user] %>";
   var guGitServer="<%= Setting.plugin_openproject_revisions_git[:ssh_server_domain] %>";
   var guHttpBase="<%= Setting.plugin_openproject_revisions_git[:https_server_domain] %>";
-  var guHttpProto="<%=  @repository.https_access_enabled? ? 'https' : 'http' %>";
+  var guHttpProto="<%= @repository.https_access_enabled? ? 'https' : 'http' %>";
 
   if (!(window.Event === undefined) && !(Event.observe === undefined)) {
     Event.observe(window,"load", setGitUrlOnload);
@@ -170,3 +179,4 @@ function setGitUrlOnload()
 }
 
 </script>
+<% end %>
