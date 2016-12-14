@@ -353,12 +353,12 @@ en:
   # Gitolite Rescue
   label_tab_gitolite_rescue: Rescue
   label_gitolite_rescue: Gitolite Rescue
-
   label_resync_all_projects: Resync all projects?
   label_resync_all_projects_desc: Check this box and apply to rewrite the whole gitolite config file (this may take several minutes).
-
   label_configure_projects: Find projects without proper settings?
   label_configure_projects_desc: Check this box and apply to find projects without proper configuration settings and fix them.
+  label_resync_all_ssh_keys: Resync all SSH public keys?
+  label_resync_all_ssh_keys_desc: Check this box and apply to rewrite all SSH public keys from DB to Gitolite (this may take several minutes).
 
   # Misc
   label_select_all: Select all

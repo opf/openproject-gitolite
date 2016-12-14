@@ -11,3 +11,9 @@
   <%= styled_check_box_tag("settings[gitolite_resync_all_projects]", true, false) %>
   <%= content_tag('div', l(:label_resync_all_projects_desc), class: 'form--field-instructions') %>
 </div>
+
+<div class="form--field">
+  <%= styled_label_tag("settings[gitolite_resync_all_ssh_keys]", l(:label_resync_all_ssh_keys)) %>
+  <%= styled_check_box_tag("settings[gitolite_resync_all_ssh_keys]", true, false) %>
+  <%= content_tag('div', l(:label_resync_all_ssh_keys_desc), class: 'form--field-instructions') %>
+</div>

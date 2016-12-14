@@ -341,12 +341,12 @@ fr:
   # Gitolite Rescue
   label_tab_gitolite_rescue: Sauvetage
   label_gitolite_rescue: Sauvetage de Gitolite
-
-  label_resync_all_projects: Resynchroniser tous les projets
-  label_resync_all_ssh_keys: Resynchroniser toutes les clés SSH
-
+  label_resync_all_projects: Resynchroniser tous les projets ?
+  label_resync_all_projects_desc: Cochez cette case et appliquez pour réécrire le fichier de configuration Gitolite (cela peut prendre plusieurs minutes).
   label_configure_projects: Trouver les projets sans paramètres appropriés ?
   label_configure_projects_desc: Cochez cette case et appliquez pour trouver des projets sans paramètres de configuration appropriés et les corriger.
+  label_resync_all_ssh_keys: Resynchroniser toutes les clés SSH ?
+  label_resync_all_ssh_keys_desc: Cochez cette case et appliquez pour réécrire toutes les clés publiques SSH depuis la base de données sur Gitolite (cela peut prendre plusieurs minutes).
 
   # Misc
   label_select_all: Tout sélectionner

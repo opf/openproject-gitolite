@@ -10,6 +10,7 @@ module OpenProject::Revisions::Git
           before_save :validate_settings
           after_commit :restore_revisions_git_values
           after_commit :fix_projects_without_settings
+          after_commit :resync_all_ssh_keys
         end
       end
 
@@ -43,6 +44,9 @@ module OpenProject::Revisions::Git
 
           # Prepare any configuration of settings
           prepare_configurations valuehash
+
+          # Prepare any resync of ssh keys
+          prepare_resync_all_ssh_keys valuehash
 
           # Save back results
           self.value = valuehash
@@ -89,6 +93,12 @@ module OpenProject::Revisions::Git
           ## Rest configuration requests
           @@configure_projects = valuehash[:gitolite_configure_projects] == 'true'
           valuehash[:gitolite_configure_projects] = 'false'
+        end
+
+        def prepare_resync_all_ssh_keys(valuehash)
+          ## Rest configuration requests
+          @@resync_ssh_keys = valuehash[:gitolite_resync_all_ssh_keys] == 'true'
+          valuehash[:gitolite_resync_all_ssh_keys] = 'false'
         end
 
         def restore_revisions_git_values
@@ -159,6 +169,11 @@ module OpenProject::Revisions::Git
             
             
           end
+        end
+
+        def resync_all_ssh_keys
+          # Need to update everyone!
+          OpenProject::Revisions::Git::GitoliteWrapper.update(:update_all_ssh_keys_forced, GitolitePublicKey.all.length)
         end
 
       end
