@@ -10,7 +10,7 @@ module OpenProject::Revisions::Git
           before_save :validate_settings
           after_commit :restore_revisions_git_values
           after_commit :fix_projects_without_settings
-          after_commit :resync_all_ssh_keys
+          after_commit :resync_all_ssh_keys_from_db
         end
       end
 
@@ -120,11 +120,26 @@ module OpenProject::Revisions::Git
           # Only perform after-actions on settings for our plugin
           if name == 'plugin_openproject_revisions_git'
             valuehash = value
-        
+
             ## A configuration of projects without proper settings has been asked within the interface, fix projects
             if @@configure_projects == true
               fix_project_settings
               @@configure_projects = false
+            end
+
+            @@old_valuehash = valuehash.clone
+          end
+        end
+
+        def resync_all_ssh_keys_from_db
+          # Only perform after-actions on settings for our plugin
+          if name == 'plugin_openproject_revisions_git'
+            valuehash = value
+        
+            ## A resync of all public SSH keys has been asked within the interface, update all keys in force mode
+            if @@resync_ssh_keys == true
+              resync_all_ssh_keys
+              @@resync_ssh_keys = false
             end
         
             @@old_valuehash = valuehash.clone
