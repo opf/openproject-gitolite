@@ -58,7 +58,7 @@ module OpenProject::Revisions::Git::GitoliteWrapper
     def git_daemon_enabled?
       User.anonymous.allowed_to?(:view_changesets, @project) &&
         extra_given? &&
-        @repository.extra[:git_daemon] != 0
+        @repository.extra[:git_daemon]
     end
 
     def extra_given?

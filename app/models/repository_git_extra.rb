@@ -7,6 +7,8 @@ class RepositoryGitExtra < ActiveRecord::Base
 
   after_initialize :set_values
 
+  after_commit ->(obj) { obj.update_git_daemon }, on: :update
+
   def set_values_for_existing_repo
     if !repository.nil?
       #When the default branch is null, it means that the proper configuration was not made for this repository when it was created
@@ -32,6 +34,15 @@ class RepositoryGitExtra < ActiveRecord::Base
     rescue Exception=>e
     end
     valid
+  end
+
+  protected
+
+  def update_git_daemon
+    OpenProject::Revisions::Git::GitoliteWrapper.logger.info(
+      "Update git daemon for repository : '#{repository.gitolite_repository_name}'"
+    )
+    OpenProject::Revisions::Git::GitoliteWrapper.update(:update_repository, repository)
   end
 
   private

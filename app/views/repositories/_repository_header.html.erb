@@ -47,7 +47,7 @@ See doc/COPYRIGHT.rdoc for more details.
           <a id="git_url_http" href="javascript:void(0)">HTTP</a>
         </div>
       <% end %>
-      <% if @project.is_public && @repository.extra[:git_daemon].to_s != "0" %>
+      <% if @project.is_public && @repository.extra[:git_daemon] %>
         <div class="toolbar-input-group--affix -prepend">
           <a id="git_url_git"  href="javascript:void(0)">Git</a>
         </div>

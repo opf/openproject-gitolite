@@ -16,7 +16,7 @@
 <%= form.fields_for :extra do |e| %>
   <div class="form--field">
     <%=
-      e.check_box(:git_daemon, { label: :label_enable_git_daemon, checked: repository.project.is_public? })
+      e.check_box(:git_daemon, { label: :label_enable_git_daemon, checked: repository.project.is_public? && repository.extra[:git_daemon], disabled: true, })
     %>
   </div>
 <% end %>
