@@ -112,7 +112,7 @@ See doc/COPYRIGHT.rdoc for more details.
 
 <% if @repository.is_a?(Repository::Gitolite) %>
 <script type="text/javascript">
-  var guProjectName= "<%= @repository.project.identifier + '.git' %>";
+  var guProjectName= "<%= @repository.repository_identifier %>";
   var guProjectIsPublic= "<%= @project.is_public.to_s %>";
   var guUser= "<%= User.current.login %>";
   var guUserIsCommitter= "<%= User.current.allowed_to?(:commit_access, @project) ? 'true' : 'false' %>";
