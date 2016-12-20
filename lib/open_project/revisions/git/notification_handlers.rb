@@ -17,6 +17,7 @@ module OpenProject::Revisions::Git
 
         return unless accepts?(project)
 
+        GitoliteWrapper.logger.info("Delete repositories of project '#{project}'. Resynchronizing Gitolite.")
         # Remember all projects with git repositories we have to delete later on.
         # Reverse the list to remove the lowermost repo first.
         destroy_repos = flatten_project_git_repos(project).reverse
@@ -30,14 +31,14 @@ module OpenProject::Revisions::Git
         return unless accepts?(project)
 
         if project_url_changed?(project.repository)
-          GitoliteWrapper.logger.info("Move repositories of project : '#{project}'")
+          GitoliteWrapper.logger.info("Move repositories of project '#{project}'. Resynchronizing Gitolite.")
           GitoliteWrapper.update(:move_repositories, project.id)
         else
           update_repo_daemon project
         end
       end
 
-      def roles_changed(_payload)
+      def roles_changed(payload)
         GitoliteWrapper.logger.info("Roles were changed. Resynchronizing Gitolite.")
         GitoliteWrapper.update(:sync_with_gitolite, Project)
       end
