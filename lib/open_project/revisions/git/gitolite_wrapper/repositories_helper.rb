@@ -26,8 +26,8 @@ module OpenProject::Revisions::Git::GitoliteWrapper
       repo_conf.set_git_config('openprojectgitolite.projectid', repository.project.identifier.to_s)
       repo_conf.set_git_config('openprojectgitolite.repositorykey', repository.extra[:key].to_s)
       repo_conf.set_git_config('http.uploadpack', (User.anonymous.allowed_to?(:view_changesets, repository.project) ||
-        repository.extra[:git_http]))
-      repo_conf.set_git_config('http.receivepack', (repository.extra[:git_http] != 0))
+        repository.smart_http_enabled?))
+      repo_conf.set_git_config('http.receivepack', (repository.smart_http_enabled?))
 
       # Set Git config keys
       repository.repository_git_config_keys.each do |config_entry|
