@@ -25,7 +25,9 @@ module OpenProject::Revisions::Git::GitoliteWrapper
 
         # Delete old config file to recreate it form scratch
         logger.info("#{@action} : Cleaning Gitolite configuration file '#{config_file}' ...")
-        FileUtils.rm_f(config_file_full_pat)
+        if File.exists?(config_file_full_pat)
+          FileUtils.rm_f(config_file_full_pat)
+        end
         FileUtils.touch(config_file_full_pat)
 
         @admin.reload!
@@ -35,11 +37,9 @@ module OpenProject::Revisions::Git::GitoliteWrapper
 
     ##
     # Forces resynchronization with the gitolite config for all repositories
-    # with a current configuration.
+    # with a current configuration from OpenProject DB.
     def sync_with_gitolite
       @admin.transaction do
-        #admin.truncate!
-        #gitolite_admin_repo_commit("Truncated configuration")
         perform_update(@object_id)
       end
     end

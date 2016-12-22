@@ -108,7 +108,7 @@ module OpenProject::Revisions::Git::GitoliteWrapper
       @gitolite_config.rm_repo(old_name)
 
       # Move the repo on filesystem
-      if move_physical_repo(old_path, old_name, new_path, new_name)
+      if move_physical_repo(old_path, old_name, new_path, new_name, true)
         # Add the repo as new in Gitolite
         repo.url = new_path
         repo.root_url = new_path
@@ -117,7 +117,8 @@ module OpenProject::Revisions::Git::GitoliteWrapper
       end
     end
 
-    def move_physical_repo(old_path, old_name, new_path, new_name)
+    def move_physical_repo(old_path, old_name, new_path, new_name, force_move)
+      # Both old and new repository are identical, no need to move anything on the disk
       if old_path == new_path
         logger.warn("#{@action} : old repository and new repository are identical '#{old_path}' ... why move?")
         return false
@@ -157,8 +158,17 @@ module OpenProject::Revisions::Git::GitoliteWrapper
 
       # If the new path exists, some old project wasn't correctly cleaned.
       if File.directory?(new_path)
-        logger.warn("#{@action} : New location '#{new_path}' is non-empty. Cleaning first.")
-        clean_repo_dir([new_name, '.git'].join)
+        if force_move
+          logger.warn("#{@action} : New location '#{new_path}' is non-empty. Cleaning first.")
+          clean_repo_dir([new_name, '.git'].join)
+        else
+          # If here, old and new paths are different and both exist
+          # Keeping new repo as it may be the current one; this prevents unwanted deletion of a repository
+          # Returning false as this part of the conditional is used to correct problems in paths, not to move repositories when projects are updated
+          logger.error("#{@action} : New location '#{new_path}' is non-empty. Keeping repository due to option 'force move' set to 'false'.")
+          logger.error("#{@action} : Project will keep old configuration, but Gitolite will use then new path")
+          return false
+        end
       end
 
       # Otherwise, move the old repo
