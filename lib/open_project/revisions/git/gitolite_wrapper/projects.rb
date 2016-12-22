@@ -15,11 +15,27 @@ module OpenProject::Revisions::Git::GitoliteWrapper
     end
 
     ##
-    # Forces resynchronization with the gitolite config for all repositories
-    # with a current configuration.
-    #
     # Truncates the +openproject.conf+ file prior to synchronization
     # so that all configurations made from the plugin are reset.
+    def clear_gitolite_config
+      @admin.transaction do
+        gitolite_admin_dir = OpenProject::Revisions::Git::Config.get_setting(:gitolite_admin_dir)
+        config_file = OpenProject::Revisions::Git::GitoliteWrapper.gitolite_admin_settings[:config_file]
+        config_file_full_pat = File.join(gitolite_admin_dir, 'conf', config_file)
+
+        # Delete old config file to recreate it form scratch
+        logger.info("#{@action} : Cleaning Gitolite configuration file '#{config_file}' ...")
+        FileUtils.rm_f(config_file_full_pat)
+        FileUtils.touch(config_file_full_pat)
+
+        @admin.reload!
+        gitolite_admin_repo_commit("Cleaning Gitolite configuration from '#{config_file}'")
+      end
+    end
+
+    ##
+    # Forces resynchronization with the gitolite config for all repositories
+    # with a current configuration.
     def sync_with_gitolite
       @admin.transaction do
         #admin.truncate!

@@ -40,6 +40,7 @@ module OpenProject::Revisions::Git
 
       def roles_changed(payload)
         GitoliteWrapper.logger.info("Roles were changed. Resynchronizing Gitolite.")
+        GitoliteWrapper.update(:clear_gitolite_config, Project)
         GitoliteWrapper.update(:sync_with_gitolite, Project)
       end
 
