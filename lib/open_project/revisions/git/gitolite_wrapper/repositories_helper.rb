@@ -69,8 +69,13 @@ module OpenProject::Revisions::Git::GitoliteWrapper
       projects_list.each do |project|
         # Old name is the <path> section of above, thus extract it from url.
         # But remove the '.git' part.
-        old_repository_name = File.basename(project.repository.url, '.git')
-        old_repository_path = [File.join(gitolite_repos_root, old_repository_name), '.git'].join
+        old_repository_path = project.repository.url
+        old_repository_relative_path = Pathname.new(old_repository_path).relative_path_from(Pathname.new(gitolite_repos_root))
+        if File.dirname(old_repository_path).to_s == gitolite_repos_root.to_s.chomp("/")
+          old_repository_name = File.basename(old_repository_relative_path.to_s, '.git')
+        else
+          old_repository_name = File.join(File.dirname(old_repository_relative_path.to_s), File.basename(old_repository_relative_path.to_s, '.git'))
+        end
 
         # Actually move the repository
         do_move_repository(project.repository, old_repository_path, old_repository_name)
@@ -87,49 +92,88 @@ module OpenProject::Revisions::Git::GitoliteWrapper
     # 3. Add the repository using +repo.gitolite_repository_name+
     #
     def do_move_repository(repo, old_path, old_name)
-      new_name  = repo.repository_identifier
+      gitolite_repos_root = OpenProject::Revisions::Git::GitoliteWrapper.gitolite_global_storage_path
       new_path  = repo.managed_repository_path
+      new_relative_path = Pathname.new(new_path).relative_path_from(Pathname.new(gitolite_repos_root))
+      if File.dirname(new_path).to_s == gitolite_repos_root.to_s.chomp("/")
+        new_name = File.basename(new_relative_path.to_s, '.git')
+      else
+        new_name = File.join(File.dirname(new_relative_path.to_s), File.basename(new_relative_path.to_s, '.git'))
+      end
 
       logger.info("#{@action} : Moving '#{old_name}' -> '#{new_name}'")
       logger.debug("-- On filesystem, this means '#{old_path}' -> '#{new_path}'")
 
-      # Remove old config entry
+      # Remove old config entry in Gitolite
       @gitolite_config.rm_repo(old_name)
 
       # Move the repo on filesystem
-      move_physical_repo(old_path, new_path)
-
-      # Add the repo as new
-      repo.url = new_path
-      repo.root_url = new_path
-      repo.save
-      handle_repository_add(repo)
+      if move_physical_repo(old_path, old_name, new_path, new_name)
+        # Add the repo as new in Gitolite
+        repo.url = new_path
+        repo.root_url = new_path
+        repo.save
+        handle_repository_add(repo)
+      end
     end
 
-    def move_physical_repo(old_path, new_path)
+    def move_physical_repo(old_path, old_name, new_path, new_name)
       if old_path == new_path
-        logger.warn("#{@action} : old repository and new repository are identical '#{old_path}' .. why move?")
-        return
-      end
-
-      # If the new path exists, some old project wasn't correctly cleaned.
-      if File.directory?(new_path)
-        logger.warn("#{@action} : New location '#{new_path}' was non-empty. Cleaning first.")
-        clean_repo_dir([File.basename(new_path, '.git'), '.git'].join)
+        logger.warn("#{@action} : old repository and new repository are identical '#{old_path}' ... why move?")
+        return false
       end
 
       # Old repository has never been created by gitolite
       # => No need to move anything on the disk
       if !File.directory?(old_path)
         logger.info("#{@action} : Old location '#{old_path}' was never created. Skipping disk movement.")
-        return
+        return false
+      end
+
+      # Creates the parent directory if necessary
+      # If parent directory does not exist, FileUtils.mv will not move the repository
+      parent_dir = Pathname.new(new_path).parent
+      if !File.directory?(parent_dir)
+        logger.info("#{@action} : Creating parent directory '#{parent_dir}' ...")
+        begin
+          OpenProject::Revisions::Git::Commands.sudo_mkdir_p(parent_dir.to_s)
+          OpenProject::Revisions::Git::Commands.sudo_chmod('770', parent_dir.to_s)
+        rescue OpenProject::Revisions::Git::Error::GitoliteCommandException => e
+          logger.error("#{@action} : Creation of parent directory '#{parent_dir}' failed!")
+          return false
+        end
+      end
+
+      # Cheking permissions in case the parent directory already existed
+      if !File.writable?(parent_dir)
+        logger.info("#{@action} : Setting write permissios to parent directory '#{parent_dir}' ...")
+        begin
+          OpenProject::Revisions::Git::Commands.sudo_chmod('770', parent_dir.to_s)
+        rescue OpenProject::Revisions::Git::Error::GitoliteCommandException => e
+          logger.error("#{@action} : Changing permissions of parent directory '#{parent_dir}' failed!")
+          return false
+        end
+      end
+
+      # If the new path exists, some old project wasn't correctly cleaned.
+      if File.directory?(new_path)
+        logger.warn("#{@action} : New location '#{new_path}' is non-empty. Cleaning first.")
+        clean_repo_dir([new_name, '.git'].join)
       end
 
       # Otherwise, move the old repo
       FileUtils.mv(old_path, new_path, force: true)
 
+      # If the new path does not exist, it is a problem!
+      if !File.directory?(new_path)
+        logger.error("#{@action} : Repository could not be moved to '#{new_path}'!.")
+        return false
+      end
+
       # Clean up the old path
-      clean_repo_dir([File.basename(old_path, '.git'), '.git'].join)
+      clean_repo_dir([old_name, '.git'].join)
+      
+      return true
     end
 
     # Removes the repository path and all parent repositories that are empty
@@ -142,12 +186,14 @@ module OpenProject::Revisions::Git::GitoliteWrapper
 
       Dir.chdir(repo_root) do
         # If no repository was created, break early
-        break unless File.directory?(full_path)
+        #break unless File.directory?(full_path)
 
-        # Delete the repository project itself.
-        logger.info("Deleting obsolete repository #{full_path}")
-        OpenProject::Revisions::Git::Commands.sudo_rm_rf(full_path) #To prevent error while deleting repos that use SmartHTTP (still need to find why error is produced)
-        #FileUtils.remove_dir(path)
+        if File.directory?(full_path)
+          # Delete the repository project itself.
+          logger.info("Deleting obsolete repository #{full_path}")
+          OpenProject::Revisions::Git::Commands.sudo_rm_rf(full_path) #To prevent error while deleting repos that use SmartHTTP (still need to find why error is produced)
+          #FileUtils.remove_dir(path)
+        end
 
         # Traverse all parent directories within repositories,
         # searching for empty project directories.
