@@ -69,6 +69,8 @@ module OpenProject::Revisions::Git::GitoliteWrapper
       projects_list.each do |project|
         # Old name is the <path> section of above, thus extract it from url.
         # But remove the '.git' part.
+
+        # Get the path (where the repo actually is) from the database in OpenProject
         old_repository_path = project.repository.url
         old_repository_relative_path = Pathname.new(old_repository_path).relative_path_from(Pathname.new(gitolite_repos_root))
         if File.dirname(old_repository_path).to_s == gitolite_repos_root.to_s.chomp("/")
@@ -93,6 +95,7 @@ module OpenProject::Revisions::Git::GitoliteWrapper
     #
     def do_move_repository(repo, old_path, old_name)
       gitolite_repos_root = OpenProject::Revisions::Git::GitoliteWrapper.gitolite_global_storage_path
+      # Build the path (where the repo should be) from the project's settings
       new_path  = repo.managed_repository_path
       new_relative_path = Pathname.new(new_path).relative_path_from(Pathname.new(gitolite_repos_root))
       if File.dirname(new_path).to_s == gitolite_repos_root.to_s.chomp("/")
@@ -166,7 +169,7 @@ module OpenProject::Revisions::Git::GitoliteWrapper
           # Keeping new repo as it may be the current one; this prevents unwanted deletion of a repository
           # Returning false as this part of the conditional is used to correct problems in paths, not to move repositories when projects are updated
           logger.error("#{@action} : New location '#{new_path}' is non-empty. Keeping repository due to option 'force move' set to 'false'.")
-          logger.error("#{@action} : Project will keep old configuration, but Gitolite will use then new path")
+          logger.error("#{@action} : Project will keep old configuration, but Gitolite will use the new path")
           return false
         end
       end

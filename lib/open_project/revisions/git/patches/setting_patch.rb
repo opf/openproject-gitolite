@@ -149,49 +149,8 @@ module OpenProject::Revisions::Git
 
         def resync_projects
           # Makes sure that also the repositories in filesystem are in the right path
-          OpenProject::Revisions::Git::GitoliteWrapper.logger.info("Forced resync of all projects : Making sure all repositories are in proper place")
-          projects_with_repos = Project.includes(:repository)
-                                .where('repositories.type = ?', 'Repository::Gitolite')
-                                .references('repositories')
+          resync_repos
 
-          if projects_with_repos.size > 0
-            projects_with_repos.each do |proj|
-              gitolite_repos_root = OpenProject::Revisions::Git::GitoliteWrapper.gitolite_global_storage_path
-
-              old_path = proj.repository.url
-              old_relative_path = Pathname.new(old_path).relative_path_from(Pathname.new(gitolite_repos_root))
-              if File.dirname(old_path).to_s == gitolite_repos_root.to_s.chomp("/")
-                old_name = File.basename(old_relative_path.to_s, '.git')
-              else
-                old_name = File.join(File.dirname(old_relative_path.to_s), File.basename(old_relative_path.to_s, '.git'))
-              end
-
-              new_path  = proj.repository.managed_repository_path
-              new_relative_path = Pathname.new(new_path).relative_path_from(Pathname.new(gitolite_repos_root))
-              if File.dirname(new_path).to_s == gitolite_repos_root.to_s.chomp("/")
-                new_name = File.basename(new_relative_path.to_s, '.git')
-              else
-                new_name = File.join(File.dirname(new_relative_path.to_s), File.basename(new_relative_path.to_s, '.git'))
-              end
-
-              if old_path == new_path
-                # Nathing to do with this repository
-                next
-              end
-              
-              OpenProject::Revisions::Git::GitoliteWrapper.logger.warn("Forced resync of all projects : Found repository '#{old_name}' in wrong location on filesystem")
-              OpenProject::Revisions::Git::GitoliteWrapper.logger.warn("Forced resync of all projects : Moving repository '#{old_name}' -> '#{new_name}' ")
-              OpenProject::Revisions::Git::GitoliteWrapper.logger.debug("-- On filesystem, this means '#{old_path}' -> '#{new_path}'")
-
-              if move_physical_repo(old_path, old_name, new_path, new_name, false)
-                # Add the repo as new in Gitolite
-                proj.repository.url = new_path
-                proj.repository.root_url = new_path
-                proj.repository.save
-              end
-            end
-          end
-          
           # Need to update everyone!
           projects = Project.active.includes(:repository).all
           if projects.length > 0
@@ -235,6 +194,56 @@ module OpenProject::Revisions::Git
         def resync_all_ssh_keys
           # Need to update everyone!
           OpenProject::Revisions::Git::GitoliteWrapper.update(:update_all_ssh_keys_forced, GitolitePublicKey.all.length)
+        end
+
+        private
+        
+        def resync_repos
+          OpenProject::Revisions::Git::GitoliteWrapper.logger.info("Resync of all repositories : Making sure all repositories are in proper place")
+          projects_with_repos = Project.includes(:repository)
+                                .where('repositories.type = ?', 'Repository::Gitolite')
+                                .references('repositories')
+
+          if projects_with_repos.size > 0
+            projects_with_repos.each do |proj|
+              gitolite_repos_root = OpenProject::Revisions::Git::GitoliteWrapper.gitolite_global_storage_path
+
+              # Get the path (where the repo actually is) from the database in OpenProject
+              old_path = proj.repository.url
+              old_relative_path = Pathname.new(old_path).relative_path_from(Pathname.new(gitolite_repos_root))
+              if File.dirname(old_path).to_s == gitolite_repos_root.to_s.chomp("/")
+                old_name = File.basename(old_relative_path.to_s, '.git')
+              else
+                old_name = File.join(File.dirname(old_relative_path.to_s), File.basename(old_relative_path.to_s, '.git'))
+              end
+
+              # Build the path (where the repo should be) from the project's settings
+              new_path  = proj.repository.managed_repository_path
+              new_relative_path = Pathname.new(new_path).relative_path_from(Pathname.new(gitolite_repos_root))
+              if File.dirname(new_path).to_s == gitolite_repos_root.to_s.chomp("/")
+                new_name = File.basename(new_relative_path.to_s, '.git')
+              else
+                new_name = File.join(File.dirname(new_relative_path.to_s), File.basename(new_relative_path.to_s, '.git'))
+              end
+
+              if old_path == new_path
+                # Nathing to do with this repository
+                next
+              end
+              
+              OpenProject::Revisions::Git::GitoliteWrapper.logger.warn("Resync of all repositories : Found repository '#{old_name}' in wrong location on filesystem")
+              OpenProject::Revisions::Git::GitoliteWrapper.logger.warn("Resync of all repositories : Moving repository '#{old_name}' -> '#{new_name}' ")
+              OpenProject::Revisions::Git::GitoliteWrapper.logger.debug("-- On filesystem, this means '#{old_path}' -> '#{new_path}'")
+
+              if move_physical_repo(old_path, old_name, new_path, new_name, false)
+                # Add the repo as new in Gitolite
+                proj.repository.url = new_path
+                proj.repository.root_url = new_path
+                proj.repository.save
+              end
+              
+            end
+          end
         end
 
       end
