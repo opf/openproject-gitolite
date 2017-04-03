@@ -190,7 +190,7 @@ then restart the OpenProject server:
 
     touch ~/openproject/tmp/restart.txt
 
-**4.a. Plugin settings**
+**4.b. Plugin settings**
 
 Run OpenProject, go to **Administration > Plugins > Revisions/Git** (click on configure)
 
