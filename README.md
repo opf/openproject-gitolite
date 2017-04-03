@@ -168,7 +168,7 @@ Make sure you can ssh into Gitolite from the openproject user. If you run the fo
 
 #### 4. Configuration of OpenProject
 
-**4.a. OpenProject gzip/deflate (OpenProject 5.0.16 and later)**
+**4.a. OpenProject gzip/deflate (OpenProject 5.0.16 and later or 6.0.x)**
 
 We need to adjust ``Rack::Deflater`` in the ``<openproject home>/config/application.rb`` configuration file to prevent conflicts with SmartHTTP. Change the following line (84):
 
