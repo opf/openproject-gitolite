@@ -130,8 +130,8 @@ Our post-receive hook is triggered after each commit and is used to fetch change
 Add a Gemfile.plugins to your OpenProject root with the following contents:
 
 	gem 'gitlab-grack', git: 'https://github.com/jbox-web/grack.git', require: 'grack', branch: 'fix_rails4'
-	gem 'redcarpet', '~> 3.3.2'
-	gem "openproject-revisions_git", git: "https://github.com/oliverguenther/openproject-revisions_git.git", branch: "release/5.0"
+	gem 'redcarpet', '> 3.3.2'
+	gem "openproject-revisions_git", git: "https://github.com/oliverguenther/openproject-revisions_git.git", branch: "release/6.0"
 
 #### 2. Gitolite access rights
 
