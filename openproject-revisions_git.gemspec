@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
 
   s.files = Dir['{app,config,db,lib}/**/*'] + %w(README.md)
 
-  s.add_dependency 'rails', '>= 4.0', '< 5'
+  s.add_dependency 'rails', '>= 5.0'
   s.add_dependency 'gitolite-rugged'
   s.add_dependency 'gitlab-grack'
   s.add_dependency 'net-ssh'

@@ -129,9 +129,9 @@ Our post-receive hook is triggered after each commit and is used to fetch change
 
 Add a Gemfile.plugins to your OpenProject root with the following contents:
 
-	gem 'gitlab-grack', git: 'https://github.com/jbox-web/grack.git', require: 'grack', branch: 'fix_rails4'
-	gem 'redcarpet', '> 3.3.2'
-	gem "openproject-revisions_git", git: "https://github.com/oliverguenther/openproject-revisions_git.git", branch: "release/6.0"
+    gem 'gitlab-grack', git: 'https://github.com/jbox-web/grack.git', require: 'grack', branch: 'fix_gemfile'
+    gem 'redcarpet', '> 3.3.2'
+    gem "openproject-revisions_git", git: "https://github.com/oliverguenther/openproject-revisions_git.git", branch: "release/6.1"
 
 #### 2. Gitolite access rights
 
@@ -160,19 +160,26 @@ Make sure you can access the repositories from openproject:
 
 Make sure you can ssh into Gitolite from the openproject user. If you run the following command, the output below (or similar for Gitolite 2) should appear. **If it does not, this is a Gitolite configuration error.**
 
-	openproject$ ssh -i <gitolite-admin SSH key> git@localhost info
-	hello openproject, this is git@dev running gitolite3 v3.x-x on git x.x.x
-	    R W  gitolite-admin
-	    R W  testing
+    openproject$ ssh -i <gitolite-admin SSH key> git@localhost info
+    hello openproject, this is git@dev running gitolite3 v3.x-x on git x.x.x
+        R W  gitolite-admin
+        R W  testing
 
 
 #### 4. Configuration of OpenProject
 
-**4.a. OpenProject gzip/deflate (OpenProject 5.0.16 and later or 6.0.x)**
+**4.a. OpenProject gzip/deflate (OpenProject 6.1.x)**
 
-We need to adjust ``Rack::Deflater`` in the ``<openproject home>/config/application.rb`` configuration file to prevent conflicts with SmartHTTP. Change the following line (84):
+We need to adjust ``Rack::Deflater`` in the ``<openproject home>/config/application.rb`` configuration file to prevent conflicts with SmartHTTP. Change the following lines (85-92):
 
-    config.middleware.insert_before 'Rack::ETag', 'Rack::Deflater'
+    config.middleware.insert_before Rack::ETag,
+                                    Rack::Deflater,
+                                    if: lambda { |_env, _code, headers, _body|
+                                      # Firefox fails to properly decode gzip attachments
+                                      # We thus avoid deflating if sending gzip already.
+                                      content_type = headers['Content-Type']
+                                      content_type != 'application/x-gzip'
+                                    }
 
 with
 
