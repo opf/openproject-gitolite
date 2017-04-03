@@ -166,7 +166,31 @@ Make sure you can ssh into Gitolite from the openproject user. If you run the fo
 	    R W  testing
 
 
-#### 4. Configuration in OpenProject
+#### 4. Configuration of OpenProject
+
+**4.a. OpenProject gzip/deflate (OpenProject 5.0.16 and later)**
+
+We need to adjust ``Rack::Deflater`` in the ``<openproject home>/config/application.rb`` configuration file to prevent conflicts with SmartHTTP. Change the following line (84):
+
+    config.middleware.insert_before 'Rack::ETag', 'Rack::Deflater'
+
+with
+
+    config.middleware.insert_before Rack::ETag,
+                                    Rack::Deflater,
+                                    if: lambda { |_env, _code, headers, _body|
+                                      # Firefox fails to properly decode gzip attachments
+                                      # We thus avoid deflating if sending gzip already.
+                                      content_type = headers['Content-Type']
+                                      truncated_content_type = truncate(content_type, length: 18, omission: '')
+                                      content_type != 'application/x-gzip' && truncated_content_type != 'application/x-git-'
+                                    }
+
+then restart the OpenProject server:
+
+    touch ~/openproject/tmp/restart.txt
+
+**4.a. Plugin settings**
 
 Run OpenProject, go to **Administration > Plugins > Revisions/Git** (click on configure)
 

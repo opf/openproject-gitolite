@@ -61,7 +61,7 @@ See doc/COPYRIGHT.rdoc for more details.
     <input id="repository-checkout-url"
            type="text" class="-clickable" size="40"
            <% if !@repository.is_a?(Repository::Gitolite) %>
-             value="<%= @instructions.checkout_url %>"
+             value="<%= @instructions.checkout_url(true) %>"
            <% end %>
            onclick="this.focus(); this.select();"
            readonly>
