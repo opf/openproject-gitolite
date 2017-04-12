@@ -26,6 +26,11 @@ module OpenProject::Gitolite
       end
 
 
+      def dump_settings
+        puts YAML.dump Redmine::Plugin.find('openproject_gitolite').settings[:default]
+      end
+
+
       private
 
 

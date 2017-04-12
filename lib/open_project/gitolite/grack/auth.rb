@@ -1,12 +1,12 @@
+require 'grack/auth'
+
 module Grack
   class Auth < Rack::Auth::Basic
-
-    attr_accessor :user, :env
 
     def call(env)
       @env = env
       @request = Rack::Request.new(env)
-      @auth = Request.new(env)
+      @auth = Rack::Auth::Basic::Request.new(env)
 
       # Need this patch due to the rails mount
 
@@ -41,7 +41,7 @@ module Grack
         end
 
         if authorized_request?
-          @app.call(env)
+          @app.call(@env)
         else
           unauthorized
         end
@@ -57,8 +57,8 @@ module Grack
       def authorized_request?
         case git_cmd
         when *OpenProject::Gitolite::GitAccess::DOWNLOAD_COMMANDS
-          if user
-            OpenProject::Gitolite::GitAccess.new.download_access_check(user, repository, is_ssl?).allowed?
+          if @user
+            OpenProject::Gitolite::GitAccess.new.download_access_check(@user, repository, is_ssl?).allowed?
           elsif repository.project.is_public?
             # Allow clone/fetch for public projects
             true
@@ -67,8 +67,8 @@ module Grack
           end
         when *OpenProject::Gitolite::GitAccess::PUSH_COMMANDS
           # Push requires valid user
-          if user
-            OpenProject::Gitolite::GitAccess.new.upload_access_check(user, repository).allowed?
+          if @user
+            OpenProject::Gitolite::GitAccess.new.upload_access_check(@user, repository).allowed?
           else
             false
           end

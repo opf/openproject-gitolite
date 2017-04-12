@@ -177,6 +177,7 @@ module OpenProject::Gitolite
       require_dependency 'open_project/gitolite/load_gitolite_hooks'
       require_dependency 'open_project/gitolite/git_hosting'
       require_dependency 'open_project/gitolite/grack/auth'
+      require_dependency 'open_project/gitolite/grack/git'
       require_dependency 'open_project/gitolite/grack/server'
     end
 

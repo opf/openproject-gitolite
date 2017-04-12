@@ -134,6 +134,17 @@ module OpenProject::Gitolite
       end
 
 
+      # Test if file permissions has changed
+      #
+      def sudo_file_perms_changed?(filemode, dest_file)
+        current_mode = sudo_capture('stat', '-c', "%a", dest_file)
+        current_mode.chomp != filemode
+      rescue OpenProject::Gitolite::Error::GitoliteCommandException => e
+        logger.error(e.output)
+        false
+      end
+
+
       # Return only the output of the shell command.
       # Throws an exception if the shell command does not exit with code 0.
       #
@@ -168,7 +179,11 @@ module OpenProject::Gitolite
         # Return the Sudo command with basic args.
         #
         def sudo
-          ['sudo', *sudo_shell_params]
+          if OpenProject::Gitolite::Config.gitolite_use_sudo?
+            ['sudo', *sudo_shell_params]
+          else
+            []
+          end
         end
 
 
@@ -195,6 +210,9 @@ module OpenProject::Gitolite
         #
         def content_from_redmine_side(file)
           File.read(file)
+        rescue Errno::ENOENT => e
+          logger.error(e.message)
+          ''
         end
 
 

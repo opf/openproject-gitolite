@@ -16,20 +16,20 @@ module OpenProject::Gitolite
         @redmine_user ||= (%x[whoami]).chomp.strip
       end
 
+      def gitolite_use_sudo?
+        redmine_user != gitolite_user
+      end
+
       def gitolite_home_dir
         @gitolite_home_dir ||= Etc.getpwnam(gitolite_user).dir rescue nil
       end
 
-      def gitolite_lib_dir
-        get_setting(:gitolite_lib_dir)
+      def gitolite_bin_dir
+        @gitolite_bin_dir ||= OpenProject::Gitolite::Commands.sudo_gitolite_query_rc('GL_BINDIR')
       end
 
-      def gitolite_lib_dir_path
-        if gitolite_lib_dir.starts_with?('/')
-          gitolite_lib_dir
-        else
-          File.join(gitolite_home_dir, gitolite_lib_dir)
-        end
+      def gitolite_lib_dir
+        @gitolite_lib_dir ||= OpenProject::Gitolite::Commands.sudo_gitolite_query_rc('GL_LIBDIR')
       end
 
       def gitolite_user

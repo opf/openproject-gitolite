@@ -1,3 +1,8 @@
+require 'json'
+require 'net/http'
+require 'net/https'
+require 'uri'
+
 include ActionView::Helpers::TextHelper
 
 class GitoliteHooksController < ApplicationController

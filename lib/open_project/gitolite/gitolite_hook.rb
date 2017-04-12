@@ -71,6 +71,8 @@ module OpenProject::Gitolite
         else
           logger.info("Leaving '#{name}' hook untouched since forceInstallHook == false")
         end
+      else
+        logger.info("Hook '#{name}' is correcly installed")
       end
       installed?
     end
@@ -99,7 +101,8 @@ module OpenProject::Gitolite
 
 
       def hook_file_has_changed?
-        OpenProject::Gitolite::Commands.sudo_file_changed?(source_path, destination_path)
+        OpenProject::Gitolite::Commands.sudo_file_changed?(source_path, destination_path) ||
+          OpenProject::Gitolite::Commands.sudo_file_perms_changed?(filemode, destination_path)
       end
 
 
@@ -110,7 +113,14 @@ module OpenProject::Gitolite
 
       def install_hook_file
         logger.info("Installing hook '#{source_path}' in '#{destination_path}'")
-        OpenProject::Gitolite::Commands.sudo_install_file(File.read(source_path), destination_path, filemode)
+        begin
+          content = File.read(source_path)
+        rescue Errno::ENOENT => e
+          logger.error("Errors while installing hook '#{e.message}'")
+          return false
+        else
+          OpenProject::Gitolite::Commands.sudo_install_file(content, destination_path, filemode)
+        end
       end
 
 

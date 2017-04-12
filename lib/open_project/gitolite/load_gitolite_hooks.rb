@@ -64,6 +64,13 @@ OpenProject::Gitolite::GitoliteHooks.register_hooks do
   end
 end
 
+# Gitolite hooks can be found in Redmine root dir or in plugin root dir
+#[
+#  Rails.root.join('redmine_git_hosting_hooks.rb').to_s,
+#  Rails.root.join('plugins', 'redmine_git_hosting', 'custom_hooks.rb').to_s
+#].each do |file|
+#  require_dependency file if File.exist?(file)
+#end
 
 # You can declare here you own hooks to install globally in Gitolite.
 # You must set the source directory of the files with the *source_dir* method and

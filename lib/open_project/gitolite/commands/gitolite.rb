@@ -13,6 +13,17 @@ module OpenProject::Gitolite
         ssh_capture('info')
       end
 
+
+      def sudo_gitolite_query_rc(param)
+        begin
+          sudo_capture('gitolite', 'query-rc', param).try(:chomp)
+        rescue OpenProject::Gitolite::Error::GitoliteCommandException => e
+          logger.error("Can't retrieve Gitolite param : #{e.output}")
+          nil
+        end
+      end
+
+
       def sudo_update_gitolite!
         if gitolite_command.nil?
           logger.error("gitolite_command is nil, can't update Gitolite !")
@@ -41,8 +52,14 @@ module OpenProject::Gitolite
       end
 
       def sudo_git_objects_count(repo_path)
+        if OpenProject::Gitolite::Config.gitolite_use_sudo?
+          cmd = ['eval', 'find', repo_path, '-type', 'f', '|', 'wc', '-l']
+        else
+          cmd = ['bash', '-c', "find #{repo_path} -type f | wc -l"]
+        end
+
         begin
-          sudo_capture('eval', 'find', repo_path, '-type', 'f', '|', 'wc', '-l')
+          sudo_capture(*cmd)
         rescue OpenProject::Gitolite::Error::GitoliteCommandException => e
           logger.error("Can't retrieve Git objects count : #{e.output}")
           0
