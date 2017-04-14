@@ -189,7 +189,7 @@ with
                                       # Firefox fails to properly decode gzip attachments
                                       # We thus avoid deflating if sending gzip already.
                                       content_type = headers['Content-Type']
-                                      truncated_content_type = truncate(content_type, length: 18, omission: '')
+                                      truncated_content_type = content_type.truncate(18, omission: '')
                                       content_type != 'application/x-gzip' && truncated_content_type != 'application/x-git-'
                                     }
 
