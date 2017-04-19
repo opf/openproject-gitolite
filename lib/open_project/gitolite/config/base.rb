@@ -42,10 +42,10 @@ module OpenProject::Gitolite
           begin
             value = Setting.plugin_openproject_gitolite[setting]
           rescue => e
-            value = Redmine::Plugin.find('openproject_revisions_git').settings[:default][setting]
+            value = Redmine::Plugin.find('openproject_gitolite').settings[:default][setting]
           else
             ## The Setting table exist but does not contain the value yet, fallback to default
-            value = Redmine::Plugin.find('openproject_revisions_git').settings[:default][setting] if value.nil?
+            value = Redmine::Plugin.find('openproject_gitolite').settings[:default][setting] if value.nil?
           end
 
           value
