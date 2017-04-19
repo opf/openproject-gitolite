@@ -60,7 +60,7 @@ class RepositoryMirror < ActiveRecord::Base
 
 
   def push
-    gitolite_repos_root = OpenProject::Revisions::Git::GitoliteWrapper.gitolite_global_storage_path
+    gitolite_repos_root = OpenProject::Gitolite::GitoliteWrapper.gitolite_global_storage_path
     repo_path = repository.url
     
     push_args = ""

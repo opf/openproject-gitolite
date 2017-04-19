@@ -81,14 +81,14 @@ module GitolitePluginSettingsHelper
 
 
   def log_level_options
-    OpenProject::Revisions::Git::Logger::LOG_LEVELS.map { |level| [l("label_#{level}"), level] }
+    OpenProject::Gitolite::Logger::LOG_LEVELS.map { |level| [l("label_#{level}"), level] }
   end
 
 
   def render_rugged_mandatory_features
     content = ''
-    OpenProject::Revisions::Git::Config.rugged_mandatory_features.each do |feature|
-      if OpenProject::Revisions::Git::Config.rugged_features.include?(feature)
+    OpenProject::Gitolite::Config.rugged_mandatory_features.each do |feature|
+      if OpenProject::Gitolite::Config.rugged_features.include?(feature)
         opts = { class: 'label label-success' }
       else
         opts = { class: 'label label-important' }
@@ -101,8 +101,8 @@ module GitolitePluginSettingsHelper
 
   def render_rugged_optional_features
     content = ''
-    OpenProject::Revisions::Git::Config.rugged_features.each do |feature|
-      if !OpenProject::Revisions::Git::Config.rugged_mandatory_features.include?(feature)
+    OpenProject::Gitolite::Config.rugged_features.each do |feature|
+      if !OpenProject::Gitolite::Config.rugged_mandatory_features.include?(feature)
         opts = { class: 'label label-success' }
         content << content_tag(:span, feature, opts)
       end

@@ -1,10 +1,10 @@
 <%
   # Gitolite Storage Config
-  gitolite_global_storage_dir       = OpenProject::Revisions::Git::Config.get_setting(:gitolite_global_storage_dir)
-  gitolite_redmine_storage_dir      = OpenProject::Revisions::Git::Config.get_setting(:gitolite_redmine_storage_dir)
-  gitolite_recycle_bin_dir          = OpenProject::Revisions::Git::Config.get_setting(:gitolite_recycle_bin_dir)
-  gitolite_local_code_dir           = OpenProject::Revisions::Git::Config.get_setting(:gitolite_local_code_dir)
-  gitolite_lib_dir                  = OpenProject::Revisions::Git::Config.get_setting(:gitolite_lib_dir)
+  gitolite_global_storage_dir       = OpenProject::Gitolite::Config.get_setting(:gitolite_global_storage_dir)
+  gitolite_redmine_storage_dir      = OpenProject::Gitolite::Config.get_setting(:gitolite_redmine_storage_dir)
+  gitolite_recycle_bin_dir          = OpenProject::Gitolite::Config.get_setting(:gitolite_recycle_bin_dir)
+  gitolite_local_code_dir           = OpenProject::Gitolite::Config.get_setting(:gitolite_local_code_dir)
+  gitolite_lib_dir                  = OpenProject::Gitolite::Config.get_setting(:gitolite_lib_dir)
 %>
 
 
@@ -29,7 +29,7 @@
   <%= content_tag('div', l(:label_gitolite_redmine_storage_dir_desc), class: 'form--field-instructions') %>
 </div>
 
-<% if OpenProject::Revisions::Git::Config.gitolite_version == 3%>
+<% if OpenProject::Gitolite::Config.gitolite_version == 3%>
   <div class="form--field -required">
     <%= styled_label_tag("settings[gitolite_local_code_dir]", l(:label_gitolite_local_code_dir)) %>
     <%= styled_text_field_tag("settings[gitolite_local_code_dir]", gitolite_local_code_dir) %>

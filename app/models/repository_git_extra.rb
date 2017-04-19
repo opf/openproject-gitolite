@@ -39,10 +39,10 @@ class RepositoryGitExtra < ActiveRecord::Base
   protected
 
   def update_git_daemon
-    OpenProject::Revisions::Git::GitoliteWrapper.logger.info(
+    OpenProject::Gitolite::GitoliteWrapper.logger.info(
       "Update git daemon for repository : '#{repository.gitolite_repository_name}'"
     )
-    OpenProject::Revisions::Git::GitoliteWrapper.update(:update_repository, repository)
+    OpenProject::Gitolite::GitoliteWrapper.update(:update_repository, repository)
   end
 
   private
@@ -61,9 +61,9 @@ class RepositoryGitExtra < ActiveRecord::Base
   end
 
   def setup_defaults
-    self.git_http = Setting.plugin_openproject_revisions_git[:gitolite_http_by_default]
-    self.git_daemon = Setting.plugin_openproject_revisions_git[:gitolite_daemon_by_default]
-    self.git_notify = Setting.plugin_openproject_revisions_git[:gitolite_notify_by_default]
+    self.git_http = Setting.plugin_openproject_gitolite[:gitolite_http_by_default]
+    self.git_daemon = Setting.plugin_openproject_gitolite[:gitolite_daemon_by_default]
+    self.git_notify = Setting.plugin_openproject_gitolite[:gitolite_notify_by_default]
     self.default_branch = 'master'
   end
 end

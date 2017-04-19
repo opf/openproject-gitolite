@@ -43,7 +43,7 @@ class AggregatedGitHostingMigrations < ActiveRecord::Migration
       create_repository_git_extras
       create_repository_config_keys
 
-      Migration::SettingRenamer.rename(OLD_PLUGIN_NAME, 'plugin_openproject_revisions_git')
+      Migration::SettingRenamer.rename(OLD_PLUGIN_NAME, 'plugin_openproject_gitolite')
     end
   end
 

@@ -1,10 +1,10 @@
 <%
   # Gitolite Display Access
-  gitolite_user                     = OpenProject::Revisions::Git::Config.get_setting(:gitolite_user)
-  ssh_server_domain                 = OpenProject::Revisions::Git::Config.get_setting(:ssh_server_domain)
+  gitolite_user                     = OpenProject::Gitolite::Config.get_setting(:gitolite_user)
+  ssh_server_domain                 = OpenProject::Gitolite::Config.get_setting(:ssh_server_domain)
 
-  gitolite_global_storage_path      = OpenProject::Revisions::Git::Config.get_setting(:gitolite_global_storage_path)
-  https_server_domain               = OpenProject::Revisions::Git::Config.get_setting(:https_server_domain)
+  gitolite_global_storage_path      = OpenProject::Gitolite::Config.get_setting(:gitolite_global_storage_path)
+  https_server_domain               = OpenProject::Gitolite::Config.get_setting(:https_server_domain)
 %>
 
 

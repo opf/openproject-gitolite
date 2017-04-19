@@ -114,7 +114,7 @@ class GitoliteHooksController < ApplicationController
       end
 
       # Grab the repository path
-      gitolite_repos_root = OpenProject::Revisions::Git::GitoliteWrapper.gitolite_global_storage_path
+      gitolite_repos_root = OpenProject::Gitolite::GitoliteWrapper.gitolite_global_storage_path
       repo_path = @repository.url
       revisions_in_range = %x[#{GitHosting.git_exec} --git-dir='#{repo_path}' rev-list --reverse #{range}]
       #GitHosting.logger.debug "Revisions in Range: #{revisions.split().join(' ')}"

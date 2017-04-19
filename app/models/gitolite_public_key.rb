@@ -82,11 +82,11 @@ class GitolitePublicKey < ActiveRecord::Base
   protected
 
   def add_ssh_key
-    OpenProject::Revisions::Git::GitoliteWrapper.update(:add_ssh_key, self)
+    OpenProject::Gitolite::GitoliteWrapper.update(:add_ssh_key, self)
   end
 
   def destroy_ssh_key
-    OpenProject::Revisions::Git::GitoliteWrapper.logger.info("User '#{User.current.login}' has deleted a SSH key")
+    OpenProject::Gitolite::GitoliteWrapper.logger.info("User '#{User.current.login}' has deleted a SSH key")
 
     repo_key = {
       title: title, key: key,
@@ -94,7 +94,7 @@ class GitolitePublicKey < ActiveRecord::Base
       identifier: identifier
     }
 
-    OpenProject::Revisions::Git::GitoliteWrapper.update(:delete_ssh_key, repo_key)
+    OpenProject::Gitolite::GitoliteWrapper.update(:delete_ssh_key, repo_key)
   end
 
   private
@@ -104,7 +104,7 @@ class GitolitePublicKey < ActiveRecord::Base
       f.write(key)
       f.close
       # This will throw if exitcode != 0
-      output, = OpenProject::Revisions::Git::GitoliteWrapper.capture_out('ssh-keygen', '-lf',
+      output, = OpenProject::Gitolite::GitoliteWrapper.capture_out('ssh-keygen', '-lf',
                                                                         f.path)
       if output
         self.fingerprint = output.split[1]

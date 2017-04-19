@@ -199,7 +199,7 @@ en:
   label_tab_openproject: OpenProject
   label_need_help: Need Help?
   label_open_issue: Open Issue
-  label_openproject_revisions_git_issue: OpenProject Revisions/Git - Bug Tracker
+  label_openproject_revisions_git_issue: OpenProject gitolite - Bug Tracker
 
   # Gitolite SSH Config
   label_tab_gitolite: Gitolite

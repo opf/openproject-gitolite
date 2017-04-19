@@ -48,10 +48,10 @@ class RepositoryDeploymentCredential < ActiveRecord::Base
   protected
 
   def update_permissions
-    OpenProject::Revisions::Git::GitoliteWrapper.logger.info(
+    OpenProject::Gitolite::GitoliteWrapper.logger.info(
       "Update deploy keys for repository : '#{repository.gitolite_repository_name}'"
     )
-    OpenProject::Revisions::Git::GitoliteWrapper.update(:update_repository, repository)
+    OpenProject::Gitolite::GitoliteWrapper.update(:update_repository, repository)
   end
 
   private

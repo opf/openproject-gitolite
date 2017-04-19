@@ -23,8 +23,8 @@ module OpenProject
         def ssh_url(git_path)
           URI::Generic.build(
             scheme: 'ssh',
-            userinfo: Setting.plugin_openproject_revisions_git[:gitolite_user],
-            host: Setting.plugin_openproject_revisions_git[:ssh_server_domain],
+            userinfo: Setting.plugin_openproject_gitolite[:gitolite_user],
+            host: Setting.plugin_openproject_gitolite[:ssh_server_domain],
             path: "/#{git_path}"
           )
         end
@@ -32,7 +32,7 @@ module OpenProject
         def git_url(git_path)
           URI::HTTP.build(
             scheme: 'git',
-            host: Setting.plugin_openproject_revisions_git[:ssh_server_domain],
+            host: Setting.plugin_openproject_gitolite[:ssh_server_domain],
             path: "/#{git_path}"
           )
         end
@@ -40,7 +40,7 @@ module OpenProject
         def https_url(git_path)
           URI::HTTP.build(
             scheme: 'https',
-            host: Setting.plugin_openproject_revisions_git[:https_server_domain],
+            host: Setting.plugin_openproject_gitolite[:https_server_domain],
             path: "/#{git_path}"
           )
         end

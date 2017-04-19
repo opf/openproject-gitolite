@@ -1,7 +1,7 @@
 <%= stylesheet_link_tag 'revisions_git/revisions_git' %>
 <h3><%= l(:label_permissions_header) %></h3>
-<% gitolite_repos = OpenProject::Revisions::Git::GitoliteWrapper.git_repositories %>
-<% gitolite_checks = OpenProject::Revisions::Git::Config.check_hooks_install! %>
+<% gitolite_repos = OpenProject::Gitolite::GitoliteWrapper.git_repositories %>
+<% gitolite_checks = OpenProject::Gitolite::Config.check_hooks_install! %>
 
 <table class="table table-hover">
 
@@ -24,12 +24,12 @@
 
   <tr>
     <td><%= l(:label_openproject_user) %></td>
-    <td><span class="label label-success"><%= OpenProject::Revisions::Git::GitoliteWrapper.openproject_user %></span></td>
+    <td><span class="label label-success"><%= OpenProject::Gitolite::GitoliteWrapper.openproject_user %></span></td>
   </tr>
 
   <tr>
     <td><%= l(:label_gitolite_user) %></td>
-    <td><span class="label label-success"><%= OpenProject::Revisions::Git::GitoliteWrapper.gitolite_user %></span></td>
+    <td><span class="label label-success"><%= OpenProject::Gitolite::GitoliteWrapper.gitolite_user %></span></td>
   </tr>
 
   <tr>
@@ -40,7 +40,7 @@
   <tr>
     <td><%= l(:label_gitolite_version) %></td>
     <td>
-      <% gitolite_version = OpenProject::Revisions::Git::GitoliteWrapper.gitolite_version %>
+      <% gitolite_version = OpenProject::Gitolite::GitoliteWrapper.gitolite_version %>
       <span class="label label-<%= gitolite_version.nil? ? 'error' : 'success' %>">
         <%= gitolite_version.nil? ? l(:label_unknown_gitolite_version) : gitolite_version %>
       </span>
@@ -67,7 +67,7 @@
 
 <div class="box">
 <pre>
-<%= raw OpenProject::Revisions::Git::GitoliteWrapper.gitolite_banner %>
+<%= raw OpenProject::Gitolite::GitoliteWrapper.gitolite_banner %>
 </pre>
 </div>
 

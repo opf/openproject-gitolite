@@ -116,9 +116,9 @@ See doc/COPYRIGHT.rdoc for more details.
   var guProjectIsPublic= "<%= @project.is_public.to_s %>";
   var guUser= "<%= User.current.login %>";
   var guUserIsCommitter= "<%= User.current.allowed_to?(:commit_access, @project) ? 'true' : 'false' %>";
-  var guGitUser="<%= Setting.plugin_openproject_revisions_git[:gitolite_user] %>";
-  var guGitServer="<%= Setting.plugin_openproject_revisions_git[:ssh_server_domain] %>";
-  var guHttpBase="<%= Setting.plugin_openproject_revisions_git[:https_server_domain] %>";
+  var guGitUser="<%= Setting.plugin_openproject_gitolite[:gitolite_user] %>";
+  var guGitServer="<%= Setting.plugin_openproject_gitolite[:ssh_server_domain] %>";
+  var guHttpBase="<%= Setting.plugin_openproject_gitolite[:https_server_domain] %>";
   var guHttpProto="<%= @repository.https_access_enabled? ? 'https' : 'http' %>";
 
   if (!(window.Event === undefined) && !(Event.observe === undefined)) {

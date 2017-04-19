@@ -1,33 +1,33 @@
 <%
   # Gitolite Config
-  use_delayed_jobs                  = OpenProject::Revisions::Git::Config.get_setting(:use_delayed_jobs, true)
+  use_delayed_jobs                  = OpenProject::Gitolite::Config.get_setting(:use_delayed_jobs, true)
 %>
 
 <h3><%= l(:label_gitolite_ssh_config) %></h3>
 
 <div class="form--field -required">
   <%= styled_label_tag("settings[gitolite_user]", l(:label_gitolite_user)) %>
-  <%= styled_text_field_tag("settings[gitolite_user]", Setting.plugin_openproject_revisions_git[:gitolite_user]) %>
+  <%= styled_text_field_tag("settings[gitolite_user]", Setting.plugin_openproject_gitolite[:gitolite_user]) %>
 </div>
 
 <div class="form--field -required">
   <%= styled_label_tag("settings[gitolite_ssh_private_key]", l(:label_gitolite_ssh_private_key)) %>
-  <%= styled_text_field_tag("settings[gitolite_ssh_private_key]", Setting.plugin_openproject_revisions_git[:gitolite_ssh_private_key]) %>
+  <%= styled_text_field_tag("settings[gitolite_ssh_private_key]", Setting.plugin_openproject_gitolite[:gitolite_ssh_private_key]) %>
 </div>
 
 <div class="form--field -required">
   <%= styled_label_tag("settings[gitolite_ssh_public_key]", l(:label_gitolite_ssh_public_key)) %>
-  <%= styled_text_field_tag("settings[gitolite_ssh_public_key]", Setting.plugin_openproject_revisions_git[:gitolite_ssh_public_key]) %>
+  <%= styled_text_field_tag("settings[gitolite_ssh_public_key]", Setting.plugin_openproject_gitolite[:gitolite_ssh_public_key]) %>
 </div>
 
 <div class="form--field -required">
   <%= styled_label_tag("settings[gitolite_server_port]", l(:label_gitolite_server_port)) %>
-  <%= styled_text_field_tag("settings[gitolite_server_port]", Setting.plugin_openproject_revisions_git[:gitolite_server_port]) %>
+  <%= styled_text_field_tag("settings[gitolite_server_port]", Setting.plugin_openproject_gitolite[:gitolite_server_port]) %>
 </div>
 
 <div class="form--field">
   <%= styled_label_tag(:label_gitolite_must_be_accessible_through, "Gitolite must be accessible through:") %>
-  <%= raw "ssh -T #{Setting.plugin_openproject_revisions_git[:gitolite_user]}@localhost -p #{Setting.plugin_openproject_revisions_git[:gitolite_server_port]}" %>
+  <%= raw "ssh -T #{Setting.plugin_openproject_gitolite[:gitolite_user]}@localhost -p #{Setting.plugin_openproject_gitolite[:gitolite_server_port]}" %>
 </div>
 
 
@@ -36,13 +36,13 @@
 
 <div class="form--field -required">
   <%= styled_label_tag("settings[gitolite_admin_dir]", l(:label_gitolite_admin_dir)) %>
-  <%= styled_text_field_tag("settings[gitolite_admin_dir]", Setting.plugin_openproject_revisions_git[:gitolite_admin_dir]) %>
+  <%= styled_text_field_tag("settings[gitolite_admin_dir]", Setting.plugin_openproject_gitolite[:gitolite_admin_dir]) %>
   <%= content_tag('div', l(:label_gitolite_admin_dir_desc), class: 'form--field-instructions') %>
 </div>
 
 <div class="form--field -required">
   <%= styled_label_tag("settings[gitolite_global_storage_path]", l(:label_gitolite_global_storage_path)) %>
-  <%= styled_text_field_tag("settings[gitolite_global_storage_path]", OpenProject::Revisions::Git::GitoliteWrapper.gitolite_global_storage_path) %>
+  <%= styled_text_field_tag("settings[gitolite_global_storage_path]", OpenProject::Gitolite::GitoliteWrapper.gitolite_global_storage_path) %>
   <%= content_tag('div', l(:label_gitolite_global_storage_path_desc), class: 'form--field-instructions') %>
 </div>
 
@@ -59,12 +59,12 @@
 
 <div class="form--field -required">
   <%= styled_label_tag("settings[git_config_username]", l(:label_git_config_username)) %>
-  <%= styled_text_field_tag("settings[git_config_username]", Setting.plugin_openproject_revisions_git[:git_config_username]) %>
+  <%= styled_text_field_tag("settings[git_config_username]", Setting.plugin_openproject_gitolite[:git_config_username]) %>
   <%= content_tag('div', l(:label_git_config_username_desc), class: 'form--field-instructions') %>
 </div>
 
 <div class="form--field -required">
   <%= styled_label_tag("settings[git_config_email]", l(:label_git_config_email)) %>
-  <%= styled_text_field_tag("settings[git_config_email]", Setting.plugin_openproject_revisions_git[:git_config_email]) %>
+  <%= styled_text_field_tag("settings[git_config_email]", Setting.plugin_openproject_gitolite[:git_config_email]) %>
   <%= content_tag('div', l(:label_git_config_email_desc), class: 'form--field-instructions') %>
 </div>

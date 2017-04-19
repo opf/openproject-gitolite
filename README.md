@@ -1,7 +1,7 @@
-# OpenProject Revisions/Git Plugin
-[![Code Climate](https://codeclimate.com/github/oliverguenther/openproject-revisions_git/badges/gpa.svg)](https://codeclimate.com/github/oliverguenther/openproject-revisions_git)
-[![Dependency Status](https://gemnasium.com/oliverguenther/openproject-revisions_git.svg)](https://gemnasium.com/oliverguenther/openproject-revisions_git)
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/oliverguenther/openproject-revisions_git?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# OpenProject gitolite Plugin
+[![Code Climate](https://codeclimate.com/github/oliverguenther/openproject-gitolite/badges/gpa.svg)](https://codeclimate.com/github/oliverguenther/openproject-gitolite)
+[![Dependency Status](https://gemnasium.com/oliverguenther/openproject-gitolite.svg)](https://gemnasium.com/oliverguenther/openproject-gitolite)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/oliverguenther/openproject-gitolite?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 This plugin aims to provide extensive features for managing Git repositories within [OpenProject](http://www.openproject.org).
 Forked from [jbox-web's version](https://jbox-web.github.io/redmine_git_hosting/) of the long-lived and often-forked redmine-git_hosting plugin (formerly redmine-gitosis).
@@ -131,7 +131,7 @@ Add a Gemfile.plugins to your OpenProject root with the following contents:
 
     gem 'gitlab-grack', git: 'https://github.com/jbox-web/grack.git', require: 'grack', branch: 'fix_gemfile'
     gem 'redcarpet', '> 3.3.2'
-    gem "openproject-revisions_git", git: "https://github.com/oliverguenther/openproject-revisions_git.git", branch: "release/6.1"
+    gem "openproject-gitolite", git: "https://github.com/oliverguenther/openproject-gitolite.git", branch: "release/6.1"
 
 #### 2. Gitolite access rights
 
@@ -199,13 +199,13 @@ then restart the OpenProject server:
 
 **4.b. Plugin settings**
 
-Run OpenProject, go to **Administration > Plugins > Revisions/Git** (click on configure)
+Run OpenProject, go to **Administration > Plugins > gitolite** (click on configure)
 
 Alter you configuration for Gitolite (Gitolite path, gitolite-admin.git path, etc.) accordingly and click save. Do not forget to go through all tabs of the configuration.
 
 Install Gitolite hooks (click on 'Install hooks !' on tab Hooks), required by Post-receive URLs and Repository mirrors. They will be installed in the path indicated by 'Gitolite non-core hooks directory' on tab Storage (``local/`` in Gitolite 3 as previously configured indicted in ``.gitolite.rc``).
 
-Set the proper permissions per role to gain access to the different features provided by Revisions/Git.
+Set the proper permissions per role to gain access to the different features provided by gitolite.
 
 #### 5. Using delayed_job
 
@@ -253,7 +253,7 @@ Note that many of the settings are not yet functional, and some values on Config
 5. Add/Manage Git config keys.
 
 ## Copyrights & License
-OpenProject Revisions/Git is completely free and open source and released under the [MIT License](https://github.com/oliverguenther/openproject_revisions_git/blob/devel/LICENSE).
+OpenProject gitolite is completely free and open source and released under the [MIT License](https://github.com/oliverguenther/openproject_revisions_git/blob/devel/LICENSE).
 
 Copyright (c) 2014 Oliver Günther (mail@oliverguenther.de)
 

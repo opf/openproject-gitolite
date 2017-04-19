@@ -33,7 +33,7 @@ class Repository::Gitolite < Repository::Git
   end
 
   def self.managed_root
-    OpenProject::Revisions::Git::GitoliteWrapper.gitolite_global_storage_path
+    OpenProject::Gitolite::GitoliteWrapper.gitolite_global_storage_path
   end
 
   def self.permitted_params(params)
@@ -121,7 +121,7 @@ class Repository::Gitolite < Repository::Git
   # Create local managed repository request when the built instance
   # is managed by OpenProject
   def create_managed_repository
-    OpenProject::Revisions::Git::GitoliteWrapper.update(:add_repository, self)
+    OpenProject::Gitolite::GitoliteWrapper.update(:add_repository, self)
   rescue => e
     Rails.logger.error("Error while adding repository #{repository_identifier}: #{e.message}")
     raise OpenProject::Scm::Exceptions::RepositoryBuildError.new(
@@ -133,7 +133,7 @@ class Repository::Gitolite < Repository::Git
   # Destroy local managed repository request when the built instance
   # is managed by OpenProject
   def delete_managed_repository
-    OpenProject::Revisions::Git::GitoliteWrapper.logger.info("User '#{User.current.login}'
+    OpenProject::Gitolite::GitoliteWrapper.logger.info("User '#{User.current.login}'
       has removed repository '#{repository_identifier}'")
 
     repository_data = {
@@ -141,6 +141,6 @@ class Repository::Gitolite < Repository::Git
       absolute_path: managed_repository_path,
       relative_path: repository_identifier
     }
-    OpenProject::Revisions::Git::GitoliteWrapper.update(:delete_repositories, [repository_data])
+    OpenProject::Gitolite::GitoliteWrapper.update(:delete_repositories, [repository_data])
   end
 end

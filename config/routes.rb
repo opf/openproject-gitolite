@@ -17,13 +17,10 @@ OpenProject::Application.routes.draw do
     resources :repository_mirrors, controller: 'repository_mirrors'
     resources :repository_git_config_keys, controller: 'repository_git_config_keys'
   end
-  
+
   # Gitolite hooks
   get 'settings/plugin/:id/install_gitolite_hooks', to: 'settings#install_gitolite_hooks', as: 'install_gitolite_hooks'
   post 'githooks/post-receive/:type/:projectid' => 'gitolite_hooks#post_receive'
-
-  # Enable SmartHTTP Grack support
-  mount Grack::Bundle.new({}), at: '/gitolite/', constraints: lambda { |request| /[-\/\w\.]+\.git\//.match(request.path_info) }, via: [:get, :post]
 
   # Handle non existing paths (still not sure if this will help)
   #match '/gitolite/' => redirect('/404'), via: [:get, :post]

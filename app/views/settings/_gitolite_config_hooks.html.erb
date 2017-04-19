@@ -1,9 +1,9 @@
 <%
   # Gitolite Hooks Config
-  gitolite_overwrite_existing_hooks = OpenProject::Revisions::Git::Config.get_setting(:gitolite_overwrite_existing_hooks, true)
-  gitolite_hooks_are_asynchronous   = OpenProject::Revisions::Git::Config.get_setting(:gitolite_hooks_are_asynchronous, true)
-  gitolite_hooks_debug              = OpenProject::Revisions::Git::Config.get_setting(:gitolite_hooks_debug, true)
-  gitolite_hooks_url                = OpenProject::Revisions::Git::Config.get_setting(:gitolite_hooks_url)
+  gitolite_overwrite_existing_hooks = OpenProject::Gitolite::Config.get_setting(:gitolite_overwrite_existing_hooks, true)
+  gitolite_hooks_are_asynchronous   = OpenProject::Gitolite::Config.get_setting(:gitolite_hooks_are_asynchronous, true)
+  gitolite_hooks_debug              = OpenProject::Gitolite::Config.get_setting(:gitolite_hooks_debug, true)
+  gitolite_hooks_url                = OpenProject::Gitolite::Config.get_setting(:gitolite_hooks_url)
 %>
 
 
@@ -43,10 +43,10 @@
 
 <div class="form--field">
   <%= styled_label_tag(:label_gitolite_hooks_url, l(:label_gitolite_hooks_url)) %>
-  <%= raw OpenProject::Revisions::Git::Config.gitolite_hooks_url %>
+  <%= raw OpenProject::Gitolite::Config.gitolite_hooks_url %>
 </div>
 
 <div class="form--field">
   <%= styled_label_tag(:label_gitolite_hooks_namespace, l(:label_gitolite_hooks_namespace)) %>
-  <%= raw OpenProject::Revisions::Git::Config.gitolite_hooks_namespace %>
+  <%= raw OpenProject::Gitolite::Config.gitolite_hooks_namespace %>
 </div>
