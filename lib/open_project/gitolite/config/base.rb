@@ -21,7 +21,7 @@ module OpenProject::Gitolite
 
       def reload_from_file!
         ## Get default config from init.rb
-        default_hash = Redmine::Plugin.find('openproject_revisions_git').settings[:default]
+        default_hash = Redmine::Plugin.find('openproject_gitolite').settings[:default]
         do_reload_config(default_hash)
       end
 

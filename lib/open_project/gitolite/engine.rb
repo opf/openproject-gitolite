@@ -41,11 +41,11 @@ module OpenProject::Gitolite
           gitolite_identifier_strip_user_id:     false,
 
           # Gitolite Global Config
-          gitolite_temp_dir:                     File.join(Dir.home, 'tmp', 'openproject_revisions_git').to_s,
+          gitolite_temp_dir:                     File.join(Dir.home, 'tmp', 'openproject-gitolite').to_s,
           gitolite_recycle_bin_expiration_time:  24.0,
           gitolite_log_level:                    'info',
           gitolite_log_split:                    false,
-          git_config_username:                   'OpenProject Revisions(Git)',
+          git_config_username:                   'OpenProject Gitolite',
           git_config_email:                      'openproject@example.net',
           gitolite_scripts_dir:                  File.join(Dir.home, 'bin'),
           gitolite_timeout:                      10,
