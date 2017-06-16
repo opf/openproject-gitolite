@@ -1,20 +1,16 @@
-<p>
-  <% if User.current.admin? || User.current.allowed_to?(:view_repository_mirrors, @project) %>
-    <fieldset class="repository_mirrors_view">
-      <legend><%= "Current repository mirrors" %></legend>
-      <%= render template: 'repository_mirrors/show' %>
-    </fieldset>
-  <% end %>
-</p>
+<% if User.current.admin? || User.current.allowed_to?(:view_repository_mirrors, @project) %>
+  <h4><%= "Current repository mirrors" %></h4>
+  <%= render template: 'repository_mirrors/show' %>
+<% end %>
 
-<p>
-  <% if User.current.admin? || User.current.allowed_to?(:create_repository_mirrors, @project) %>
-    <%= render template: "repository_mirrors/new" %>
-  <% end %>
-</p>
+<br>
 
-<p>
-  <% if User.current.admin? || User.current.allowed_to?(:create_repository_mirrors, @project) %>
-    <%= render template: "repository_mirrors/gitolite_public_key" %>
-  <% end %>
-</p>
+<% if User.current.admin? || User.current.allowed_to?(:create_repository_mirrors, @project) %>
+  <%= render template: "repository_mirrors/new" %>
+<% end %>
+
+<br>
+
+<% if User.current.admin? || User.current.allowed_to?(:create_repository_mirrors, @project) %>
+  <%= render template: "repository_mirrors/gitolite_public_key" %>
+<% end %>

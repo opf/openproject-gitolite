@@ -5,11 +5,8 @@
   <%# if @gitolite_deploy_keys.nil? || @gitolite_deploy_keys.empty? %>
     <%#= link_to 'Add a new deployment key', {controller: 'my_public_keys', action: 'index'}, class: 'button -alt-highlight' %>
   <%# else %>
-    <fieldset class="new_repository_deployment_credential">
-      <legend><%= 'Create new deployment credential' %></legend>
+      <h4><%= t(:label_create_deploy_credential) %></h4>
         <%= render :partial => 'repository_deployment_credentials/form', :locals => { :f => f} %>
-        <%= styled_button_tag 'Create credential', class: '-highlight -with-icon icon-yes' %>
-    </fieldset>
+        <%= styled_button_tag t(:label_create_credential), class: '-highlight -with-icon icon-yes' %>
   <%# end %>
 <% end %>
-      

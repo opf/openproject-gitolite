@@ -2,10 +2,7 @@
           url: { controller: 'repository_post_receive_urls', action: 'create' },
           method: :post ) do |f| %>
 
-  <fieldset class="new_repository_post_receive_url">
-    <legend><%= 'Create new repository post receive URL' %></legend>
+    <h4><%= t(:permission_create_repository_post_receive_urls) %></h4>
       <%= render :partial => 'repository_post_receive_urls/form', :locals => { :f => f} %>
-      <%= styled_button_tag 'Create URL', class: '-highlight -with-icon icon-yes' %>
-  </fieldset>
+      <%= styled_button_tag t(:label_create_url), class: '-highlight -with-icon icon-yes' %>
 <% end %>
- 

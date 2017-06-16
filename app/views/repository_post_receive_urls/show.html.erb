@@ -1,82 +1,81 @@
-<div>
-  <% if @repository_post_receive_urls.nil? || @repository_post_receive_urls.empty? %>
-    <%= no_results_box %>
-  <% else %>
-    <div class="generic-table--container">
-      <div class="generic-table--results-container">
-        <table interactive-table class="generic-table">
-          <colgroup>
-            <col highlight-col>
-            <col highlight-col>
-            <col highlight-col>
-            <col>
-          </colgroup>
-          <thead>
+<% if @repository_post_receive_urls.nil? || @repository_post_receive_urls.empty? %>
+  <%= no_results_box %>
+<% else %>
+  <div class="generic-table--container">
+    <div class="generic-table--results-container">
+      <table interactive-table class="generic-table">
+        <colgroup>
+          <col highlight-col>
+          <col highlight-col>
+          <col highlight-col>
+          <col>
+        </colgroup>
+        <thead>
+          <tr>
+            <th>
+              <div class="generic-table--sort-header-outer">
+                <div class="generic-table--sort-header">
+                  <span>
+                    <%= 'URL' %>
+                  </span>
+                </div>
+              </div>
+            </th>
+            <th>
+              <div class="generic-table--sort-header-outer">
+                <div class="generic-table--sort-header">
+                  <span>
+                    <%= 'Mode' %>
+                  </span>
+                </div>
+              </div>
+            </th>
+            <th>
+              <div class="generic-table--sort-header-outer">
+                <div class="generic-table--sort-header">
+                  <span>
+                    <%= 'Active' %>
+                  </span>
+                </div>
+              </div>
+            </th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @repository_post_receive_urls.sort_by {|x| [x.url]}.each do |post_receive_url| %>
             <tr>
-              <th>
-                <div class="generic-table--sort-header-outer">
-                  <div class="generic-table--sort-header">
-                    <span>
-                      <%= 'URL' %>
-                    </span>
-                  </div>
-                </div>
-              </th>
-              <th>
-                <div class="generic-table--sort-header-outer">
-                  <div class="generic-table--sort-header">
-                    <span>
-                      <%= 'Mode' %>
-                    </span>
-                  </div>
-                </div>
-              </th>
-              <th>
-                <div class="generic-table--sort-header-outer">
-                  <div class="generic-table--sort-header">
-                    <span>
-                      <%= 'Active' %>
-                    </span>
-                  </div>
-                </div>
-              </th>
-              <th></th>
+              <td class="center" style="text-align:left;"><%= post_receive_url.url %></td>
+              <td class="center" style="text-align:left;"><%= post_receive_mode post_receive_url %></td>
+              <td class="center" style="text-align:left;"><%= checked_image post_receive_url.active? %></td>
+              <td class="buttons">
+                <% if User.current.admin? || User.current.allowed_to?(:edit_repository_post_receive_urls, @project) %>
+                  <% if post_receive_url.active? %>
+                    <%= link_to 'Deactivate',
+                             { controller: "projects/#{@project.identifier}/repository_post_receive_urls", action: 'update', post_receive_url: post_receive_url },
+                             method: :patch,
+                             class: 'icon icon-remove',
+                             data: { confirm: "Are you sure you want to deactivate the URL '#{post_receive_url.url}'" } %>
+                  <% else %>
+                    <%= link_to 'Activate',
+                             { controller: "projects/#{@project.identifier}/repository_post_receive_urls", action: 'update', post_receive_url: post_receive_url },
+                             method: :patch,
+                             class: 'icon icon-yes',
+                             data: { confirm: "Are you sure you want to activate the URL '#{post_receive_url.url}'" } %>
+                  <% end %>
+                  <%= link_to l(:button_delete),
+                           { controller: "projects/#{@project.identifier}/repository_post_receive_urls", action: 'destroy', post_receive_url: post_receive_url },
+                           method: :delete,
+                           class: 'icon icon-delete',
+                           data: { confirm: "Are you sure you want to delete the URL '#{post_receive_url.url}'" } %>
+      	      <% end %>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            <% @repository_post_receive_urls.sort_by {|x| [x.url]}.each do |post_receive_url| %>
-              <tr>
-                <td class="center" style="text-align:left;"><%= post_receive_url.url %></td>
-                <td class="center" style="text-align:left;"><%= post_receive_mode post_receive_url %></td>
-                <td class="center" style="text-align:left;"><%= checked_image post_receive_url.active? %></td>
-                <td class="buttons">
-                  <% if User.current.admin? || User.current.allowed_to?(:edit_repository_post_receive_urls, @project) %>
-                    <% if post_receive_url.active? %>
-                      <%= link_to 'Deactivate',
-                               { controller: "projects/#{@project.identifier}/repository_post_receive_urls", action: 'update', post_receive_url: post_receive_url },
-                               method: :patch,
-                               class: 'icon icon-remove',
-                               data: { confirm: "Are you sure you want to deactivate the URL '#{post_receive_url.url}'" } %>
-                    <% else %>
-                      <%= link_to 'Activate',
-                               { controller: "projects/#{@project.identifier}/repository_post_receive_urls", action: 'update', post_receive_url: post_receive_url },
-                               method: :patch,
-                               class: 'icon icon-yes',
-                               data: { confirm: "Are you sure you want to activate the URL '#{post_receive_url.url}'" } %>
-                    <% end %>
-                    <%= link_to l(:button_delete),
-                             { controller: "projects/#{@project.identifier}/repository_post_receive_urls", action: 'destroy', post_receive_url: post_receive_url },
-                             method: :delete,
-                             class: 'icon icon-delete',
-                             data: { confirm: "Are you sure you want to delete the URL '#{post_receive_url.url}'" } %>
-        	      <% end %>
-                </td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-        <div class="generic-table--header-background"></div>
-      </div>
+          <% end %>
+        </tbody>
+      </table>
+      <div class="generic-table--header-background"></div>
     </div>
-  <% end %>
-</div>
+  </div>
+<% end %>
+

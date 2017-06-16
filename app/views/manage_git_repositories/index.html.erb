@@ -1,56 +1,43 @@
 <% html_title 'Manage Gitolite repository' %>
-
 <%= toolbar title: 'Manage Gitolite repository' %>
 
+<% if User.current.admin? || User.current.allowed_to?(:manage_repository, @project) %>
+  <fieldset class="form--fieldset fs_git_extras">
+    <legend class="form--fieldset-legend"><%= 'Repository options' %></legend>
 
+    <%= render template: "repository_git_extras/index" %>
+  </fieldset>
+<% end %>
 
+<% if User.current.admin? || User.current.allowed_to?(:view_repository_deployment_credentials, @project) %>
+  <fieldset class="form--fieldset fs_deployment_credentials">
+    <legend class="form--fieldset-legend"><%= 'Deployment credentials' %></legend>
 
-<p>
-  <% if User.current.admin? || User.current.allowed_to?(:manage_repository, @project) %>
-    <fieldset class="fs_git_extras">
-      <legend><%= 'Repository options' %></legend>
+    <%= render template: "repository_deployment_credentials/index" %>
+  </fieldset>
+<% end %>
 
-      <%= render template: "repository_git_extras/index" %>
-    </fieldset>
-  <% end %>
-</p>
+<% if User.current.admin? || User.current.allowed_to?(:view_repository_post_receive_urls, @project) %>
+  <fieldset class="form--fieldset fs_post_receive_urls">
+    <legend class="form--fieldset-legend"><%= 'Post receive URLs' %></legend>
 
-<p>
-  <% if User.current.admin? || User.current.allowed_to?(:view_repository_deployment_credentials, @project) %>
-    <fieldset class="fs_deployment_credentials">
-      <legend><%= 'Deployment credentials' %></legend>
+    <%= render template: "repository_post_receive_urls/index" %>
+  </fieldset>
+<% end %>
 
-      <%= render template: "repository_deployment_credentials/index" %>
-    </fieldset>
-  <% end %>
-</p>
+<% if User.current.admin? || User.current.allowed_to?(:view_repository_mirrors, @project) %>
+  <fieldset class="form--fieldset fs_repository_mirrors">
+    <legend class="form--fieldset-legend"><%= 'Repository mirrors' %></legend>
 
-<p>
-  <% if User.current.admin? || User.current.allowed_to?(:view_repository_post_receive_urls, @project) %>
-    <fieldset class="fs_post_receive_urls">
-      <legend><%= 'Post receive URLs' %></legend>
+    <%= render template: "repository_mirrors/index" %>
+  </fieldset>
+<% end %>
 
-      <%= render template: "repository_post_receive_urls/index" %>
-    </fieldset>
-  <% end %>
-</p>
+<% if User.current.admin? || User.current.allowed_to?(:view_repository_git_config_keys, @project) %>
+  <fieldset class="form--fieldset fs_git_config_keys">
+    <legend class="form--fieldset-legend"><%= 'Git config keys' %></legend>
 
-<p>
-  <% if User.current.admin? || User.current.allowed_to?(:view_repository_mirrors, @project) %>
-    <fieldset class="fs_repository_mirrors">
-      <legend><%= 'Repository mirrors' %></legend>
-
-      <%= render template: "repository_mirrors/index" %>
-    </fieldset>
-  <% end %>
-</p>
-
-<p>
-  <% if User.current.admin? || User.current.allowed_to?(:view_repository_git_config_keys, @project) %>
-    <fieldset class="fs_git_config_keys">
-      <legend><%= 'Git config keys' %></legend>
-
-      <%= render template: "repository_git_config_keys/index" %>
-    </fieldset>
-  <% end %>
+    <%= render template: "repository_git_config_keys/index" %>
+  </fieldset>
+<% end %>
 </p>
