@@ -2,11 +2,9 @@
           url: { controller: 'repository_mirrors', action: 'create' },
           method: :post ) do |f| %>
 
-  <fieldset class="new_repository_mirror">
-    <legend><%= 'Create new repository mirror' %></legend>
-      <%= render :partial => 'repository_mirrors/form', :locals => { :f => f} %>
-      <%= styled_button_tag 'Create mirror', class: '-highlight -with-icon icon-yes' %>
-  </fieldset>
+  <h4><%= 'Create new repository mirror' %></h4>
+  <%= render :partial => 'repository_mirrors/form', :locals => { :f => f} %>
+  <%= styled_button_tag 'Create mirror', class: '-highlight -with-icon icon-yes' %>
 <% end %>
 
 
@@ -53,7 +51,7 @@
       enable_all();
     }
   };
-  
+
   include_all_branches.onchange = function() {
     if(this.checked && !this.disabled) {
       include_all_tags.disabled = true;
@@ -67,7 +65,7 @@
       explicit_refspec.value = '';
     }
   };
-  
+
   include_all_tags.onchange = function() {
     if(this.checked && !this.disabled) {
       include_all_branches.disabled = true;
@@ -77,8 +75,8 @@
       include_all_branches.checked = false;
     }
   };
-  
 
-</script> 
+
+</script>
 
 

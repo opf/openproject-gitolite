@@ -2,10 +2,7 @@
           url: { controller: 'repository_git_config_keys', action: 'create' },
           method: :post ) do |f| %>
 
-  <fieldset class="new_repository_git_config_key">
-    <legend><%= 'Create new repository Git config key' %></legend>
-      <%= render :partial => 'repository_git_config_keys/form', :locals => { :f => f} %>
-      <%= styled_button_tag 'Create Git config key', class: '-highlight -with-icon icon-yes' %>
-  </fieldset>
+  <h4><%= 'Create new repository Git config key' %></h4>
+  <%= render :partial => 'repository_git_config_keys/form', :locals => { :f => f} %>
+  <%= styled_button_tag 'Create Git config key', class: '-highlight -with-icon icon-yes' %>
 <% end %>
- 

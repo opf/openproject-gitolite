@@ -1,15 +1,13 @@
+<div id="validation_messages"><%= error_messages_for 'git_config_key' %></div>
 
-    <div id="validation_messages"><%= error_messages_for 'git_config_key' %></div>
+<%= f.hidden_field :repository_id, value: @repository.id %>
+<div class="form--field -required">
+  <%= f.text_field :key, label: 'Key', required: true %>
+  <div class="form--field-instructions">
+    <%= "e.g., section.key" %>
+  </div>
+</div>
 
-    <p>
-      <%= f.hidden_field :repository_id, value: @repository.id %>
-    </p>
-  
-    <p>
-      <%= f.text_field :key, label: 'Key', required: true, style: 'width: 97%;' %>
-      <em><%= "e.g., section.key" %></em>
-    </p>
-  
-    <p>
-      <%= f.text_field :value, label: 'Value', required: true, style: 'width: 97%;' %>
-    </p>
+<div class="form--field -required">
+  <%= f.text_field :value, label: 'Value', required: true %>
+</div>

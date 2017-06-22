@@ -1,78 +1,76 @@
-<div>
-  <% if ssh_keys.nil? || ssh_keys.empty? %>
-    <%= no_results_box %>
-  <% else %>
-    <div class="generic-table--container">
-      <div class="generic-table--results-container">
-        <table interactive-table class="generic-table">
-          <colgroup>
-            <col highlight-col>
-            <col highlight-col>
-            <col highlight-col>
-            <col highlight-col>
-            <col>
-          </colgroup>
-          <thead>
+<% if ssh_keys.nil? || ssh_keys.empty? %>
+  <%= no_results_box %>
+<% else %>
+  <div class="generic-table--container">
+    <div class="generic-table--results-container">
+      <table interactive-table class="generic-table">
+        <colgroup>
+          <col highlight-col>
+          <col highlight-col>
+          <col highlight-col>
+          <col highlight-col>
+          <col>
+        </colgroup>
+        <thead>
+          <tr>
+            <th>
+              <div class="generic-table--sort-header-outer">
+                <div class="generic-table--sort-header">
+                  <span>
+                    <%= l(:label_public_key_title) %>
+                  </span>
+                </div>
+              </div>
+            </th>
+            <th>
+              <div class="generic-table--sort-header-outer">
+                <div class="generic-table--sort-header">
+                  <span>
+                    <%= l(:label_gitolite_identifier) %>
+                  </span>
+                </div>
+              </div>
+            </th>
+            <th>
+              <div class="generic-table--sort-header-outer">
+                <div class="generic-table--sort-header">
+                  <span>
+                    <%= l(:label_public_key_fingerprint) %>
+                  </span>
+                </div>
+              </div>
+            </th>
+            <th>
+              <div class="generic-table--sort-header-outer">
+                <div class="generic-table--sort-header">
+                  <span>
+                    <%= l(:label_public_key_delete_when_unused) %>
+                  </span>
+                </div>
+              </div>
+            </th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% ssh_keys.each do |key| %>
             <tr>
-              <th>
-                <div class="generic-table--sort-header-outer">
-                  <div class="generic-table--sort-header">
-                    <span>
-                      <%= l(:label_public_key_title) %>
-                    </span>
-                  </div>
-                </div>
-              </th>
-              <th>
-                <div class="generic-table--sort-header-outer">
-                  <div class="generic-table--sort-header">
-                    <span>
-                      <%= l(:label_gitolite_identifier) %>
-                    </span>
-                  </div>
-                </div>
-              </th>
-              <th>
-                <div class="generic-table--sort-header-outer">
-                  <div class="generic-table--sort-header">
-                    <span>
-                      <%= l(:label_public_key_fingerprint) %>
-                    </span>
-                  </div>
-                </div>
-              </th>
-              <th>
-                <div class="generic-table--sort-header-outer">
-                  <div class="generic-table--sort-header">
-                    <span>
-                      <%= l(:label_public_key_delete_when_unused) %>
-                    </span>
-                  </div>
-                </div>
-              </th>
-              <th></th>
+              <td class="center" style="text-align:left;"><%= h(key) %></td>
+              <td class="center" style="text-align:left;"><%= raw("#{key.title}/<br/>#{key.identifier}.pub") %></td>
+              <td class="center" style="text-align:left;"><%= "#{key.fingerprint}"[-8,8] %></td>
+              <td class="center" style="text-align:left;"><%= checked_image key.delete_when_unused %></td>
+              <td class="buttons">
+                <%= link_to l(:button_delete),
+                         { controller: target, action: 'destroy', id: key.id },
+                         method: :delete,
+                         class: 'icon icon-delete',
+                         data: { confirm: l(:text_gitolite_key_destroy_confirmation, title: keylabel(key)) } %>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            <% ssh_keys.each do |key| %>
-              <tr>
-                <td class="center" style="text-align:left;"><%= h(key) %></td>
-                <td class="center" style="text-align:left;"><%= raw("#{key.title}/<br/>#{key.identifier}.pub") %></td>
-                <td class="center" style="text-align:left;"><%= "#{key.fingerprint}"[-8,8] %></td>
-                <td class="center" style="text-align:left;"><%= checked_image key.delete_when_unused %></td>
-                <td class="buttons">
-                  <%= link_to l(:button_delete),
-                           { controller: target, action: 'destroy', id: key.id },
-                           method: :delete,
-                           class: 'icon icon-delete',
-                           data: { confirm: l(:text_gitolite_key_destroy_confirmation, title: keylabel(key)) } %>
-                </td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-        <div class="generic-table--header-background"></div>
-      </div>
+          <% end %>
+        </tbody>
+      </table>
+      <div class="generic-table--header-background"></div>
     </div>
-  <% end %>
-</div>
+  </div>
+<% end %>

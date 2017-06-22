@@ -69,7 +69,7 @@ See doc/COPYRIGHT.rdoc for more details.
             title="<%= l(:label_copy_to_clipboard) %>"
             copy-to-clipboard
             clipboard-target="#repository-checkout-url">
-      <span class="icon-copy"></span>
+      <op-icon icon-classes="icon-copy">></op-icon>
       <span class="hidden-for-sighted"><%= l(:label_copy_to_clipboard) %></span>
     </button>
   </li>
@@ -78,7 +78,7 @@ See doc/COPYRIGHT.rdoc for more details.
        class="persistent-toggle--click-handler button"
        ng-class="{ '-pressed': !isHidden }"
        title="<%= l('repositories.checkout.show_instructions') %>">
-      <i class="button--icon icon-info1"></i>
+      <op-icon icon-classes="icon-info1">></op-icon>
     </a>
   </li>
   <% end %>
@@ -86,7 +86,7 @@ See doc/COPYRIGHT.rdoc for more details.
   <li class="toolbar-item -icon-only">
     <%= link_to stats_project_repository_path(@project),
         class: 'button', title: l(:label_statistics) do %>
-      <i class="button--icon icon-chart1"></i>
+      <op-icon icon-classes="icon-chart1">></op-icon>
     <% end %>
   </li>
   <% end %>
@@ -96,7 +96,7 @@ See doc/COPYRIGHT.rdoc for more details.
     <li class="toolbar-item -icon-only">
       <%= link_to settings_project_path(@project, tab: 'repository'),
           class: 'button', title: l(:label_settings) do %>
-        <i class="button--icon icon-settings"></i>
+        <op-icon icon-classes="icon-settings">></op-icon>
       <% end %>
     </li>
   <% end %>
@@ -130,7 +130,7 @@ See doc/COPYRIGHT.rdoc for more details.
 
 
   var allGitUrlIds = ["git_url_ssh", "git_url_http", "git_url_git"];
-  
+
 function updateGitUrl(el)
 {
 	guHttpBase = guHttpBase.replace(/\/$/, "");
@@ -139,8 +139,8 @@ function updateGitUrl(el)
 	urls["git_url_ssh"]  = ["ssh://" + guGitUser + "@" + guGitServer + "/" + guProjectName, guUserIsCommitter];
 	urls["git_url_http"] = [guHttpProto + "://" + ( (!guProjectIsPublic) || guUserIsCommitter ? guUser + "@" : "") + guHttpBase + "/gitolite/" + guProjectName, guUserIsCommitter];
 	urls["git_url_git"]  = ["git://" + guGitServer + "/" + guProjectName, false];
-	
-	
+
+
 	var selected_id = el.id;
 	document.getElementById("repository-checkout-url").value = urls[selected_id][0];
 

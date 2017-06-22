@@ -16,68 +16,59 @@
 <%# Controller is overriden for user key management /my/account/keys %>
 <% target ||= 'gitolite_public_keys' %>
 
-<fieldset class="public_key_view">
-  <legend><%= l(:label_public_keys) %></legend>
+<fieldset class="form--fieldset public_key_view">
+  <legend class="form--fieldset-legend"><%= l(:label_public_keys) %></legend>
 
   <% if User.current.admin? || can_create_public_user_ssh_keys_for_some_project(@user) %>
-    <fieldset class="public_user_key_view">
-      <legend><%= l(:label_current_user_keys) %></legend>
-      <%= render partial: 'gitolite_public_keys/ssh_keys', locals: { ssh_keys: @gitolite_user_keys, target: target } %>
-    </fieldset>
+    <h4><%= l(:label_current_user_keys) %></h4>
+    <%= render partial: 'gitolite_public_keys/ssh_keys', locals: { ssh_keys: @gitolite_user_keys, target: target } %>
   <% end %>
 
   <br/>
 
   <% if User.current.admin? || can_create_public_deployment_ssh_keys_for_some_project(@user) %>
-    <fieldset class="public_deploy_key_view">
-      <legend><%= l(:label_current_deploy_keys) %></legend>
-      <%= render partial: 'gitolite_public_keys/ssh_keys', locals: { ssh_keys: @gitolite_deploy_keys, target: target } %>
-    </fieldset>
+    <h4><%= l(:label_current_deploy_keys) %></h4>
+    <%= render partial: 'gitolite_public_keys/ssh_keys', locals: { ssh_keys: @gitolite_deploy_keys, target: target } %>
   <% end %>
 
   <br/>
 
-  <fieldset class="public_key_new">
-    <legend><%= l(:label_public_key_new) %></legend>
+  <h4><%= l(:label_public_key_new) %></h4>
+  <div id="validation_messages"><%= error_messages_for 'gitolite_public_key' %></div>
 
-    <div id="validation_messages"><%= error_messages_for 'gitolite_public_key' %></div>
+  <%= labelled_tabular_form_for(:gitolite_public_key,
+            url: { controller: target, action: 'create' },
+            method: :post ) do |f| %>
+    <div class="form--field -required">
+    <%= f.text_field :title, label: :label_identifier_can_be_arbitrary, required: true %>
+      <div class="form--field-instructions"><%= l(:label_identifier_can_be_arbitrary_desc) %></div>
+    </div>
 
-    <%= labelled_tabular_form_for(:gitolite_public_key,
-              url: { controller: target, action: 'create' },
-              method: :post ) do |f| %>
-
-      <p>
-        <%= f.text_field :title, label: :label_identifier_can_be_arbitrary, required: true, style: 'width: 97%;' %>
-        <em><%= l(:label_identifier_can_be_arbitrary_desc) %></em>
-      </p>
-
-      <% if target == 'gitolite_public_keys' %>
-        <p>
-          <%= f.hidden_field :user_id, value: @user.id %>
-          <%= f.text_field :user, label: l('activerecord.models.user'), value: @user.name, disabled: true, style: 'width: 97%;' %>
-        </p>
-      <% end %>
-
-      <p>
-        <%= f.select :key_type, options_for_select([["Select a key type", -1], [l(:label_user_key), 0], [l(:label_deploy_key), 1]], selected: default_key_type, disabled: [-1] + [disable_deploy_keys] + [disable_user_keys]),
-                                { required: true, label: :label_key_type },
-                                { class: 'select_key_type' } %>
-      </p>
-
-      <p>
-        <%= f.check_box :delete_when_unused, label: 'Delete key when unused', checked: true %>
-      </p>
-
-      <p>
-        <%= f.text_area :key, label: :label_public_key, required: true, style: 'width: 97%; height: 200px; overflow: auto;',
-                                  cols: nil, rows: nil %>
-        <em><%= l(:label_cut_and_paste) %></em>
-      </p>
-
-      <%= styled_button_tag 'Create', class: '-highlight -with-icon icon-yes' %>
-
+    <% if target == 'gitolite_public_keys' %>
+        <%= f.hidden_field :user_id, value: @user.id %>
+        <div class="form--field">
+          <%= f.text_field :user, label: l('activerecord.models.user'), value: @user.name, disabled: true %>
+        </div>
     <% end %>
-  </fieldset>
+
+    <div class="form--field -required">
+      <%= f.select :key_type, options_for_select([["Select a key type", -1], [l(:label_user_key), 0], [l(:label_deploy_key), 1]], selected: default_key_type, disabled: [-1] + [disable_deploy_keys] + [disable_user_keys]),
+                              { required: true, label: :label_key_type },
+                              { class: 'select_key_type' } %>
+    </div>
+
+    <div class="form--field">
+      <%= f.check_box :delete_when_unused, label: 'Delete key when unused', checked: true %>
+    </div>
+
+    <div class="form--field -required">
+      <%= f.text_area :key, label: :label_public_key, required: true,
+                                cols: nil, rows: 10 %>
+      <div class="form--field-instructions"><%= l(:label_cut_and_paste) %></div>
+    </div>
+
+    <%= styled_button_tag 'Create', class: '-highlight -with-icon icon-yes' %>
+  <% end %>
 </fieldset>
 
 
@@ -103,6 +94,6 @@
 
   key_type.onchange = function() {
     enable_disable(this)
-  };  
+  };
 
 </script>
