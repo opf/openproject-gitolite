@@ -1,22 +1,19 @@
+<div id="validation_messages"><%= error_messages_for 'git_extra' %></div>
 
-    <div id="validation_messages"><%= error_messages_for 'git_extra' %></div>
+<%= f.hidden_field :git_daemon, value: (@project.is_public ? @git_extra[:git_daemon] : false), id: 'repository_git_extra_git_daemon_hidden' %>
+<div class="form--field">
+  <%= f.check_box :git_daemon, label: l(:label_enable_git_daemon), checked: (@project.is_public ? @git_extra[:git_daemon] : false), disabled: !@project.is_public %>
+</div>
 
-    <p>
-      <%= f.hidden_field :git_daemon, value: (@project.is_public ? @git_extra[:git_daemon] : false) %>
-      <%= f.check_box :git_daemon, label: l(:label_enable_git_daemon), checked: (@project.is_public ? @git_extra[:git_daemon] : false), disabled: !@project.is_public %>
-    </p>
-     
-    <p>
-      <%= f.hidden_field :id, value: @git_extra[:id] %>
-      <%= f.hidden_field :repository_id, value: @git_extra[:repository_id] %>
-      <%#= f.hidden_field :git_notify, value: @git_extra[:git_notify] %>
-      <%#= f.hidden_field :default_branch, value: @git_extra[:default_branch] %>
-      <%#= f.hidden_field :key, value: @git_extra[:key] %>
-    </p>
 
-    <p>
-      <%= f.select :git_http, options_for_select([[l(:label_rg_disabled), 0], [l(:label_https_only), 1], [l(:label_https_and_http), 2], [l(:label_http_only), 3]], selected: @git_extra[:git_http]),
-                              { required: true, label: l(:label_gitolite_http) },
-                              { class: 'select_key_type' } %>
-    </p>
-    
+<%= f.hidden_field :id, value: @git_extra[:id] %>
+<%= f.hidden_field :repository_id, value: @git_extra[:repository_id] %>
+<%#= f.hidden_field :git_notify, value: @git_extra[:git_notify] %>
+<%#= f.hidden_field :default_branch, value: @git_extra[:default_branch] %>
+<%#= f.hidden_field :key, value: @git_extra[:key] %>
+
+<div class="form--field -reuired">
+  <%= f.select :git_http, options_for_select([[l(:label_rg_disabled), 0], [l(:label_https_only), 1], [l(:label_https_and_http), 2], [l(:label_http_only), 3]], selected: @git_extra[:git_http]),
+                          { required: true, label: l(:label_gitolite_http) },
+                          { class: 'select_key_type' } %>
+</div>

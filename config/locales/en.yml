@@ -58,6 +58,11 @@ en:
   label_current_public_keys: Current public keys
   label_current_user_keys: Current user keys
   label_current_deploy_keys: Current deployment keys
+  label_create_deploy_key: Create new deployment key
+  label_select_deploy_key: Select deployment key
+  label_current_deploy_credentials: Current deployment credentials
+  label_create_deploy_credential: Create new deployment credential
+  label_create_credential: "Create credential"
   label_no_public_keys: No public keys defined
   label_public_key_new: Enter new public key
   label_identifier_can_be_arbitrary: Title / Location
@@ -72,6 +77,7 @@ en:
 
   # User SSH keys (confirmation)
   text_gitolite_key_destroy_confirmation: "Are you sure you want to destroy this key : %{title} ?"
+  text_redirect_new_deploy_key: "You will be redirected to 'My account / Public keys.'\nUnsaved data will be lost.\nAre you sure?"
 
   # User SSH keys (errors)
   error_public_key_create_failed: Failed to create public key.
@@ -104,6 +110,7 @@ en:
   label_download_and_install_git: Download and install Git
   label_repository_access_not_configured: Repository access not configured, please contact your adminstrator.
   label_repository_access_url: Repository access links
+  label_access_permissions: "Access permissions"
   label_main_git_repository: Main Git Repository
   label_see_other_repositories: See other repositories
   label_help_git_setup: Git Setup
@@ -114,6 +121,7 @@ en:
   label_this_urls_has_permissions: "This URL has <span id=\"%{span_id}\"></span> access."
   label_read_write_permission: Read+Write
   label_read_only_permission: Read Only
+  label_create_url: "Create URL"
 
   notice_empty_repository: The Repository seems to be empty. Get started by cloning the repository using the URLs from the sidebar.
   title_repository_empty: Repository empty
@@ -374,7 +382,7 @@ en:
     checkout:
       default_instructions:
         gitolite: 'You can access this repository through Git with Gitolite.'
-  
+
   # GWDG
   label_manage_git_repository: Manage Git repository
   project_not_found: No project was found with the identifier

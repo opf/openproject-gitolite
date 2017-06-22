@@ -3,5 +3,5 @@
           method: :patch ) do |f| %>
 
       <%= render :partial => 'repository_git_extras/form', :locals => { :f => f} %>
-      <%= styled_button_tag 'Save', class: '-highlight -with-icon icon-yes' %>
+      <%= styled_button_tag t(:button_save), class: '-highlight -with-icon icon-yes' %>
 <% end %>

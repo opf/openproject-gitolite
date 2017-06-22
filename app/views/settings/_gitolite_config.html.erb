@@ -30,7 +30,7 @@
   <%= raw "ssh -T #{Setting.plugin_openproject_gitolite[:gitolite_user]}@localhost -p #{Setting.plugin_openproject_gitolite[:gitolite_server_port]}" %>
 </div>
 
-
+<br>
 
 <h3><%= l(:label_gitolite_storage_config) %></h3>
 
@@ -53,7 +53,7 @@
   <%= content_tag('div', l(:label_use_delayed_jobs_desc), class: 'form--field-instructions') %>
 </div>
 
-
+<br>
 
 <h3><%= l(:label_gitolite_git_config) %></h3>
 

@@ -1,26 +1,25 @@
+<div id="validation_messages"><%= error_messages_for 'credential' %></div>
 
-    <div id="validation_messages"><%= error_messages_for 'credential' %></div>
+<div class="form--field -required">
+  <%= f.select :gitolite_public_key_id, build_list_of_keys(@gitolite_deploy_keys, @other_deployment_keys, @disabled_deployment_keys),
+                          { required: true, label: t(:label_select_deploy_key) },
+                          { class: 'select_key_type' } %>
 
-    <p>
-      <%= f.select :gitolite_public_key_id, build_list_of_keys(@gitolite_deploy_keys, @other_deployment_keys, @disabled_deployment_keys),
-                              { required: true, label: 'Select deployment key' },
-                              { class: 'select_key_type' } %>
-      <% if User.current.admin? || User.current.allowed_to?(:create_public_deployment_ssh_keys, @project) %>
-        <%= link_to 'Create new deployment key',
-                 { controller: "my_public_keys", action: 'index', deploy: 'true'},
-                 method: :get,
-                 class: 'icon icon-add',
-                 confirm: "You will be redirected to 'My account | Public keys'\nUnsaved data will be lost\nAre you sure?" %>
-      <% end %>
-    </p>
-    
-    <p>
-      <%= f.hidden_field :repository_id, value: @repository.id %>
-      <%= f.hidden_field :user_id, value: @user.id %>
-    </p>
+  <% if User.current.admin? || User.current.allowed_to?(:create_public_deployment_ssh_keys, @project) %>
+    <span class="form--field-extra-actions">
+      <%= link_to t(:label_create_deploy_key),
+               { controller: "my_public_keys", action: 'index', deploy: 'true'},
+               method: :get,
+               data: {confirm: t(:text_redirect_new_deploy_key)} %>
+    </span>
+  <% end %>
+</div>
 
-    <p>
-      <%= f.select :perm, options_for_select(RepositoryDeploymentCredential::VALID_PERMS, RepositoryDeploymentCredential::DEFAULT_PERM),
-                              { required: true, label: 'Access permissions' },
-                              { class: 'select_key_type' } %>
-    </p>
+<%= f.hidden_field :repository_id, value: @repository.id %>
+<%= f.hidden_field :user_id, value: @user.id %>
+
+<div class="form--field -required">
+  <%= f.select :perm, options_for_select(RepositoryDeploymentCredential::VALID_PERMS, RepositoryDeploymentCredential::DEFAULT_PERM),
+                          { required: true, label: t(:label_access_permissions) },
+                          { class: 'select_key_type' } %>
+</div>

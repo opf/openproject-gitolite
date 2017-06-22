@@ -1,14 +1,10 @@
-<p>
-  <% if User.current.admin? || User.current.allowed_to?(:view_repository_git_config_keys, @project) %>
-    <fieldset class="repository_git_config_keys_view">
-      <legend><%= "Current Git config keys" %></legend>
-      <%= render template: 'repository_git_config_keys/show' %>
-    </fieldset>
-  <% end %>
-</p>
+<% if User.current.admin? || User.current.allowed_to?(:view_repository_git_config_keys, @project) %>
+  <h4><%= "Current Git config keys" %></h4>
+  <%= render template: 'repository_git_config_keys/show' %>
+<% end %>
 
-<p>
-  <% if User.current.admin? || User.current.allowed_to?(:create_repository_git_config_keys, @project) %>
-    <%= render template: "repository_git_config_keys/new" %>
-  <% end %>
-</p>
+<br>
+
+<% if User.current.admin? || User.current.allowed_to?(:create_repository_git_config_keys, @project) %>
+  <%= render template: "repository_git_config_keys/new" %>
+<% end %>

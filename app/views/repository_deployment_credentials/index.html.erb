@@ -1,14 +1,10 @@
-<p>
-  <% if User.current.admin? || User.current.allowed_to?(:view_repository_deployment_credentials, @project) %>
-    <fieldset class="repository_deployment_credentials_view">
-      <legend><%= "Current deployment credentials" %></legend>
-      <%= render template: 'repository_deployment_credentials/show' %>
-    </fieldset>
-  <% end %>
-</p>
+<% if User.current.admin? || User.current.allowed_to?(:view_repository_deployment_credentials, @project) %>
+    <h4><%= t(:label_current_deploy_credentials) %></h4>
+    <%= render template: 'repository_deployment_credentials/show' %>
+<% end %>
 
-<p>
-  <% if User.current.admin? || User.current.allowed_to?(:create_repository_deployment_credentials, @project) %>
-    <%= render template: "repository_deployment_credentials/new" %>
-  <% end %>
-</p>
+<br>
+
+<% if User.current.admin? || User.current.allowed_to?(:create_repository_deployment_credentials, @project) %>
+  <%= render template: "repository_deployment_credentials/new" %>
+<% end %>

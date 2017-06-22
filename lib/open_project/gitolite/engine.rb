@@ -159,8 +159,7 @@ module OpenProject::Gitolite
         caption: 'Manage Gitolite repository',
         param: :project_id,
         parent: :repository,
-        if: Proc.new { |p| (p.repository && p.repository.is_a?(Repository::Gitolite)) && (User.current.admin? || User.current.allowed_to?(:view_manage_gitolite_repositories, p)) },
-        html: { class: 'icon2 icon-locked-folder' }
+        if: Proc.new { |p| (p.repository && p.repository.is_a?(Repository::Gitolite)) && (User.current.admin? || User.current.allowed_to?(:view_manage_gitolite_repositories, p)) }
       )
 
 
