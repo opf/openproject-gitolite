@@ -375,6 +375,7 @@ en:
   repositories:
     gitolite:
       managed_title: 'Gitolite Repository'
+      managed_url: 'Managed URL'
       managed_introduction: "Let OpenProject create and integrate a local Gitolite repository automatically."
       managed_path: 'Gitolite repository path'
       instructions:
