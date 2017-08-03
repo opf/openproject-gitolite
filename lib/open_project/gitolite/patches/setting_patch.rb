@@ -136,13 +136,13 @@ module OpenProject::Gitolite
           # Only perform after-actions on settings for our plugin
           if name == 'plugin_openproject_gitolite'
             valuehash = value
-        
+
             ## A resync of all public SSH keys has been asked within the interface, update all keys in force mode
             if @@resync_ssh_keys == true
               resync_all_ssh_keys
               @@resync_ssh_keys = false
             end
-        
+
             @@old_valuehash = valuehash.clone
           end
         end
@@ -173,7 +173,7 @@ module OpenProject::Gitolite
 
             projects.each do |project|
               next unless project.repository.is_a?(Repository::Gitolite)
-    
+
               if project.repository.extra.nil?
                 total_project_fixed += 1
                 OpenProject::Gitolite::GitoliteWrapper.logger.info("Project #{project.name} not configured properly, generating configuration..." )
@@ -181,13 +181,13 @@ module OpenProject::Gitolite
                 project.repository.extra.set_values_for_existing_repo
                 project.repository.save
               end
-              
+
             end
             OpenProject::Gitolite::GitoliteWrapper.logger.info(
               "Forced configuration of projects finished. A total of #{total_project_fixed} project(s) with errors were found and fixed."
             )
-            
-            
+
+
           end
         end
 
@@ -197,7 +197,7 @@ module OpenProject::Gitolite
         end
 
         private
-        
+
         def resync_repos
           OpenProject::Gitolite::GitoliteWrapper.logger.info("Resync of all repositories : Making sure all repositories are in proper place")
           projects_with_repos = Project.includes(:repository)
@@ -209,7 +209,7 @@ module OpenProject::Gitolite
               gitolite_repos_root = OpenProject::Gitolite::GitoliteWrapper.gitolite_global_storage_path
 
               # Get the path (where the repo actually is) from the database in OpenProject
-              old_path = proj.repository.url
+              old_path = URI.parse(proj.repository.url).path
               old_relative_path = Pathname.new(old_path).relative_path_from(Pathname.new(gitolite_repos_root))
               if File.dirname(old_path).to_s == gitolite_repos_root.to_s.chomp("/")
                 old_name = File.basename(old_relative_path.to_s, '.git')
@@ -230,7 +230,7 @@ module OpenProject::Gitolite
                 # Nathing to do with this repository
                 next
               end
-              
+
               OpenProject::Gitolite::GitoliteWrapper.logger.warn("Resync of all repositories : Found repository '#{old_name}' in wrong location on filesystem")
               OpenProject::Gitolite::GitoliteWrapper.logger.warn("Resync of all repositories : Moving repository '#{old_name}' -> '#{new_name}' ")
               OpenProject::Gitolite::GitoliteWrapper.logger.debug("-- On filesystem, this means '#{old_path}' -> '#{new_path}'")
@@ -241,7 +241,7 @@ module OpenProject::Gitolite
                 proj.repository.root_url = new_path
                 proj.repository.save
               end
-              
+
             end
           end
         end
