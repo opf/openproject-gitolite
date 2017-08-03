@@ -34,6 +34,10 @@ class GitolitePublicKey < ActiveRecord::Base
     where('user_id = ?', user.id)
   end
 
+  def self.valid_title_from(title)
+    title.underscore.gsub(/[^0-9a-zA-Z\-_]/, '_')
+  end
+
   # Returns the path to this key under the gitolite keydir
   # resolves to <user.gitolite_identifier>/<title>/<identifier>.pub
   #

@@ -39,6 +39,18 @@ module OpenProject::Gitolite
           allowed_to?(:view_changesets, repository.project)
         end
 
+        ##
+        # Checks the user's gitolite public keys and makes sure they have the correct
+        # identifier of "$login_$id".
+        def fix_gitolite_public_keys!
+          User.transaction do
+            gitolite_public_keys.each do |pk|
+              pk.update_column :title, GitolitePublicKey.valid_title_from(pk.title)
+              pk.update_column :identifier, gitolite_identifier
+            end
+          end
+        end
+
         protected
 
         def update_repositories
