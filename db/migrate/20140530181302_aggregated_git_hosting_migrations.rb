@@ -34,6 +34,13 @@ class AggregatedGitHostingMigrations < ActiveRecord::Migration
 
   OLD_PLUGIN_NAME = 'redmine_revisions_git'
 
+  # Use a separate class to avoid triggering validations
+  # and after commit hooks. This then means we need to resync the keys after the migration
+  # using `Setting.resync_all_ssh_keys`.
+  class ImportedKey < ActiveRecord::Base
+    self.table_name = "gitolite_public_keys"
+  end
+
   def up
     migration_names = OpenProject::Plugins::MigrationMapping.migration_files_to_migration_names(
       MIGRATION_FILES, OLD_PLUGIN_NAME
@@ -67,18 +74,60 @@ class AggregatedGitHostingMigrations < ActiveRecord::Migration
   end
 
   def create_public_keys_schema
-    create_table :gitolite_public_keys do |t|
-      t.column :title, :string, null: false
-      t.column :identifier, :string, null: false
-      t.column :key, :text, null: false
-      t.column :key_type, :integer, null: false, default: GitolitePublicKey::KEY_TYPE_USER
-      t.column :delete_when_unused, :boolean, default: true
-      t.references :user, null: false
-      t.timestamps
+    existing_rows = existing_public_keys? && check_gitolite_public_keys
+
+    drop_table :gitolite_public_keys if existing_rows
+
+    if !existing_public_keys?
+      create_table :gitolite_public_keys do |t|
+        t.column :title, :string, null: false
+        t.column :identifier, :string, null: false
+        t.column :key, :text, null: false
+        t.column :key_type, :integer, null: false, default: GitolitePublicKey::KEY_TYPE_USER
+        t.column :delete_when_unused, :boolean, default: true
+        t.references :user, null: false
+        t.timestamps
+      end
+
+      add_index :gitolite_public_keys, :user_id
+      add_index :gitolite_public_keys, :identifier
     end
 
-    add_index :gitolite_public_keys, :user_id
-    add_index :gitolite_public_keys, :identifier
+    if existing_rows
+      GitolitePublicKey.reset_column_information
+
+      migrate_old_gitolite_public_keys existing_rows
+    end
+  end
+
+  def check_gitolite_public_keys
+    present_columns = ActiveRecord::Base.connection.columns("gitolite_public_keys").map(&:name)
+
+    if present_columns.include?("active") # old schema, migrate it
+      ActiveRecord::Base.connection.execute("SELECT * FROM gitolite_public_keys").to_a
+    elsif present_columns.include?("key_type")
+      nil # keys already present with current schema, nothing to do here
+    else
+      raise "There already is a gitolite_public_keys table of an unexpected schema."
+    end
+  end
+
+  def migrate_old_gitolite_public_keys(rows)
+    rows.each do |row|
+      ImportedKey.create(
+        id: row["id"],
+        user_id: row["user_id"],
+        title: GitolitePublicKey.valid_title_from(row["title"]),
+        identifier: User.find_by!(id: row["user_id"]).gitolite_identifier,
+        key: row["key"],
+        created_at: row["created_at"].to_datetime,
+        updated_at: row["updated_at"].to_datetime
+      )
+    end
+  end
+
+  def existing_public_keys?
+    ActiveRecord::Base.connection.table_exists? 'gitolite_public_keys'
   end
 
   def down
