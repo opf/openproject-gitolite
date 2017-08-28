@@ -1,5 +1,5 @@
 module OpenProject
   module Gitolite
-    VERSION = '6.1.0'
+    VERSION = '7.2.2'
   end
 end
