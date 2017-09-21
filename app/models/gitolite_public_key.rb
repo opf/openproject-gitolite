@@ -108,9 +108,10 @@ class GitolitePublicKey < ActiveRecord::Base
       f.write(key)
       f.close
       # This will throw if exitcode != 0
-      output, = OpenProject::Gitolite::GitoliteWrapper.capture_out('ssh-keygen', '-lf',
-                                                                        f.path)
-      if output
+      output, err, code = OpenProject::Gitolite::GitoliteWrapper
+        .capture_out('ssh-keygen', '-lf', f.path)
+
+      if output && code == 0
         self.fingerprint = output.split[1]
       end
     end
