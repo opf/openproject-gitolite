@@ -94,9 +94,10 @@ module OpenProject::Gitolite::GitoliteWrapper
     # 3. Add the repository using +repo.gitolite_repository_name+
     #
     def do_move_repository(repo, old_path, old_name)
+      repo_to_move = Repository.find_by_id(repo.id)
       gitolite_repos_root = OpenProject::Gitolite::GitoliteWrapper.gitolite_global_storage_path
       # Build the path (where the repo should be) from the project's settings
-      new_path  = repo.managed_repository_path
+      new_path  = repo_to_move.managed_repository_path
       new_relative_path = Pathname.new(new_path).relative_path_from(Pathname.new(gitolite_repos_root))
       if File.dirname(new_path).to_s == gitolite_repos_root.to_s.chomp("/")
         new_name = File.basename(new_relative_path.to_s, '.git')
@@ -113,10 +114,10 @@ module OpenProject::Gitolite::GitoliteWrapper
       # Move the repo on filesystem
       if move_physical_repo(old_path, old_name, new_path, new_name, true)
         # Add the repo as new in Gitolite
-        repo.url = new_path
-        repo.root_url = new_path
-        repo.save
-        handle_repository_add(repo)
+        repo_to_move.url = new_path
+        repo_to_move.root_url = new_path
+        repo_to_move.save
+        handle_repository_add(repo_to_move)
       end
     end
 
