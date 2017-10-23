@@ -188,7 +188,7 @@ class GitoliteHooksController < ApplicationController
   def find_project_and_repository
     @project = Project.find_by_identifier(params[:projectid])
     if @project.nil?
-      render(:text => "#{l(:project_not_found)} #{params[:projectid]}") if @project.nil?
+      render(:text => "#{l(:label_project_not_found)} #{params[:projectid]}") if @project.nil?
       return
     end
     @repository = @project.repository  # Only repository if redmine < 1.4

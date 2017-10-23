@@ -1,5 +1,4 @@
 fr:
-  module_name: Redmine Git Hosting
   activerecord:
     errors:
       messages:
@@ -52,13 +51,18 @@ fr:
   label_gitolite_public_key: Clés publiques
   label_my_public_key: Mes clés publiques
   label_public_key: Clé publique
-  label_public_key_title: Public key title
+  label_public_key_title: Titre de clé publique
   label_public_key_fingerprint: Signature
   label_public_key_delete_when_unused: Supprimer inutilisée
   label_public_key_edit: Modifier une clé publique existante
   label_current_public_keys: Clés publiques courantes
   label_current_user_keys: Clés de l'utilisateur courant
   label_current_deploy_keys: Clés de déploiement courantes
+  label_create_deploy_key: Créer des clés de déploiement
+  label_select_deploy_key: Sélectionnez une clé de déploiement
+  label_current_deploy_credentials: Pièces d'identités de déploiement
+  label_create_deploy_credential: Créer une nouvelle pièce d'identité de déploiement
+  label_create_credential: "Créer la pièce d'identité"
   label_no_public_keys: Aucune clé publique définie
   label_public_key_new: Entrez une nouvelle clé publique
   label_identifier_can_be_arbitrary: Identifiant
@@ -73,6 +77,7 @@ fr:
 
   # User SSH keys (confirmation)
   text_gitolite_key_destroy_confirmation: "Êtes-vous sûr de vouloir détruire cette clé : %{title} ?"
+  text_redirect_new_deploy_key: "Vous allez être redirigé vers 'Mon compte / Clés publiques.'\nLes données non sauvegardées seront perdues.\nÊtes vous sur?"
 
   # User SSH keys (errors)
   error_public_key_create_failed: Échec de création de clé publique.
@@ -85,8 +90,6 @@ fr:
 
 
   ########### REPOSITORIES ###########
-
-  text_scm_command_not_available_revisions_git: Ce SCM n'est pas disponible. Vérifier les paramètres dans la section administration du plugin Redmine Git Hosting.
 
   # Create Repository
   label_repository_options: Options du dépôt
@@ -101,14 +104,13 @@ fr:
   # Repository list view
   label_repository_enabled_capabilities: Fonctionnalité activées du dépôt
 
-  # Repository code browser
-  label_download_format: Télécharger au format %{archive_format}
   # Repositories URL (labels)
   label_copy_to_clipboard: Copier dans le presse papier
   label_copied_to_clipboard: Copié!
   label_download_and_install_git: Téléchargez et installez Git
   label_repository_access_not_configured: Les accès au dépôt n'ont pas été configurés, veuillez contacter vôtre administrateur.
   label_repository_access_url: URL d'accès au dépôt
+  label_access_permissions: "Autorisations d'accès"
   label_main_git_repository: Dépôt Git Principal
   label_see_other_repositories: Voir les autres dépôts
   label_help_git_setup: Configuration de Git
@@ -119,6 +121,7 @@ fr:
   label_this_urls_has_permissions: "Cette URL est accessilbe en <span id=\"%{span_id}\"></span>."
   label_read_write_permission: Lecture+Ecriture
   label_read_only_permission: Lecture seule
+  label_create_url: "Créer l'URL"
 
   notice_empty_repository: Le dépôt est vide. Commencez en suivant les instructions ci-dessous.
 
@@ -194,11 +197,19 @@ fr:
   permission_edit_repository_git_config_keys: Modifier des clés de configuration Git
 
 
+  # Mangeable
+  label_gitolite_manageable: Le vendeur Gitolite est gérable ?
+  label_gitolite_not_manageable: Le vendeur Gitolite n'est pas gérable. Vous devez activer Gitolite pour la configuration gérée dans `configuration.yml`.
+
   # Global
   label_need_help: Besoin d'aide?
   label_open_issue: Ouvrir une demande
-  label_openproject_revisions_git_wiki: Redmine Git Hosting - Wiki
-  label_openproject_revisions_git_issue: Redmine Git Hosting - Ouvrir une demande
+  label_openproject_revisions_git_wiki: OpenProject gitolite - Wiki
+  label_openproject_revisions_git_issue: OpenProject gitolite - Ouvrir une demande
+
+  # OpenProject Config
+  label_tab_openproject: OpenProject
+  label_tab_openproject_config: Configuration d'OpenProject
 
   # Gitolite SSH Config
   label_tab_ssh: SSH
@@ -211,16 +222,9 @@ fr:
 
   label_cannot_change_selinux: Ne peut être changé dans la configuration actuelle
 
-  # Gitolite Storage Config
-  label_tab_storage: Stockage
-  label_gitolite_storage_config: Configuration du stockage dans Gitolite
-
-  label_gitolite_global_storage_path: Chemin de base des dépôts Gitolite
-  label_gitolite_global_storage_path_desc: (Relatif au répertoire personnel de l'utilisateur Gitolite)
-  label_gitolite_recycle_bin_dir: Chemin de la corbeille Gitolite
-  label_gitolite_recycle_bin_dir_desc: (Relatif au répertoire personnel de l'utilisateur Gitolite)
-
   # Gitolite Config File
+  label_gitolite_include_config_file: Séparer la configuration de Gitolite
+  label_gitolite_include_config_file_desc: Utilisez un fichier de configuration Gitolite séparé pour les dépôts créés à partir d'OpenProject
   label_tab_config_file: Fichier de configuration
   label_gitolite_config_file: Fichier de configuration de Gitolite
   label_gitolite_config_has_admin_key: Le fichier de configuration de Gitolite a la clé d'administration.
@@ -230,10 +234,15 @@ fr:
   label_git_config_username_desc: (Sera utilisé comme nom de l'auteur dans les commits)
   label_git_config_email: Email de l'auteur Git
   label_git_config_email_desc: (Sera utilisé comme email de l'auteur dans les commits)
+  label_use_delayed_jobs: Accès asynchrone à Gitolite
+  label_use_delayed_jobs_desc: Utilisez la file d'attente asynchrone 'delayed_job'
 
   # Gitolite Global Config
   label_tab_global: Global
   label_gitolite_global_config: Configuration globale du plugin
+  label_gitolite_admin_dir: Dépôt Gitolite Admin
+  label_gitolite_admin_dir_desc: Emplacement du dépôt Gitolite Admin
+  label_gitolite_git_config: Paramètres Gitolite Git
 
   label_gitolite_temp_dir: Répertoire temporaire pour les fichiers de verrouillage et les données
   label_gitolite_temp_dir_desc: (Doit être absolu)
@@ -259,6 +268,7 @@ fr:
   label_gitolite_access_config: Configuration des accès Gitolite
 
   label_ssh_server_domain: Nom de domaine du serveur SSH
+  label_ssh_server_domain_desc: Racine de l'URL d'accès SSH, contribue à l'URL de clonage git-ssh (voir ci-dessous)
   label_http_server_domain: Nom de domaine du serveur HTTP
   label_https_server_domain: Nom de domaine du serveur HTTPS
   label_https_server_domain_desc: "(laissez vide si vous n'utilisez pas HTTPS)"
@@ -283,9 +293,10 @@ fr:
   label_gitolite_cache_max_size: Taille maximale d'un élément du cache
   label_gitolite_cache_max_elements: Nombre maximal d'éléments dans le cache
 
+  # Gitolite Notifications
+  label_tab_notify: Notifications
+
   # Redmine Config
-  label_tab_redmine: Redmine
-  label_redmine_config: Configuration de Redmine
 
   label_all_projects_use_git: Créer automatiquement un dépôt Git pour les nouveaux projets
   label_delete_git_repositories: Effacer les dépôts Git d'un projet quand celui-ci est effacé?<br/>(seront mis dans la corbeille)
@@ -311,6 +322,9 @@ fr:
   label_default_repository: Dépôt par défaut
   label_example_repository: Dépôt example
 
+  # Sidekiq Config
+  label_tab_sidekiq_interface: Sidekiq
+
   # Config Check
   label_tab_config_test: Test de la Configuration
   label_permissions_header: Permissions requises
@@ -329,6 +343,8 @@ fr:
   label_gitolite_hooks_installed: Hooks installés?
   label_openproject_user: Nom d'utilisateur OpenProject
   label_git_version: Version de Git
+  label_found_repositories: Dépôts trouvés
+  label_none_repositories: Aucun
 
   # Recycle Bin
   label_tab_gitolite_recycle_bin: Corbeille
@@ -352,12 +368,26 @@ fr:
   label_select_all: Tout sélectionner
   label_etcetera: etc
 
+  repositories:
+    gitolite:
+      managed_title: "Dépôt Gitolite intégré à OpenProject"
+      managed_introduction: "Laisser OpenProject créer et intégrer automatiquement un dépôt local Gitolite."
+      managed_path: "Chemin Gitolite gérée"
+      managed_url: "URL gérée"
+      instructions:
+        managed_url: "Ceci est l'URL du dépôt (local) Gitolite géré."
+    checkout:
+      default_instructions:
+        gitolite: |-
+          Les données contenues dans ce dépôt peuvent être téléchargées sur votre ordinateur à l'aide de Git.
+          Si vous désirez plus d'informations sur la procédure de « checkout » et les clients disponibles, consultez la documentation de Git.
+
   # GWDG
   label_manage_git_repository: Gérer le dépôt Git
-  project_not_found: Aucun projet n'a été trouvé avec l'identifiant
+  label_project_not_found: Aucun projet n'a été trouvé avec l'identifiant
   label_mirrors_grant_access_public_key: Les miroirs doivent accorder l'accès en écriture à la clé publique suivante
   label_repository_mirror: Miroir du dépôt
-   
+
   # Gitolite Hooks Config
   label_tab_hooks: Hooks
   label_gitolite_hooks_config: Configuration des hooks de Gitolite
@@ -375,6 +405,8 @@ fr:
   # Gitolite Storage Config
   label_tab_storage: Stockage
   label_gitolite_storage_config: Configuration du stockage dans Gitolite
+  label_gitolite_global_storage_path: Chemin de base des dépôts Gitolite
+  label_gitolite_global_storage_path_desc: Relatif au répertoire personnel de l'utilisateur Gitolite
 
   label_gitolite_global_storage_dir: Chemin de base des dépôts Gitolite
   label_gitolite_global_storage_dir_desc: Relatif au répertoire personnel de l'utilisateur Gitolite

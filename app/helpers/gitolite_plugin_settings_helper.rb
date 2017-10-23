@@ -59,7 +59,7 @@ module GitolitePluginSettingsHelper
       { name: 'gitolite_config_hooks',      partial: 'settings/gitolite_config_hooks',   label: :label_tab_hooks },
       { name: 'gitolite_config_cache',      partial: 'settings/gitolite_config_cache',   label: :label_tab_cache },
       { name: 'gitolite_config_notify',     partial: 'settings/gitolite_config_notify',  label: :label_tab_notify },
-      { name: 'gitolite_redmine_config',    partial: 'settings/redmine_config',          label: :label_tab_redmine },
+      { name: 'gitolite_redmine_config',    partial: 'settings/redmine_config',          label: :label_tab_openproject },
       { name: 'gitolite_sidekiq_interface', partial: 'settings/sidekiq_interface',       label: :label_tab_sidekiq_interface },
       { name: 'gitolite_config_test',       partial: 'settings/gitolite_config_test',    label: :label_tab_config_test },
       { name: 'gitolite_recycle_bin',       partial: 'settings/gitolite_recycle_bin',    label: :label_tab_gitolite_recycle_bin },
