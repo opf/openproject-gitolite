@@ -21,23 +21,41 @@ module OpenProject::Gitolite::GitoliteWrapper
     def update_all_ssh_keys_forced
       users = User.includes(:gitolite_public_keys).all.select { |u| u.gitolite_public_keys.any? }
       logger.info("Starting forced update of SSH keys for #{users.size} users.")
-      #Deletes directory with all keys (it does not work, directory is deleted after keys are re-created)
-      #@admin.transaction do
-      #  ssh_keys_dir = File.join(Setting.plugin_openproject_gitolite[:gitolite_admin_dir], @admin.relative_key_dir)
-      #  logger.info("Deleting directory with SSH keys: #{ssh_keys_dir}")
-      #  FileUtils.remove_dir(ssh_keys_dir)
-      #  gitolite_admin_repo_commit("Deleted all SSH keys for #{users.size} users")
-      #end
+      #Deletes all SSH keys found in file system
+      filesystem_repo_keys = @admin.ssh_keys
+      if filesystem_repo_keys.size > 0
+        logger.info("Found #{filesystem_repo_keys.size} SSH keys in the file system. Removing them...")
+        #Deletes all SSH keys from Gitolite
+        @admin.transaction do
+          filesystem_repo_keys.each_value do |filesystem_repo_key|
+            repo_key_to_delete = filesystem_repo_key.first
+            #logger.info("Removing SSH key '#{repo_key_to_delete.location}' from Gitolite...")
+            @admin.rm_key(repo_key_to_delete)
+          end
+          gitolite_admin_repo_commit("Forced update of SSH keys - Removing old SSH keys from file system.")
+        end
+      end
+
+      #After deleting all keys from filesystem, the keys are still in memory.
+      #This resets and reloads the updated information from Gitolite
+      #logger.info("Before reset and reload: #{@admin.ssh_keys.size} keys in Gitolite...")
+      @admin.reset!
+      @admin.reload!
+      #logger.info("After reset and reload: #{@admin.ssh_keys.size} keys in Gitolite...")
+      
       #Re-creates the ssh keys
+      new_added_keys = 0
       @admin.transaction do
         users.each do |user|
           user.gitolite_public_keys.each do |key|
+            #logger.info("Adding SSH key '#{key}' to Gitolite...")
             add_gitolite_key(key)
+            new_added_keys = new_added_keys + 1
           end
         end
         gitolite_admin_repo_commit("Updated SSH keys for #{users.size} users")
       end
-      logger.info("Finished forced update of SSH keys for #{users.size} users.")
+      logger.info("Finished forced update of #{new_added_keys} SSH keys for #{users.size} users.")
     end
 
     private

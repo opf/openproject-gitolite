@@ -152,7 +152,9 @@ module OpenProject::Gitolite
           resync_repos
 
           # Need to update everyone!
-          projects = Project.active.includes(:repository).all
+          projects = Project.includes(:repository)
+                     .where('repositories.type = ?', 'Repository::Gitolite')
+                     .references('repositories')
           if projects.length > 0
             OpenProject::Gitolite::GitoliteWrapper.logger.info(
               "Forced resync of all projects (#{projects.length})..."
@@ -164,7 +166,9 @@ module OpenProject::Gitolite
 
         def fix_project_settings
           # Need to fix some projects!
-          projects = Project.active.includes(:repository).all
+          projects = Project.includes(:repository)
+                     .where('repositories.type = ?', 'Repository::Gitolite')
+                     .references('repositories')
           total_project_fixed = 0
           if projects.length > 0
             OpenProject::Gitolite::GitoliteWrapper.logger.info(
@@ -177,9 +181,10 @@ module OpenProject::Gitolite
               if project.repository.extra.nil?
                 total_project_fixed += 1
                 OpenProject::Gitolite::GitoliteWrapper.logger.info("Project #{project.name} not configured properly, generating configuration..." )
-                project.repository.build_extra
-                project.repository.extra.set_values_for_existing_repo
-                project.repository.save
+                current_repo = Repository.find_by_id(project.repository.id)
+                current_repo.build_extra
+                current_repo.extra.set_values_for_existing_repo
+                current_repo.save
               end
 
             end
@@ -205,6 +210,7 @@ module OpenProject::Gitolite
                                 .references('repositories')
 
           if projects_with_repos.size > 0
+            OpenProject::Gitolite::GitoliteWrapper.logger.info("Resync of all repositories : Found #{projects_with_repos.size} project(s) with a repository")
             projects_with_repos.each do |proj|
               gitolite_repos_root = OpenProject::Gitolite::GitoliteWrapper.gitolite_global_storage_path
 
@@ -237,9 +243,11 @@ module OpenProject::Gitolite
 
               if move_physical_repo(old_path, old_name, new_path, new_name, false)
                 # Add the repo as new in Gitolite
-                proj.repository.url = new_path
-                proj.repository.root_url = new_path
-                proj.repository.save
+                current_repo = Repository.find_by_id(proj.repository.id)
+                current_repo.url = new_path
+                current_repo.root_url = new_path
+                current_repo.save
+                OpenProject::Gitolite::GitoliteWrapper.logger.warn("Resync of all repositories : Repository was updated")
               end
 
             end
