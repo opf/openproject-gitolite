@@ -375,6 +375,7 @@ fr:
       managed_introduction: "Laisser OpenProject créer et intégrer automatiquement un dépôt local Gitolite."
       managed_path: "Chemin Gitolite gérée"
       managed_url: "URL gérée"
+      cannot_add_repository: "Impossible de créer le dépôt"
       instructions:
         managed_url: "Ceci est l'URL du dépôt (local) Gitolite géré."
     checkout:

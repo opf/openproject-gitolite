@@ -375,6 +375,7 @@ it:
       managed_introduction: "Let OpenProject create and integrate a local Gitolite repository automatically."
       managed_path: "Gitolite repository path"
       managed_url: "Managed URL"
+      cannot_add_repository: "Unable to create the repository"
       instructions:
         managed_url: "Path preview of the repository in the Gitolite tree"
     checkout:
