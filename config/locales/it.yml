@@ -100,6 +100,7 @@ it:
   label_init_repo_with_readme: Initialize this repository with a README
   label_browse_repository: Browse repository
   label_repository_exists_in_gitolite: Repository exists in Gitolite
+  label_creating_repository: Creating...
 
   # Repository list view
   label_repository_enabled_capabilities: Repository Enabled Capabilities
