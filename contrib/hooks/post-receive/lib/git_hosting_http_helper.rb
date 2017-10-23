@@ -76,8 +76,8 @@ module GitHosting
 
       def build_http_request(url, opts = {})
         # Get HTTP options
-        open_timeout = opts.delete(:open_timeout) { 5 }
-        read_timeout = opts.delete(:read_timeout) { 10 }
+        open_timeout = opts.delete(:open_timeout) { 10 }
+        read_timeout = opts.delete(:read_timeout) { 25 }
 
         uri  = URI(url)
         http = Net::HTTP.new(uri.host, uri.port)
