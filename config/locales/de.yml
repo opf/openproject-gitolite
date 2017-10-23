@@ -310,8 +310,8 @@ de:
   label_http_access: HTTP access
   label_https_access: HTTPS access
 
-  display_access_setup1: "Assume that <em>project1</em> is a parent of <em>project2</em>, and <em>project2</em> is a parent of <em>project3</em>."
-  display_access_setup2: "Also, assume that project <em>project3</em> has 2 repositories : the <em>default</em> repository and a repository <em>example</em>."
+  display_access_setup1: "Assume that <em>project1</em> is the parent of <em>project2</em>, and <em>project2</em> is the parent of <em>project3</em>."
+  display_access_setup2: "Also, assume that project <em>project3</em> has a repository : <em>project3.git</em>."
   display_access_setup3: "Given the current configuration, project <em>project3</em> has the following properties :"
   display_access_emphasis: "In the above patterns, <em>emphasized</em> components represent context-dependent elements."
   display_access_hierarchical: "Parent projects are included in the URLs, since the repository is in <em>Hierarchical</em> mode."

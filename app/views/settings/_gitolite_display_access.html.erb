@@ -31,17 +31,17 @@
 
 <div class="form--field">
   <%= styled_label_tag(:label_storage_directory, l(:label_storage_directory)) %>
-  <%= raw File.join gitolite_global_storage_path, 'project1/project2/project3/', 'example.git' %>
+  <%= raw File.join gitolite_global_storage_path, 'project1/project2/project3.git' %>
 </div>
 
 <div class="form--field">
   <%= styled_label_tag(:label_ssh_access, l(:label_ssh_access)) %>
-  <%= raw "ssh://#{gitolite_user}@#{ssh_server_domain}/project1/project2/project3/example.git" %>
+  <%= raw "ssh://#{gitolite_user}@#{ssh_server_domain}/project1/project2/project3.git" %>
 </div>
 
 <div class="form--field">
   <%= styled_label_tag(:label_ssh_access, l(:label_https_access)) %>
-  <%= raw "https://#{https_server_domain}/git/project1/project2/project3/example.git" %>
+  <%= raw "https://#{https_server_domain}/gitolite/project1/project2/project3.git" %>
 </div>
 
 <div class="form--field">

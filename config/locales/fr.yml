@@ -311,7 +311,7 @@ fr:
   label_https_access: Accès HTTPS
 
   display_access_setup1: "Assumez que <em>project1</em> est le parent de <em>project2</em> et que <em>project2</em> est le parent de <em>project3</em>."
-  display_access_setup2: "Assumez aussi que le projet <em>project3</em> a 2 dépôts : le dépôt par <em>défaut</em> et un dépôt <em>example</em>."
+  display_access_setup2: "Assumez aussi que le projet <em>project3</em> a un dépôt : <em>project3.git</em>."
   display_access_setup3: "Avec la configuration courante, le projet <em>project3</em> a les propriétés suivantes :"
   display_access_emphasis: "Dans l'exemple ci-dessus, les termes en <em>emphase</em> représentent des éléments qui dépendent du contexte."
   display_access_hierarchical: "Les projets parents sont inclus dans l'URL, car le dépôt est en mode <em>Hiérarchique</em>."
