@@ -1,6 +1,6 @@
 require 'socket'
 module OpenProject::Gitolite
-  GITHUB_ISSUE = 'https://github.com/oliverguenther/openproject-gitolite/issues'
+  GITHUB_ISSUE = 'https://github.com/opf/openproject-gitolite/issues'
 
   class Engine < ::Rails::Engine
     engine_name :openproject_gitolite
@@ -109,7 +109,7 @@ module OpenProject::Gitolite
     register(
       'openproject-gitolite',
       author_url: 'https://github.com/opf/openproject-gitolite',
-      requires_openproject: '>= 6.0.0',
+      requires_openproject: '>= 7.3.0',
       settings: settings
     ) do
       project_module :repository do

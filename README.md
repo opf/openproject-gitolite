@@ -131,7 +131,7 @@ Add a Gemfile.plugins to your OpenProject root with the following contents:
 
     gem 'gitlab-grack', git: 'https://github.com/jbox-web/grack.git', require: 'grack', branch: 'fix_gemfile'
     gem 'redcarpet', '> 3.3.2'
-    gem "openproject-gitolite", git: "https://github.com/oliverguenther/openproject-gitolite.git", branch: "release/6.1"
+    gem "openproject-gitolite", git: "https://github.com/opf/openproject-gitolite.git", branch: "release/7.3"
 
 #### 2. Gitolite access rights
 
@@ -168,7 +168,7 @@ Make sure you can ssh into Gitolite from the openproject user. If you run the fo
 
 #### 4. Configuration of OpenProject
 
-**4.a. OpenProject gzip/deflate (OpenProject 6.1.x)**
+**4.a. OpenProject gzip/deflate (OpenProject 7.x)**
 
 We need to adjust ``Rack::Deflater`` in the ``<openproject home>/config/application.rb`` configuration file to prevent conflicts with SmartHTTP. Change the following lines (85-92):
 
@@ -253,7 +253,7 @@ Note that many of the settings are not yet functional, and some values on Config
 5. Add/Manage Git config keys.
 
 ## Copyrights & License
-OpenProject gitolite is completely free and open source and released under the [MIT License](https://github.com/oliverguenther/openproject_revisions_git/blob/devel/LICENSE).
+OpenProject gitolite is completely free and open source and released under the [MIT License](https://github.com/opf/openproject-gitolite/blob/dev/LICENSE).
 
 Copyright (c) 2014 Oliver Günther (mail@oliverguenther.de)
 
