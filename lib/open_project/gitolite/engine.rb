@@ -165,11 +165,16 @@ module OpenProject::Gitolite
 
     end
 
+    add_tab_entry :user,
+                  name: 'keys',
+                  partial: 'gitolite_public_keys/form',
+                  label: :label_public_keys
+
     config.to_prepare do
       [
         :user, :setting, :settings_controller,
         :users_controller, :my_controller,
-        :users_helper, :roles_controller, :member
+        :roles_controller, :member
       ].each do |sym|
         require_dependency "open_project/gitolite/patches/#{sym}_patch"
       end
