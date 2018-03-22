@@ -3,30 +3,24 @@ module OpenProject::Gitolite
     module MemberPatch
 
       def self.included(base)
-        base.class_eval do
-          include InstanceMethods
-
-          alias_method_chain :save_notification,   :revisions_git
-          alias_method_chain :destroy_notification,   :revisions_git
-        end
+        base.prepend InstanceMethods
       end
 
       module InstanceMethods
-
         private
 
         # Send the propper notification
-        def save_notification_with_revisions_git(&block)
+        def save_notification(&block)
           # Previous rutine (perhaps this is not necessary)
-          save_notification_without_revisions_git(&block)
+          super(&block)
 
           # Sends the notification
           ::OpenProject::Notifications.send('member_updated', member: self)
         end
 
-        def destroy_notification_with_revisions_git(&block)
+        def destroy_notification(&block)
           # Previous rutine (perhaps this is not necessary)
-          destroy_notification_without_revisions_git(&block)
+          super(&block)
 
           # Sends the notification
           ::OpenProject::Notifications.send('member_removed', member: self)

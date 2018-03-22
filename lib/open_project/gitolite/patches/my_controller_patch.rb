@@ -2,19 +2,17 @@ module OpenProject::Gitolite
   module Patches
     module MyControllerPatch
       def self.included(base)
+        base.prepend InstanceMethods
+
         base.class_eval do
-          include InstanceMethods
-
-          alias_method_chain :account, :revisions_git
-
           helper :gitolite_public_keys
         end
       end
 
       module InstanceMethods
-        def account_with_revisions_git(&block)
+        def account(&block)
           # Previous routine
-          account_without_revisions_git(&block)
+          super(&block)
 
           # Set public key values for view
           set_public_key_values
