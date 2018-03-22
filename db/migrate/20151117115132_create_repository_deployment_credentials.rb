@@ -1,4 +1,4 @@
-class CreateRepositoryDeploymentCredentials < ActiveRecord::Migration
+class CreateRepositoryDeploymentCredentials < ActiveRecord::Migration[4.2]
 
   def self.up
     create_table :repository_deployment_credentials do |t|

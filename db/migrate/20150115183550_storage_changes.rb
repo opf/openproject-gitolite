@@ -1,4 +1,4 @@
-class StorageChanges < ActiveRecord::Migration
+class StorageChanges < ActiveRecord::Migration[4.2]
   def self.up
     Repository::Git.find_each do |repo|
       #repo.url = repo.git_path
