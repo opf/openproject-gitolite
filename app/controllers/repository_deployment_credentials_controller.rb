@@ -1,11 +1,11 @@
 class RepositoryDeploymentCredentialsController < ApplicationController
 
-  before_filter :find_project
-  before_filter :find_repository
-  before_filter :set_my_keys
-  before_filter :find_credentials
-  before_filter :find_deployment_credential, only: [:edit, :update, :destroy]
-  before_filter :find_key,                   only: [:edit, :update, :destroy]
+  before_action :find_project
+  before_action :find_repository
+  before_action :set_my_keys
+  before_action :find_credentials
+  before_action :find_deployment_credential, only: [:edit, :update, :destroy]
+  before_action :find_key,                   only: [:edit, :update, :destroy]
 
   def index
 

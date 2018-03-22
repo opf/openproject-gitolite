@@ -1,8 +1,8 @@
 class GitolitePublicKeysController < ApplicationController
   include GitolitePublicKeysHelper
 
-  before_filter :require_admin
-  before_filter :find_gitolite_public_key, only: [:destroy]
+  before_action :require_admin
+  before_action :find_gitolite_public_key, only: [:destroy]
 
   def create
     @user = User.find_by_id(gitolite_keys_allowed_params[:user_id])

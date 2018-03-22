@@ -1,4 +1,4 @@
-class MoveToSeparateModel < ActiveRecord::Migration
+class MoveToSeparateModel < ActiveRecord::Migration[4.2]
   def self.up
     Repository::Git.update_all(type: 'Repository::Gitolite',
                                scm_type: 'managed')

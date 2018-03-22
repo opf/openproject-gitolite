@@ -1,8 +1,8 @@
 class RepositoryPostReceiveUrlsController < ApplicationController
 
-  before_filter :find_project
-  before_filter :find_repository
-  before_filter :find_post_receive_url, only: [:edit, :update, :destroy]
+  before_action :find_project
+  before_action :find_repository
+  before_action :find_post_receive_url, only: [:edit, :update, :destroy]
 
   def index
   end

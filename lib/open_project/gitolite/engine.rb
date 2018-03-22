@@ -173,8 +173,7 @@ module OpenProject::Gitolite
     config.to_prepare do
       [
         :user, :setting, :settings_controller,
-        :users_controller, :my_controller,
-        :roles_controller, :member
+        :users_controller, :my_controller
       ].each do |sym|
         require_dependency "open_project/gitolite/patches/#{sym}_patch"
       end

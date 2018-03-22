@@ -1,4 +1,4 @@
-class CreateRepositoryPostReceiveUrls < ActiveRecord::Migration
+class CreateRepositoryPostReceiveUrls < ActiveRecord::Migration[4.2]
 
   def self.up
     create_table :repository_post_receive_urls do |t|

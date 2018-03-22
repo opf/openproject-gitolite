@@ -1,9 +1,9 @@
 class RevisionsGitControllerBase < ApplicationController
-  before_filter :require_login
-  before_filter :set_repository_variable
-  before_filter :set_project_variable
-  before_filter :check_xhr_request
-  before_filter :check_required_permissions
+  before_action :require_login
+  before_action :set_repository_variable
+  before_action :set_project_variable
+  before_action :check_xhr_request
+  before_action :check_required_permissions
 
   layout Proc.new { |controller| controller.request.xhr? ? 'popup' : 'base' }
 

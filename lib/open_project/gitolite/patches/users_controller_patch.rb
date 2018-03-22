@@ -4,20 +4,16 @@ module OpenProject::Gitolite
       include GitolitePublicKeysHelper
 
       def self.included(base)
-        base.class_eval do
-          include InstanceMethods
-
-          alias_method_chain :edit,   :revisions_git
-        end
+        base.prepend InstanceMethods
       end
 
       module InstanceMethods
-        def edit_with_revisions_git(&block)
+        def edit(&block)
           # Set public key values for view
           set_public_key_values
 
           # Previous routine
-          edit_without_revisions_git(&block)
+          super(&block)
         end
 
         private

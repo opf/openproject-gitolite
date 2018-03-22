@@ -3,7 +3,7 @@ require Rails.root.join('db', 'migrate', 'migration_utils', 'migration_squasher'
 require Rails.root.join('db', 'migrate', 'migration_utils', 'setting_renamer').to_s
 require 'open_project/plugins/migration_mapping'
 # This migration aggregates the migrations detailed in MIGRATION_FILES
-class AggregatedGitHostingMigrations < ActiveRecord::Migration
+class AggregatedGitHostingMigrations < ActiveRecord::Migration[4.2]
   MIGRATION_FILES = <<-MIGRATIONS
     20091119162426_set_mirror_role_permissions.rb
     20091119162427_create_gitolite_public_keys.rb

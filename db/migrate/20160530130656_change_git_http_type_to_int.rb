@@ -1,4 +1,4 @@
-class ChangeGitHttpTypeToInt < ActiveRecord::Migration
+class ChangeGitHttpTypeToInt < ActiveRecord::Migration[4.2]
 
   def self.up
     # Allows the configuration of a repository for SmartHTTP: None, HTTP, HTTPS and Both

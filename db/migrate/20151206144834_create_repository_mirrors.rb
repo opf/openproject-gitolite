@@ -1,4 +1,4 @@
-class CreateRepositoryMirrors < ActiveRecord::Migration
+class CreateRepositoryMirrors < ActiveRecord::Migration[4.2]
   
   def self.up
     create_table :repository_mirrors do |t|

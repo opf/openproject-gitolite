@@ -4,9 +4,9 @@ class MyPublicKeysController < ApplicationController
   layout 'my'
   menu_item :public_keys
 
-  before_filter :require_login
-  before_filter :set_my_keys, only: [:index]
-  before_filter :find_gitolite_public_key, only: [:destroy]
+  before_action :require_login
+  before_action :set_my_keys, only: [:index]
+  before_action :find_gitolite_public_key, only: [:destroy]
 
   def create
     @gitolite_public_key = GitolitePublicKey.new(gitolite_keys_allowed_params.merge(user: User.current))
