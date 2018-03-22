@@ -174,7 +174,7 @@ module OpenProject::Gitolite
       [
         :user, :setting, :settings_controller,
         :users_controller, :my_controller,
-        :roles_controller, :member
+        :roles_controller
       ].each do |sym|
         require_dependency "open_project/gitolite/patches/#{sym}_patch"
       end
