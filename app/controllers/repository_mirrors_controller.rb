@@ -1,8 +1,8 @@
 class RepositoryMirrorsController < ApplicationController
 
-  before_filter :find_project
-  before_filter :find_repository
-  before_filter :find_mirror, only: [:edit, :update, :destroy, :push]
+  before_action :find_project
+  before_action :find_repository
+  before_action :find_mirror, only: [:edit, :update, :destroy, :push]
 
   def index
   end

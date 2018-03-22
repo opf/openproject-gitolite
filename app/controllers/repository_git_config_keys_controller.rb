@@ -1,8 +1,8 @@
 class RepositoryGitConfigKeysController < ApplicationController
 
-  before_filter :find_project
-  before_filter :find_repository
-  before_filter :find_git_config_key, only: [:edit, :update, :destroy]
+  before_action :find_project
+  before_action :find_repository
+  before_action :find_git_config_key, only: [:edit, :update, :destroy]
 
   def index
 

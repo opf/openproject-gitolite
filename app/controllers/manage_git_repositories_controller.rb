@@ -1,17 +1,17 @@
 class ManageGitRepositoriesController < ApplicationController
 
-  before_filter :find_project_by_project_id, :only => [:index]
+  before_action :find_project_by_project_id, :only => [:index]
   
-  before_filter :authorize, :only => :index
+  before_action :authorize, :only => :index
 
-  before_filter :require_login
-  before_filter :find_repository
-  before_filter :set_my_keys
-  before_filter :find_credentials
-  before_filter :find_post_receive_urls
-  before_filter :find_mirrors
-  before_filter :find_git_config_keys
-  before_filter :find_git_extra
+  before_action :require_login
+  before_action :find_repository
+  before_action :set_my_keys
+  before_action :find_credentials
+  before_action :find_post_receive_urls
+  before_action :find_mirrors
+  before_action :find_git_config_keys
+  before_action :find_git_extra
   
   menu_item :manage_git_repositories, only: [:index]
 

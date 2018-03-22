@@ -4,8 +4,8 @@ class GitoliteHooksController < ApplicationController
 
   layout nil
   
-  skip_before_filter :verify_authenticity_token, :check_if_login_required, :except => :test
-  before_filter  :find_project_and_repository
+  skip_before_action :verify_authenticity_token, :check_if_login_required, :except => :test
+  before_action  :find_project_and_repository
 
   def post_receive
     if not @repository.extra.validate_encoded_time(params[:clear_time], params[:encoded_time])

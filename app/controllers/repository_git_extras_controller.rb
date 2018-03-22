@@ -1,8 +1,8 @@
 class RepositoryGitExtrasController < ApplicationController
 
-  before_filter :find_project
-  before_filter :find_repository
-  before_filter :find_git_extra, only: [:edit, :update]
+  before_action :find_project
+  before_action :find_repository
+  before_action :find_git_extra, only: [:edit, :update]
 
   def index
   end
