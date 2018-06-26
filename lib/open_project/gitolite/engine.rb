@@ -151,6 +151,17 @@ module OpenProject::Gitolite
                        authorized }
       )
 
+      # As admin have a child menu entry under Project|Repository, we need an entry for the main action.
+      menu(
+        :project_menu,
+        :browse_git_repository,
+        { controller: '/repositories', action: 'show' },
+        caption: 'Browse repository',
+        param: :project_id,
+        parent: :repository,
+        if: Proc.new { |p| (p.repository && p.repository.is_a?(Repository::Gitolite)) && (User.current.admin? || User.current.allowed_to?(:view_manage_gitolite_repositories, p)) }
+      )
+
       # Manage Gitolite repository under Project|Repository
       menu(
         :project_menu,
@@ -162,6 +173,7 @@ module OpenProject::Gitolite
         if: Proc.new { |p| (p.repository && p.repository.is_a?(Repository::Gitolite)) && (User.current.admin? || User.current.allowed_to?(:view_manage_gitolite_repositories, p)) }
       )
 
+      RepositoriesController.menu_item :browse_git_repository
 
     end
 
