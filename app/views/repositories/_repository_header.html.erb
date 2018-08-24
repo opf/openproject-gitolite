@@ -78,7 +78,7 @@ See doc/COPYRIGHT.rdoc for more details.
        class="persistent-toggle--click-handler button"
        ng-class="{ '-pressed': !isHidden }"
        title="<%= l('repositories.checkout.show_instructions') %>">
-      <op-icon icon-classes="icon-info1">></op-icon>
+      <op-icon icon-classes="icon-info1"></op-icon>
     </a>
   </li>
   <% end %>
@@ -86,7 +86,7 @@ See doc/COPYRIGHT.rdoc for more details.
   <li class="toolbar-item -icon-only">
     <%= link_to stats_project_repository_path(@project),
         class: 'button', title: l(:label_statistics) do %>
-      <op-icon icon-classes="icon-chart1">></op-icon>
+      <op-icon icon-classes="icon-chart1"></op-icon>
     <% end %>
   </li>
   <% end %>
@@ -96,7 +96,7 @@ See doc/COPYRIGHT.rdoc for more details.
     <li class="toolbar-item -icon-only">
       <%= link_to settings_project_path(@project, tab: 'repository'),
           class: 'button', title: l(:label_settings) do %>
-        <op-icon icon-classes="icon-settings">></op-icon>
+        <op-icon icon-classes="icon-settings"></op-icon>
       <% end %>
     </li>
   <% end %>
