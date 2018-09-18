@@ -1,0 +1,39 @@
+<div id="validation_messages"><%= error_messages_for 'mirror' %></div>
+
+<div class="form--field -required">
+  <%= f.text_field :url, label: 'URL', required: true %>
+  <div class="form--field-instructions">
+    <%= "e.g., ssh://git@openproject.example.org/project1/project2/project3/project4.git" %>
+    <br>
+    <%= "e.g., ssh://git@openproject.example.org:2222/project1/project2/project3/project4.git" %>
+  </div>
+</div>
+
+<%= f.hidden_field :repository_id, value: @repository.id %>
+
+<div class="form--field -required">
+  <%= f.select :push_mode, options_for_select([['Complete mirroring', 0], ['Force update remote', 1], ['Fast forward (unforced)', 2]], 0),
+                          { required: true, label: 'Mirror update mode' },
+                          { class: 'select_key_type' } %>
+</div>
+
+<div class="form--field">
+  <%= f.check_box :include_all_branches, label: 'Include all branches', checked: false %>
+</div>
+
+<div class="form--field">
+  <%= f.check_box :include_all_tags, label: 'Include all tags', checked: false %>
+</div>
+
+<div class="form--field">
+  <%= f.text_field :explicit_refspec, label: 'Explicit refspec' %>
+  <div class="form--field-instructions">
+    <%= "e.g., <src>:<dest>" %>
+    <br>
+    <%= "e.g., refs/<name>/<ref>:refs/<name>/<ref>" %>
+  </div>
+</div>
+
+<div class="form--field">
+  <%= f.check_box :active, label: 'Active', checked: true %>
+</div>

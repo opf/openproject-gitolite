@@ -1,0 +1,56 @@
+<% if @repository_git_config_keys.nil? || @repository_git_config_keys.empty? %>
+  <%= no_results_box %>
+<% else %>
+  <div class="generic-table--container">
+    <div class="generic-table--results-container">
+      <table interactive-table class="generic-table">
+        <colgroup>
+          <col highlight-col>
+          <col highlight-col>
+          <col>
+        </colgroup>
+        <thead>
+          <tr>
+            <th>
+              <div class="generic-table--sort-header-outer">
+                <div class="generic-table--sort-header">
+                  <span>
+                    <%= 'Key' %>
+                  </span>
+                </div>
+              </div>
+            </th>
+            <th>
+              <div class="generic-table--sort-header-outer">
+                <div class="generic-table--sort-header">
+                  <span>
+                    <%= 'Value' %>
+                  </span>
+                </div>
+              </div>
+            </th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @repository_git_config_keys.sort_by {|x| [x.key]}.each do |git_config_key| %>
+            <tr>
+              <td class="center" style="text-align:left;"><%= git_config_key.key %></td>
+              <td class="center" style="text-align:left;"><%= git_config_key.value %></td>
+              <td class="buttons">
+                <% if User.current.admin? || User.current.allowed_to?(:edit_repository_git_config_keys, @project) %>
+                  <%= link_to l(:button_delete),
+                           { controller: "projects/#{@project.identifier}/repository_git_config_keys", action: 'destroy', git_config_key: git_config_key },
+                           method: :delete,
+                           class: 'icon icon-delete',
+                           data: { confirm: "The key will ONLY be deleted from the database, NOT FROM THE REPOSITORY!\n\nAre you sure you want to delete the key '#{git_config_key.key}'" } %>
+      	      <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <div class="generic-table--header-background"></div>
+    </div>
+  </div>
+<% end %>

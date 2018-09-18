@@ -1,0 +1,20 @@
+<div id="validation_messages"><%= error_messages_for 'post_receive_url' %></div>
+
+<div class="form--field -required">
+  <%= f.text_field :url, label: 'URL', required: true %>
+  <div class="form--field-instructions">
+    <%= "e.g., http://openproject.example.org/project1/post.pl" %>
+  </div>
+</div>
+
+<%= f.hidden_field :repository_id, value: @repository.id %>
+
+<div class="form--field">
+  <%= f.select :mode, options_for_select([['Github-style POST', :github], ['Empty GET request', :get]], :github),
+                          { required: true, label: 'Mode' },
+                          { class: 'select_key_type' } %>
+</div>
+
+<div class="form--field">
+  <%= f.check_box :active, label: 'Active', checked: true %>
+</div>

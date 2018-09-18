@@ -1,0 +1,182 @@
+<%#-- copyright
+OpenProject is a project management system.
+Copyright (C) 2012-2015 the OpenProject Foundation (OPF)
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License version 3.
+
+OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+Copyright (C) 2006-2013 Jean-Philippe Lang
+Copyright (C) 2010-2013 the ChiliProject Team
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+See doc/COPYRIGHT.rdoc for more details.
+
+++#%>
+
+<% content_for :header_tags do %>
+  <%= javascript_include_tag 'repository_navigation' %>
+<% end %>
+<persistent-toggle identifier="repository.checkout_instructions">
+<%= toolbar title: l('repositories.named_repository',
+                     vendor_name: @repository.class.vendor_name) do %>
+  <% if @instructions && @instructions.available? %>
+  <li class="toolbar-item toolbar-input-group">
+
+    <% if @repository.is_a?(Repository::Gitolite) %>
+      <% if !User.current.anonymous? %>
+        <div class="toolbar-input-group--affix -prepend">
+          <a id="git_url_ssh"  href="javascript:void(0)">SSH</a>
+        </div>
+      <% end %>
+      <% if @repository.extra[:git_http].to_s != "0" %>
+        <div class="toolbar-input-group--affix -prepend">
+          <a id="git_url_http" href="javascript:void(0)">HTTP</a>
+        </div>
+      <% end %>
+      <% if @project.is_public && @repository.extra[:git_daemon] %>
+        <div class="toolbar-input-group--affix -prepend">
+          <a id="git_url_git"  href="javascript:void(0)">Git</a>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="toolbar-input-group--affix -prepend">
+        <span><%= @instructions.checkout_command %></span>
+      </div>
+    <% end %>
+
+    <input id="repository-checkout-url"
+           type="text" class="-clickable" size="40"
+           <% if !@repository.is_a?(Repository::Gitolite) %>
+             value="<%= @instructions.checkout_url(true) %>"
+           <% end %>
+           onclick="this.focus(); this.select();"
+           readonly>
+    <button class="toolbar-input--affix toolbar-input-group--affix -append"
+            title="<%= l(:label_copy_to_clipboard) %>"
+            copy-to-clipboard
+            clipboard-target="#repository-checkout-url">
+      <op-icon icon-classes="icon-copy">></op-icon>
+      <span class="hidden-for-sighted"><%= l(:label_copy_to_clipboard) %></span>
+    </button>
+  </li>
+  <li class="toolbar-item -icon-only">
+    <a id="repository--checkout-instructions-toggle"
+       class="persistent-toggle--click-handler button"
+       ng-class="{ '-pressed': !isHidden }"
+       title="<%= l('repositories.checkout.show_instructions') %>">
+      <op-icon icon-classes="icon-info1"></op-icon>
+    </a>
+  </li>
+  <% end %>
+  <% if !empty && User.current.allowed_to?(:browse_repository, @project) %>
+  <li class="toolbar-item -icon-only">
+    <%= link_to stats_project_repository_path(@project),
+        class: 'button', title: l(:label_statistics) do %>
+      <op-icon icon-classes="icon-chart1"></op-icon>
+    <% end %>
+  </li>
+  <% end %>
+  <%= call_hook(:repositories_navigation_toolbar,
+                { repository: @repository, project: @project, repository_empty: empty }) %>
+  <% if User.current.allowed_to?(:manage_repository, @project) %>
+    <li class="toolbar-item -icon-only">
+      <%= link_to settings_project_path(@project, tab: 'repository'),
+          class: 'button', title: l(:label_settings) do %>
+        <op-icon icon-classes="icon-settings"></op-icon>
+      <% end %>
+    </li>
+  <% end %>
+<% end %>
+
+
+<% if @instructions %>
+  <%= render partial: 'checkout_instructions',
+             locals: { repository: @repository, instructions: @instructions } %>
+<% end %>
+</persistent-toggle>
+
+
+<% if @repository.is_a?(Repository::Gitolite) %>
+<script type="text/javascript">
+  var guProjectName= "<%= @repository.repository_identifier %>";
+  var guProjectIsPublic= "<%= @project.is_public.to_s %>";
+  var guUser= "<%= User.current.login %>";
+  var guUserIsCommitter= "<%= User.current.allowed_to?(:commit_access, @project) ? 'true' : 'false' %>";
+  var guGitUser="<%= Setting.plugin_openproject_gitolite[:gitolite_user] %>";
+  var guGitServer="<%= Setting.plugin_openproject_gitolite[:ssh_server_domain] %>";
+  var guHttpBase="<%= Setting.plugin_openproject_gitolite[:https_server_domain] %>";
+  var guHttpProto="<%= @repository.https_access_enabled? ? 'https' : 'http' %>";
+
+  if (!(window.Event === undefined) && !(Event.observe === undefined)) {
+    Event.observe(window,"load", setGitUrlOnload);
+  } else {
+    window.onload = setGitUrlOnload;
+  }
+
+
+
+  var allGitUrlIds = ["git_url_ssh", "git_url_http", "git_url_git"];
+
+function updateGitUrl(el)
+{
+	guHttpBase = guHttpBase.replace(/\/$/, "");
+
+	var urls=[];
+	urls["git_url_ssh"]  = ["ssh://" + guGitUser + "@" + guGitServer + "/" + guProjectName, guUserIsCommitter];
+	urls["git_url_http"] = [guHttpProto + "://" + ( (!guProjectIsPublic) || guUserIsCommitter ? guUser + "@" : "") + guHttpBase + "/gitolite/" + guProjectName, guUserIsCommitter];
+	urls["git_url_git"]  = ["git://" + guGitServer + "/" + guProjectName, false];
+
+
+	var selected_id = el.id;
+	document.getElementById("repository-checkout-url").value = urls[selected_id][0];
+
+	var i;
+	for(i=0;i<allGitUrlIds.length; i++)
+	{
+		var test_id = allGitUrlIds[i];
+		var test_el = document.getElementById(test_id);
+		if (test_el != null)
+		{
+			test_el.className = test_id == selected_id ? "selected" : "";
+		}
+	}
+}
+
+function setGitUrlOnload()
+{
+	var git_input = document.getElementById("repository-checkout-url");
+	if (git_input) {
+		git_input.setAttribute("onclick", "this.select()");
+	}
+
+	var i;
+	var firstEl = null;
+	for(i=0;i<allGitUrlIds.length; i++)
+	{
+		var el = document.getElementById(allGitUrlIds[i]);
+		if (el != null)
+		{
+			firstEl = firstEl == null ? el : firstEl;
+			el.setAttribute("onclick", "updateGitUrl(this)");
+		}
+	}
+	updateGitUrl(firstEl);
+
+}
+
+</script>
+<% end %>

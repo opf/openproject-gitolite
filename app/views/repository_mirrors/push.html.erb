@@ -1,0 +1,18 @@
+<h3><%= "Push to mirror" %></h3>
+
+<p>
+  <% if @push_failed %>
+    <h2><%= "Failed!"%></h2>
+  <%else%>
+    <h2><%= "Succeeded!"%></h2>
+  <%end%>
+</p>
+
+<p>
+  <h4><%= "With message"%></h4>
+  <%= "#{@shellout}"%>
+</p>
+
+<p>
+  <a href="javascript:history.back()">Back</a>
+</p>

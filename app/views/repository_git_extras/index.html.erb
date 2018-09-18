@@ -1,0 +1,3 @@
+<% if User.current.admin? || User.current.allowed_to?(:manage_repository, @project) %>
+  <%= render template: "repository_git_extras/edit" %>
+<% end %>

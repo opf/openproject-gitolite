@@ -1,0 +1,52 @@
+<%
+  # Gitolite Hooks Config
+  gitolite_overwrite_existing_hooks = OpenProject::Gitolite::Config.get_setting(:gitolite_overwrite_existing_hooks, true)
+  gitolite_hooks_are_asynchronous   = OpenProject::Gitolite::Config.get_setting(:gitolite_hooks_are_asynchronous, true)
+  gitolite_hooks_debug              = OpenProject::Gitolite::Config.get_setting(:gitolite_hooks_debug, true)
+  gitolite_hooks_url                = OpenProject::Gitolite::Config.get_setting(:gitolite_hooks_url)
+%>
+
+
+
+<h3><%= l(:label_gitolite_hooks_config) %></h3>
+
+<p>
+  <%= link_to l(:label_install_gitolite_hooks),
+           install_gitolite_hooks_url,
+           method: :get,
+           class: 'icon icon-download' %>
+<p/>
+
+<div class="form--field">
+  <%= styled_label_tag("settings[gitolite_overwrite_existing_hooks]", l(:label_gitolite_overwrite_existing_hooks)) %>
+  <%= hidden_field_tag "settings[gitolite_overwrite_existing_hooks]", "false" %>
+  <%= styled_check_box_tag("settings[gitolite_overwrite_existing_hooks]", true, gitolite_overwrite_existing_hooks) %>
+</div>
+
+<div class="form--field">
+  <%= styled_label_tag("settings[gitolite_hooks_are_asynchronous]", l(:label_gitolite_hooks_are_asynchronous)) %>
+  <%= hidden_field_tag "settings[gitolite_hooks_are_asynchronous]", "false" %>
+  <%= styled_check_box_tag("settings[gitolite_hooks_are_asynchronous]", true, gitolite_hooks_are_asynchronous) %>
+</div>
+
+<div class="form--field">
+  <%= styled_label_tag("settings[gitolite_hooks_debug]", l(:label_gitolite_hooks_debug)) %>
+  <%= hidden_field_tag "settings[gitolite_hooks_debug]", "false" %>
+  <%= styled_check_box_tag("settings[gitolite_hooks_debug]", true, gitolite_hooks_debug) %>
+</div>
+
+<div class="form--field -required">
+  <%= styled_label_tag("settings[gitolite_hooks_url]", l(:label_gitolite_hooks_url)) %>
+  <%= styled_text_field_tag("settings[gitolite_hooks_url]", gitolite_hooks_url) %>
+  <%= content_tag('div', "#{l(:label_default_gitolite_hooks_url)}: #{Setting.protocol}://#{Setting.host_name.split('/').first}", class: 'form--field-instructions') %>
+</div>
+
+<div class="form--field">
+  <%= styled_label_tag(:label_gitolite_hooks_url, l(:label_gitolite_hooks_url)) %>
+  <%= raw OpenProject::Gitolite::Config.gitolite_hooks_url %>
+</div>
+
+<div class="form--field">
+  <%= styled_label_tag(:label_gitolite_hooks_namespace, l(:label_gitolite_hooks_namespace)) %>
+  <%= raw OpenProject::Gitolite::Config.gitolite_hooks_namespace %>
+</div>

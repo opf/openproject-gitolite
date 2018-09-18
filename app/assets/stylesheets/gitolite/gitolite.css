@@ -1,0 +1,196 @@
+.label {
+  padding: 5px;
+  font-weight: bold;
+  display: inline-block;
+  width: 200px;
+  text-align: center;
+  border-radius: 5px;
+  color: white;
+}
+
+.label-success {
+  background: #53C97C;
+}
+.label-error {
+  background: #C0392B;
+}
+
+table.list-aleft th {
+  text-align: left;
+}
+
+#sidebar input.revisions-git-url {
+  width: 90%;
+  padding: 5px;
+}
+
+/*
+REPOSITORY SETTINGS
+*/
+#revisions_git_settings label {
+  margin-left: -190px;
+  padding-left: 5px;
+  padding-right: 10px;
+  width: 190px;
+}
+
+.revisions_git {
+  height: auto;
+  min-height: 80px;
+}
+
+
+/*
+PUBLIC KEY
+*/
+.public_key_view {
+  background-color: #fff;
+  padding: 5px;
+}
+
+.public_key_view label {
+  font-weight: bold;
+  text-align: right;
+}
+
+.public_key_view .myhead {
+  font-style: italic;
+  color: #000;
+  size: 140%;
+  padding: 10px 10px 0px 0px;
+  margin-bottom: 5px;
+  border-bottom: 1px solid #bbbbbb;
+}
+
+.public_key_view p {
+  margin-top: 0px;
+  margin-bottom: 5px;
+  padding-top: 0px;
+}
+
+.public_key_view legend {
+  font-style: italic;
+  color: #000;
+  size: 130%;
+}
+
+
+/*
+MISC
+*/
+.spacer { display: block; height: 10px; clear: both; }
+
+td.buttons { width: 20%; }
+
+.select_key_type { margin-left: 10px; }
+
+
+/*
+STATISTICS
+*/
+#statistics-global {
+  color: #FFFFFF;
+  font-weight: bold;
+}
+
+.thumbnails:before, .thumbnails:after {
+  content: "";
+  display: table;
+  line-height: 0;
+}
+
+.thumbnails:after {
+  clear: both;
+}
+
+.thumbnails:before, .thumbnails:after {
+  content: "";
+  display: table;
+  line-height: 0;
+}
+
+.thumbnails {
+  list-style: none outside none;
+  margin-left: -20px;
+}
+
+ul, ol {
+  margin: 0 0 10px 25px;
+  padding: 0;
+}
+
+#statistics-global .thumbnail {
+  background: none repeat scroll 0 0 #3498DB;
+  padding: 10px;
+}
+
+.thumbnail {
+  position: relative;
+}
+
+.thumbnail {
+  border: 1px solid #DDDDDD;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
+  display: block;
+  line-height: 20px;
+  padding: 4px;
+  transition: all 0.2s ease-in-out 0s;
+}
+
+.thumbnails > li {
+  float: left;
+  margin-bottom: 20px;
+  margin-left: 20px;
+}
+
+.span4 {
+  width: 300px;
+}
+
+[class*="span"] {
+  float: left;
+  margin-left: 20px;
+  min-height: 1px;
+}
+
+#statistics-global .thumbnail .title {
+  font-size: 1.1em;
+}
+
+#statistics-global .thumbnail .value {
+  font-size: 3em;
+  line-height: 1em;
+  padding-top: 10px;
+  text-align: right;
+}
+
+.span6 {
+  width: 500px;
+}
+
+.thumbnail h5 {
+  background: none repeat scroll 0 0 #1ABC9C;
+  color: #FFFFFF;
+  padding: 10px;
+  position: absolute;
+  right: 10px;
+  top: 0;
+  font-size: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin: 10px 0;
+}
+
+.thumbnail h4 {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 5px;
+  border-bottom: 0 none;
+}
+
+.thumbnail h4 small {
+  color: #999999;
+  font-weight: normal;
+  line-height: 1;
+}

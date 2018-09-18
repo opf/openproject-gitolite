@@ -1,0 +1,57 @@
+<%
+  # Gitolite Display Access
+  gitolite_user                     = OpenProject::Gitolite::Config.get_setting(:gitolite_user)
+  ssh_server_domain                 = OpenProject::Gitolite::Config.get_setting(:ssh_server_domain)
+
+  gitolite_global_storage_path      = OpenProject::Gitolite::Config.get_setting(:gitolite_global_storage_path)
+  https_server_domain               = OpenProject::Gitolite::Config.get_setting(:https_server_domain)
+%>
+
+
+
+<h3><%= l(:label_current_access_patterns) %></h3>
+
+<div>
+  <%= raw l(:display_access_setup1) %>
+</div>
+
+<div>
+  <%= raw l(:display_access_setup2) %>
+</div>
+
+<div>
+  <%= raw l(:display_access_setup3) %>
+</div>
+
+<br/>
+
+<div class="form--field">
+  <%= styled_label_tag(:label_example_repository, l(:label_example_repository)) %>
+</div>
+
+<div class="form--field">
+  <%= styled_label_tag(:gitolite_global_storage_path, l(:gitolite_global_storage_path)) %>
+  <%= raw File.join gitolite_global_storage_path, 'project1/project2/project3/', 'example.git' %>
+</div>
+
+<div class="form--field">
+  <%= styled_label_tag(:label_ssh_access, l(:label_ssh_access)) %>
+  <%= raw "ssh://#{gitolite_user}@#{ssh_server_domain}/project1/project2/project3/example.git" %>
+</div>
+
+<div class="form--field">
+  <%= styled_label_tag(:label_ssh_access, l(:label_https_access)) %>
+  <%= raw "https://#{https_server_domain}/git/project1/project2/project3/example.git" %>
+</div>
+
+<div class="form--field">
+  <%= styled_label_tag(:label_etcetera, l(:label_etcetera)) %>
+</div>
+
+<br/>
+
+<div>
+  <%= raw l(:display_access_emphasis) %>
+</div>
+
+<br/>

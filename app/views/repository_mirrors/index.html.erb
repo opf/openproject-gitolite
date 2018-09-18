@@ -1,0 +1,16 @@
+<% if User.current.admin? || User.current.allowed_to?(:view_repository_mirrors, @project) %>
+  <h4><%= "Current repository mirrors" %></h4>
+  <%= render template: 'repository_mirrors/show' %>
+<% end %>
+
+<br>
+
+<% if User.current.admin? || User.current.allowed_to?(:create_repository_mirrors, @project) %>
+  <%= render template: "repository_mirrors/new" %>
+<% end %>
+
+<br>
+
+<% if User.current.admin? || User.current.allowed_to?(:create_repository_mirrors, @project) %>
+  <%= render template: "repository_mirrors/gitolite_public_key" %>
+<% end %>

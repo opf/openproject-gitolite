@@ -1,0 +1,82 @@
+<%= labelled_tabular_form_for(:repository_mirror,
+          url: { controller: 'repository_mirrors', action: 'create' },
+          method: :post ) do |f| %>
+
+  <h4><%= 'Create new repository mirror' %></h4>
+  <%= render :partial => 'repository_mirrors/form', :locals => { :f => f} %>
+  <%= styled_button_tag 'Create mirror', class: '-highlight -with-icon icon-yes' %>
+<% end %>
+
+
+
+<script type="text/javascript">
+  var push_mode = document.getElementById('repository_mirror_push_mode');
+  var include_all_branches = document.getElementById('repository_mirror_include_all_branches');
+  var include_all_tags = document.getElementById('repository_mirror_include_all_tags');
+  var explicit_refspec = document.getElementById('repository_mirror_explicit_refspec');
+
+  function enable_all(){
+    include_all_tags.disabled = false;
+    include_all_tags.checked = false;
+    include_all_branches.disabled = false;
+    include_all_branches.checked = false;
+    explicit_refspec.disabled = false;
+    explicit_refspec.value = '';
+  };
+
+  function disable_all(){
+    include_all_tags.disabled = true;
+    include_all_tags.checked = false;
+    include_all_branches.disabled = true;
+    include_all_branches.checked = false;
+    explicit_refspec.disabled = true;
+    explicit_refspec.value = '';
+  };
+
+
+  window.onload = function() {
+    if (push_mode.value == 0) {
+      disable_all();
+    }
+    else {
+      enable_all();
+    }
+  };
+
+  push_mode.onchange = function() {
+    if(this.value == 0) {
+      disable_all();
+    }
+    else {
+      enable_all();
+    }
+  };
+
+  include_all_branches.onchange = function() {
+    if(this.checked && !this.disabled) {
+      include_all_tags.disabled = true;
+      include_all_tags.checked = false;
+      explicit_refspec.disabled = true;
+      explicit_refspec.value = '';
+    } else {
+      include_all_tags.disabled = false;
+      include_all_tags.checked = false;
+      explicit_refspec.disabled = false;
+      explicit_refspec.value = '';
+    }
+  };
+
+  include_all_tags.onchange = function() {
+    if(this.checked && !this.disabled) {
+      include_all_branches.disabled = true;
+      include_all_branches.checked = false;
+    } else {
+      include_all_branches.disabled = false;
+      include_all_branches.checked = false;
+    }
+  };
+
+
+</script>
+
+

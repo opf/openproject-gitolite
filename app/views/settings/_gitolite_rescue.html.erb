@@ -1,0 +1,19 @@
+<h3><%= l(:label_gitolite_rescue) %></h3>
+
+<div class="form--field">
+  <%= styled_label_tag("settings[gitolite_configure_projects]", l(:label_configure_projects)) %>
+  <%= styled_check_box_tag("settings[gitolite_configure_projects]", true, false) %>
+  <%= content_tag('div', l(:label_configure_projects_desc), class: 'form--field-instructions') %>
+</div>
+
+<div class="form--field">
+  <%= styled_label_tag("settings[gitolite_resync_all_projects]", l(:label_resync_all_projects)) %>
+  <%= styled_check_box_tag("settings[gitolite_resync_all_projects]", true, false) %>
+  <%= content_tag('div', l(:label_resync_all_projects_desc), class: 'form--field-instructions') %>
+</div>
+
+<div class="form--field">
+  <%= styled_label_tag("settings[gitolite_resync_all_ssh_keys]", l(:label_resync_all_ssh_keys)) %>
+  <%= styled_check_box_tag("settings[gitolite_resync_all_ssh_keys]", true, false) %>
+  <%= content_tag('div', l(:label_resync_all_ssh_keys_desc), class: 'form--field-instructions') %>
+</div>

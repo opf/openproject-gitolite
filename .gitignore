@@ -1,0 +1,9 @@
+.*.swp
+Gemfile.lock
+/selinux/tmp
+/tmp
+/rdoc
+/coverage
+/junit
+config/i18n-tasks.yml
+.idea/

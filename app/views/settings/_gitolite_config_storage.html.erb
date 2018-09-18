@@ -1,0 +1,50 @@
+<%
+  # Gitolite Storage Config
+  gitolite_global_storage_dir       = OpenProject::Gitolite::Config.get_setting(:gitolite_global_storage_dir)
+  gitolite_redmine_storage_dir      = OpenProject::Gitolite::Config.get_setting(:gitolite_redmine_storage_dir)
+  gitolite_recycle_bin_dir          = OpenProject::Gitolite::Config.get_setting(:gitolite_recycle_bin_dir)
+  gitolite_local_code_dir           = OpenProject::Gitolite::Config.get_setting(:gitolite_local_code_dir)
+  gitolite_lib_dir                  = OpenProject::Gitolite::Config.get_setting(:gitolite_lib_dir)
+%>
+
+
+
+<h3><%= l(:label_gitolite_storage_config) %></h3>
+
+<div class="form--field -required">
+  <%= styled_label_tag("settings[gitolite_global_storage_dir]", l(:label_gitolite_global_storage_dir)) %>
+  <%= styled_text_field_tag("settings[gitolite_global_storage_dir]", gitolite_global_storage_dir) %>
+  <%= content_tag('div', l(:label_gitolite_global_storage_dir_desc), class: 'form--field-instructions') %>
+</div>
+
+<div class="form--field -required">
+  <%= styled_label_tag("settings[gitolite_recycle_bin_dir]", l(:label_gitolite_recycle_bin_dir)) %>
+  <%= styled_text_field_tag("settings[gitolite_recycle_bin_dir]", gitolite_recycle_bin_dir) %>
+  <%= content_tag('div', l(:label_gitolite_recycle_bin_dir_desc), class: 'form--field-instructions') %>
+</div>
+
+<div class="form--field -required">
+  <%= styled_label_tag("settings[gitolite_redmine_storage_dir]", l(:label_gitolite_redmine_storage_dir)) %>
+  <%= styled_text_field_tag("settings[gitolite_redmine_storage_dir]", gitolite_redmine_storage_dir) %>
+  <%= content_tag('div', l(:label_gitolite_redmine_storage_dir_desc), class: 'form--field-instructions') %>
+</div>
+
+<% if OpenProject::Gitolite::Config.gitolite_version == 3%>
+  <div class="form--field -required">
+    <%= styled_label_tag("settings[gitolite_local_code_dir]", l(:label_gitolite_local_code_dir)) %>
+    <%= styled_text_field_tag("settings[gitolite_local_code_dir]", gitolite_local_code_dir) %>
+    <%= content_tag('div', l(:label_gitolite_local_code_dir_desc), class: 'form--field-instructions') %>
+    <%= link_to 'Gitolite non-core programs', 'http://gitolite.com/gitolite/non-core.html#localcode', target: '_blank' %>
+  </div>
+<% else %>
+  <div class="form--field">
+    <%= styled_label_tag("settings[gitolite_local_code_dir]", l(:label_gitolite_local_code_dir)) %>
+    <%= raw gitolite_local_code_dir %>
+  </div>
+<% end %>
+
+<div class="form--field -required">
+  <%= styled_label_tag("settings[gitolite_lib_dir]", l(:label_gitolite_lib_dir)) %>
+  <%= styled_text_field_tag("settings[gitolite_lib_dir]", gitolite_lib_dir) %>
+  <%= content_tag('div', l(:label_gitolite_lib_dir_desc), class: 'form--field-instructions') %>
+</div>

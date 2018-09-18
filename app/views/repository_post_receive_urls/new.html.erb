@@ -1,0 +1,8 @@
+<%= labelled_tabular_form_for(:repository_post_receive_url,
+          url: { controller: 'repository_post_receive_urls', action: 'create' },
+          method: :post ) do |f| %>
+
+    <h4><%= t(:permission_create_repository_post_receive_urls) %></h4>
+      <%= render :partial => 'repository_post_receive_urls/form', :locals => { :f => f} %>
+      <%= styled_button_tag t(:label_create_url), class: '-highlight -with-icon icon-yes' %>
+<% end %>

@@ -1,0 +1,17 @@
+<% settings_tabs = [
+  { name: 'gitolite_config', partial: 'settings/gitolite_config', label: :label_tab_gitolite },
+  { name: 'gitolite_config_storage', partial: 'settings/gitolite_config_storage', label: :label_tab_storage },
+  { name: 'gitolite_config_access', partial: 'settings/gitolite_config_access', label: :label_tab_access },
+  { name: 'gitolite_config_hooks', partial: 'settings/gitolite_config_hooks', label: :label_tab_hooks },
+  { name: 'gitolite_config_test', partial: 'settings/gitolite_config_test', label: :label_tab_config_test },
+  { name: 'gitolite_rescue', partial: 'settings/gitolite_rescue', label: :label_tab_gitolite_rescue },
+ ] %>
+
+<br />
+
+<span><%= l(:label_open_issue) %> : <%= link_to l(:label_openproject_revisions_git_issue), OpenProject::Gitolite::GITHUB_ISSUE, target: '_blank' %></span>
+
+<br />
+<br />
+
+<%= render_tabs settings_tabs %>

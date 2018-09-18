@@ -1,0 +1,98 @@
+<% if @repository_mirrors.nil? || @repository_mirrors.empty? %>
+  <%= no_results_box %>
+<% else %>
+  <div class="generic-table--container">
+    <div class="generic-table--results-container">
+      <table interactive-table class="generic-table">
+        <colgroup>
+          <col highlight-col>
+          <col highlight-col>
+          <col highlight-col>
+          <col highlight-col>
+          <col>
+        </colgroup>
+        <thead>
+          <tr>
+            <th>
+              <div class="generic-table--sort-header-outer">
+                <div class="generic-table--sort-header">
+                  <span>
+                    <%= 'URL' %>
+                  </span>
+                </div>
+              </div>
+            </th>
+            <th>
+              <div class="generic-table--sort-header-outer">
+                <div class="generic-table--sort-header">
+                  <span>
+                    <%= 'Refspec' %>
+                  </span>
+                </div>
+              </div>
+            </th>
+            <th>
+              <div class="generic-table--sort-header-outer">
+                <div class="generic-table--sort-header">
+                  <span>
+                    <%= 'Mode' %>
+                  </span>
+                </div>
+              </div>
+            </th>
+            <th>
+              <div class="generic-table--sort-header-outer">
+                <div class="generic-table--sort-header">
+                  <span>
+                    <%= 'Active' %>
+                  </span>
+                </div>
+              </div>
+            </th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @repository_mirrors.sort_by {|x| [x.url]}.each do |mirror| %>
+            <tr>
+              <td class="center" style="text-align:left;"><%= mirror.url %></td>
+              <td class="center" style="text-align:left;"><%= raw(refspec mirror, 64) %></td>
+              <td class="center" style="text-align:left;"><%= mirror_mode mirror %></td>
+              <td class="center" style="text-align:left;"><%= checked_image mirror.active? %></td>
+              <td class="buttons">
+                <% if User.current.admin? || User.current.allowed_to?(:push_repository_mirrors, @project) %>
+                  <%= link_to 'Push to mirror',
+                           { controller: "projects/#{@project.identifier}/repository_mirrors", action: 'push', mirror: mirror },
+                           method: :get,
+                           class: 'icon icon-double-arrow-right',
+                           data: { confirm: "Are you sure you want to push the latest commits to mirror '#{mirror.url}'" } %>
+                <% end %>
+                <% if User.current.admin? || User.current.allowed_to?(:edit_repository_mirrors, @project) %>
+                  <% if mirror.active? %>
+                    <%= link_to 'Deactivate',
+                             { controller: "projects/#{@project.identifier}/repository_mirrors", action: 'update', mirror: mirror },
+                             method: :patch,
+                             class: 'icon icon-remove',
+                             data: { confirm: "Are you sure you want to deactivate the mirror '#{mirror.url}'" } %>
+                  <% else %>
+                    <%= link_to 'Activate',
+                             { controller: "projects/#{@project.identifier}/repository_mirrors", action: 'update', mirror: mirror },
+                             method: :patch,
+                             class: 'icon icon-yes',
+                             data: { confirm: "Are you sure you want to activate the mirror '#{mirror.url}'" } %>
+                  <% end %>
+                  <%= link_to l(:button_delete),
+                           { controller: "projects/#{@project.identifier}/repository_mirrors", action: 'destroy', mirror: mirror },
+                           method: :delete,
+                           class: 'icon icon-delete',
+                           data: { confirm: "Are you sure you want to delete the mirror '#{mirror.url}'" } %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <div class="generic-table--header-background"></div>
+    </div>
+  </div>
+<% end %>

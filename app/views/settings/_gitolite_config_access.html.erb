@@ -1,0 +1,42 @@
+<%
+  # Gitolite Access Config
+  ssh_server_domain                 = OpenProject::Gitolite::Config.get_setting(:ssh_server_domain)
+  #http_server_domain                = OpenProject::Gitolite::Config.get_setting(:http_server_domain)
+  https_server_domain               = OpenProject::Gitolite::Config.get_setting(:https_server_domain)
+
+  gitolite_http_by_default          = OpenProject::Gitolite::Config.get_setting(:gitolite_http_by_default)
+
+  #show_repositories_url             = OpenProject::Gitolite::Config.get_setting(:show_repositories_url)
+  gitolite_daemon_by_default        = OpenProject::Gitolite::Config.get_setting(:gitolite_daemon_by_default, true)
+%>
+
+<h3><%= l(:label_gitolite_access_config) %></h3>
+
+<div class="form--field -required">
+  <%= styled_label_tag("settings[https_server_domain]", l(:label_https_server_domain)) %>
+  <%= styled_text_field_tag("settings[https_server_domain]", https_server_domain) %>
+  <%= content_tag('div', l(:label_https_server_domain_desc), class: 'form--field-instructions') %>
+</div>
+
+<div class="form--field -required">
+  <%= styled_label_tag("settings[gitolite_http_by_default]", l(:label_gitolite_http_by_default)) %>
+  <%= styled_select_tag("settings[gitolite_http_by_default]", options_for_select([[l(:label_rg_disabled), 0], [l(:label_https_only), 1], [l(:label_https_and_http), 2], [l(:label_http_only), 3]], gitolite_http_by_default)) %>
+</div>
+
+<div class="form--field">
+  <%= styled_label_tag("settings[gitolite_daemon_by_default]", l(:label_gitolite_daemon_by_default)) %>
+  <span class="bootstrap-switch switch-small" data-on="primary" data-off="default" data-on-label="<%= l(:label_yes) %>" data-off-label="<%= l(:label_no) %>">
+    <%= hidden_field_tag "settings[gitolite_daemon_by_default]", "false" %>
+    <%= styled_check_box_tag("settings[gitolite_daemon_by_default]", true, gitolite_daemon_by_default) %>
+  </span>
+</div>
+
+<div class="form--field -required">
+  <%= styled_label_tag("settings[ssh_server_domain]", l(:ssh_server_domain)) %>
+  <%= styled_text_field_tag("settings[ssh_server_domain]", ssh_server_domain) %>
+  <%= content_tag('div', l(:label_ssh_server_domain_desc), class: 'form--field-instructions') %>
+</div>
+
+<br>
+
+<%= render partial: "gitolite_display_access" %>

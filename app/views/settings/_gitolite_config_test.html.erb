@@ -1,0 +1,112 @@
+<%= stylesheet_link_tag 'revisions_git/revisions_git' %>
+<h3><%= l(:label_permissions_header) %></h3>
+<% gitolite_repos = OpenProject::Gitolite::GitoliteWrapper.git_repositories %>
+<% gitolite_checks = OpenProject::Gitolite::Config.check_hooks_install! %>
+
+<table class="table table-hover">
+
+  <tr>
+    <td><%= l(:label_gitolite_manageable) %></td>
+    <td>
+      <% if Repository::Gitolite.manageable? %>
+      <span class="label label-success">✓</span>
+      <p>
+        <%= Repository::Gitolite.managed_root %>
+      </p>
+      <% else %>
+      <span class="label label-error">x</span>
+      <p>
+        <%= l(:label_gitolite_not_manageable) %>
+      </p>
+      <% end %>
+    </td>
+  </tr>
+
+  <tr>
+    <td><%= l(:label_openproject_user) %></td>
+    <td><span class="label label-success"><%= OpenProject::Gitolite::GitoliteWrapper.openproject_user %></span></td>
+  </tr>
+
+  <tr>
+    <td><%= l(:label_gitolite_user) %></td>
+    <td><span class="label label-success"><%= OpenProject::Gitolite::GitoliteWrapper.gitolite_user %></span></td>
+  </tr>
+
+  <tr>
+    <td><%= l(:label_git_version) %></td>
+    <td><span class="label label-success"><%= OpenProject::Scm::Adapters::Gitolite.scm_version_from_command_line %></span></td>
+  </tr>
+
+  <tr>
+    <td><%= l(:label_gitolite_version) %></td>
+    <td>
+      <% gitolite_version = OpenProject::Gitolite::GitoliteWrapper.gitolite_version %>
+      <span class="label label-<%= gitolite_version.nil? ? 'error' : 'success' %>">
+        <%= gitolite_version.nil? ? l(:label_unknown_gitolite_version) : gitolite_version %>
+      </span>
+    </td>
+  </tr>
+
+  <tr>
+    <td><%= l(:label_found_repositories) %></td>
+    <td>
+      <% if gitolite_repos[:error] %>
+      <span class="label label-error"><%= l(:label_error) %></span>
+      <br/>
+      <strong><%= gitolite_repos[:error] %></strong>
+      <% else %>
+      <span class="label label-success">
+        <%= gitolite_repos[:repos].nil? ? l(:label_none_repositories) : gitolite_repos[:repos].length %>
+      </span>
+      <% end %>
+    </td>
+  </tr>
+</table>
+
+<p><%= label_tag  "", l(:label_gitolite_banner) %></p>
+
+<div class="box">
+<pre>
+<%= raw OpenProject::Gitolite::GitoliteWrapper.gitolite_banner %>
+</pre>
+</div>
+
+<% if gitolite_repos[:repos] %>
+  <% repos = gitolite_repos[:repos] %>
+  <div class="box">
+  <pre>
+  <% repos.first(20).each do |repo| %>
+  <%= repo %>
+  <% end %>
+  </pre>
+  <strong><%= repos.length > 20 ? '(showing only first 20 entries)' : "Total: #{repos.length}" %></strong>
+  </div>
+<% end %>
+
+<p><%= label_tag  "", l(:label_path_directories) %></p>
+
+<div class="box">
+<pre>
+<%= raw (ENV['PATH']).gsub(/:/, "<br/>") %>
+</pre>
+</div>
+
+
+<p>
+  <table class="list list-aleft" style="width:100%">
+    <thead>
+      <tr>
+        <th><%= l(:label_gitolite_hooks_installed) %></th>
+        <th><%= l(:label_gitolite_hooks_params_installed) %></th>
+        <th><%= l(:label_gitolite_mailer_params_installed) %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="<%= curcycle=cycle('odd', 'even') %>">
+        <td class="center" style="text-align:left;"><%= render_gitolite_params_status(gitolite_checks[:hook_files]) %></td>
+        <td class="center" style="text-align:left;"><%= render_gitolite_params_status(gitolite_checks[:global_params]) %></td>
+        <td class="center" style="text-align:left;"><%= render_gitolite_params_status(gitolite_checks[:mailer_params]) %></td>
+      </tr>
+    </tbody>
+  </table>
+</p>

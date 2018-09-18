@@ -1,0 +1,8 @@
+<%= labelled_tabular_form_for(:repository_git_config_key,
+          url: { controller: 'repository_git_config_keys', action: 'create' },
+          method: :post ) do |f| %>
+
+  <h4><%= 'Create new repository Git config key' %></h4>
+  <%= render :partial => 'repository_git_config_keys/form', :locals => { :f => f} %>
+  <%= styled_button_tag 'Create Git config key', class: '-highlight -with-icon icon-yes' %>
+<% end %>

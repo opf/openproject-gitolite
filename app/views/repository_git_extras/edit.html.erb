@@ -1,0 +1,7 @@
+<%= labelled_tabular_form_for(@git_extra,
+          url: { controller: "projects/#{@project.identifier}/repository_git_extras", action: 'update'},
+          method: :patch ) do |f| %>
+
+      <%= render :partial => 'repository_git_extras/form', :locals => { :f => f} %>
+      <%= styled_button_tag t(:button_save), class: '-highlight -with-icon icon-yes' %>
+<% end %>

@@ -1,0 +1,102 @@
+<% if @repository_deployment_credentials.nil? || @repository_deployment_credentials.empty? %>
+  <%= no_results_box %>
+<% else %>
+  <div class="generic-table--container">
+    <div class="generic-table--results-container">
+      <table interactive-table class="generic-table">
+        <colgroup>
+          <col highlight-col>
+          <col highlight-col>
+          <col highlight-col>
+          <col highlight-col>
+          <col highlight-col>
+          <col>
+        </colgroup>
+        <thead>
+          <tr>
+            <th>
+              <div class="generic-table--sort-header-outer">
+                <div class="generic-table--sort-header">
+                  <span>
+                    <%= 'Owner' %>
+                  </span>
+                </div>
+              </div>
+            </th>
+            <th>
+              <div class="generic-table--sort-header-outer">
+                <div class="generic-table--sort-header">
+                  <span>
+                    <%= 'Gitolite identifier' %>
+                  </span>
+                </div>
+              </div>
+            </th>
+            <th>
+              <div class="generic-table--sort-header-outer">
+                <div class="generic-table--sort-header">
+                  <span>
+                    <%= 'Permissions' %>
+                  </span>
+                </div>
+              </div>
+            </th>
+            <th>
+              <div class="generic-table--sort-header-outer">
+                <div class="generic-table--sort-header">
+                  <span>
+                    <%= 'Honored' %>
+                  </span>
+                </div>
+              </div>
+            </th>
+            <th>
+              <div class="generic-table--sort-header-outer">
+                <div class="generic-table--sort-header">
+                  <span>
+                    <%= 'Active' %>
+                  </span>
+                </div>
+              </div>
+            </th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @repository_deployment_credentials.sort_by {|x| [x.user.login, x.gitolite_public_key.title]}.each do |credential| %>
+            <tr>
+              <td class="center" style="text-align:left;"><%= credential.user.login %></td>
+              <td class="center" style="text-align:left;"><%= raw("#{credential.gitolite_public_key.title}/<br/>#{credential.gitolite_public_key.identifier}.pub") %></td>
+              <td class="center" style="text-align:left;"><%= credential.perm %></td>
+              <td class="center" style="text-align:left;"><%= checked_image credential.honored? %></td>
+              <td class="center" style="text-align:left;"><%= checked_image credential.active? %></td>
+              <td class="buttons">
+                <% if User.current.admin? || (User.current.allowed_to?(:edit_repository_deployment_credentials, @project) && User.current == credential.user) %>
+                  <% if credential.active? %>
+                    <%= link_to 'Deactivate',
+                             { controller: "projects/#{@project.identifier}/repository_deployment_credentials", action: 'update', credential: credential },
+                             method: :patch,
+                             class: 'icon icon-remove',
+                             data: { confirm: "Are you sure you want to deactivate the credential '#{credential.gitolite_public_key.title}' => #{credential.perm}" } %>
+                  <% else %>
+                    <%= link_to 'Activate',
+                             { controller: "projects/#{@project.identifier}/repository_deployment_credentials", action: 'update', credential: credential },
+                             method: :patch,
+                             class: 'icon icon-yes',
+                             data: { confirm: "Are you sure you want to activate the credential '#{credential.gitolite_public_key.title}' => #{credential.perm}" } %>
+                  <% end %>
+                  <%= link_to l(:button_delete),
+                           { controller: "projects/#{@project.identifier}/repository_deployment_credentials", action: 'destroy', credential: credential },
+                           method: :delete,
+                           class: 'icon icon-delete',
+                           data: { confirm: "Are you sure you want to delete the credential '#{credential.gitolite_public_key.title}' => #{credential.perm}" } %>
+      	      <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <div class="generic-table--header-background"></div>
+    </div>
+  </div>
+<% end %>

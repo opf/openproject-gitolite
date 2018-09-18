@@ -1,0 +1,3 @@
+<% html_title 'My public keys' %>
+<%= toolbar title: 'My public keys' %>
+<%= render partial: 'gitolite_public_keys/form', locals: {ssh_keys: @gitolite_user_keys, target: 'my_public_keys', deploy: params[:deploy]} %>
