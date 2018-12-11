@@ -13,7 +13,7 @@ module OpenProject::Gitolite
       module InstanceMethods
         def install_gitolite_hooks
           @plugin = Redmine::Plugin.find(params[:id])
-          return render_404 unless @plugin.id == :openproject_revisions_git
+          return render_404 unless @plugin.id == :openproject_gitolite
           @gitolite_checks = OpenProject::Gitolite::Config.install_hooks!
         end
       end
