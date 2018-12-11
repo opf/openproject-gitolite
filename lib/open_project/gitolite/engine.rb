@@ -166,7 +166,7 @@ module OpenProject::Gitolite
       menu(
         :project_menu,
         :manage_git_repositories,
-        { controller: 'manage_git_repositories', action: 'index' },
+        { controller: '/manage_git_repositories', action: 'index' },
         caption: 'Manage Gitolite repository',
         param: :project_id,
         parent: :repository,
