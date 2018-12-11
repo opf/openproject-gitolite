@@ -141,7 +141,7 @@ module OpenProject::Gitolite
       menu(
         :my_menu,
         :public_keys,
-        { controller: 'my_public_keys', action: 'index' },
+        { controller: '/my_public_keys', action: 'index' },
         html: { class: 'icon2 icon-folder-locked' },
         caption: :label_public_keys,
         if: Proc.new { |authorized = false| authorized = true if User.current.admin?
